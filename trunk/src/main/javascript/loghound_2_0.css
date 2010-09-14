@@ -1,0 +1,226 @@
+#lhPlateCtrlPanel {
+    text-align:left;
+}
+/*
+#D79900
+#91B4DE
+#688DE0
+
+#FFF2BA
+#DFEAF8
+*/
+.lhInput {
+    font-family: Verdana, Tahoma, Helvetica, Arial;
+    font-size: 7pt;
+}
+.lhBtn {
+    cursor:pointer;
+    cursor:hand;
+}
+.lhBtnOut {
+    border: 1px solid #DFEAF8;
+}
+.lhBtnOver {
+    border: 1px solid #000000;
+}
+.lhCtrl {
+    display: block;
+    font-family: Verdana, Tahoma, Helvetica, Arial;
+    font-size: 8pt;
+    font-weight: bold;
+    text-align:center;
+    white-space:nowrap;
+    height: 14px;
+    width: 18px;
+    cursor:pointer;
+    cursor:hand;
+}
+#lhCtrlTags {
+    display: block;
+    font-family: Verdana, Tahoma, Helvetica, Arial;
+    font-size: 8pt;
+    font-weight: normal;
+}
+.lhCtrlLvl {
+    border: 1px #688DE0 solid;
+    margin: 0px !important;
+}
+.lhSearchLabel {
+    font-family: Verdana, Tahoma, Helvetica, Arial;
+    font-size: 7pt;
+    font-weight: bold;
+    width: 5em;
+    float: left;
+    text-align: right;
+    display: block;
+    white-space:nowrap;
+    margin-left: 10px;
+}
+.lhSearchField {
+    font-family: Verdana, Tahoma, Helvetica, Arial;
+    font-size: 6pt;
+    text-align: left;
+    width: 100px;
+    float: left;
+}
+.lhTitleLeft {
+    display: block;
+    width: 20px;
+    height: 14px
+}
+.lhTitle {
+    font-family: Verdana, Tahoma, Helvetica, Arial;
+    font-size: 8pt;
+    font-weight: bold;
+    width: 100%;
+    height: 14px
+}
+.lhTitleCtrl {
+    display: block;
+    font-family: Verdana, Tahoma, Helvetica, Arial;
+    font-size: 8pt;
+    font-weight: bold;
+    text-align:center;
+    white-space:nowrap;
+    height: 14px;
+    width: 18px;
+}
+#lhPlate {
+    -moz-border-radius: 5px 5px 5px 5px;
+    width: 400px;
+    height: 100px;
+    border: 3px #688DE0 solid;
+    position: absolute;
+    background-color: #688DE0;
+    display: none;
+}
+#lhPlateHead {
+    -moz-border-radius: 5px 5px 5px 5px; 
+    background-color: #DFEAF8;
+    height: 16px;
+    font-size: 8pt;
+    font-weight: bold;
+    font-family: Verdana, Tahoma, Helvetica, Arial;
+    border-bottom: 3px solid #688DE0;
+    padding: 0px 4px;
+}
+#lhPlateCtrlPanel {
+    -moz-border-radius: 5px 5px 5px 5px;  
+    position: relative;
+    background-color: #DFEAF8;
+    height: 16px;
+    font-size: 8pt;
+    font-weight: bold;
+    color: #404040;
+    font-family: Verdana, Tahoma, Helvetica, Arial;
+    border-bottom: 3px solid #688DE0;
+    padding: 0px 4px;
+    display: none;
+}
+#lhPlateBodyBox {
+    clear: both;
+    height: 81px;
+    position: relative;
+    overflow: visible;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background-color: #DFEAF8;
+}
+#lhPlateBody {
+    position: relative;
+    overflow: hidden;
+}
+.lhMsgElmt {
+    font-family: Verdana, Tahoma, Helvetica, Arial;
+    font-size: 7pt;
+    word-wrap: break-word;
+    padding: 1px 2px;
+    margin: 0px;
+}
+.lhMsgNum {
+    border-right: 1px black solid;
+    width: 20px;
+}
+.lhMsgTime {
+    border-right: 1px black solid;
+}
+.lhMsgTxt {
+    word-wrap: break-word;
+}
+.logMsg {
+    border-bottom: 1px solid #688DE0;
+    border-collapse: collapse;
+    text-align: left;
+    width: 100%;
+}
+.logMsg > table {
+    border-spacing: 0px;
+    margin: 0px;
+    padding: 0px;
+}
+.logMsg > table > tbody {
+    border-spacing: 0px;
+    margin: 0px;
+    padding: 0px;
+}
+.lhFatalMsg {
+    background-color: #FFA1FD;
+}
+.lhErrorMsg {
+    background-color: #FFA1A1;
+}
+.lhWarnMsg {
+    background-color: #FAFFA1;
+}
+.lhInfoMsg {
+    background-color: #A1FFA1;
+}
+.lhDebugMsg {
+    background-color: #A1FDFF;
+}
+.lhTraceMsg {
+    background-color: #A1C5FF;
+}
+
+#lhPlateTagPanel {
+    -moz-border-radius: 5px 5px 5px 5px;
+    font-family: Verdana, Tahoma, Helvetica, Arial;
+    font-size: 7pt;
+    overflow: auto;
+    background-color: #DFEAF8;
+    border-bottom: 3px solid #688DE0;
+    padding: 2px;
+}
+
+#lhAvailTagsPlate {
+    width: 150px;
+    float: left;
+}
+#lhCtrlTagsPlate {
+    margin: 8px 3px 0px 3px;
+    vertical-align: middle;
+    width: 23px;
+    text-align: center;
+    float: left;
+}
+.lhTagCtrl {
+    display: block;
+    cursor:pointer;
+    cursor:hand;
+}
+#lhTagCtrlRem {
+    margin-top: 2px;
+}
+#lhViewTagsPlate {
+    width: 150px;
+    float: left;
+}
+
+
+#lhAvailTagsSelect {
+    width: 150px;
+}
+#lhViewTagsSelect {
+    width: 150px;
+}
+
