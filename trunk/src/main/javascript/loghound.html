@@ -8,12 +8,75 @@
 <script language="JavaScript" src="loghound.js" type="text/JavaScript"></script>
 <script language="JavaScript" type="text/JavaScript">
 function onBodyLoad() {
-  window.logHound.doSetup();
+    window.logHound.doSetup();
 }
 </script>
+<style type="text/css">
+<!--
+body {
+	  font-family: Arial, Helvetica, serif;
+	  padding: 3px;
+}
+#facetsPlate {
+    font-family: Verdana, sans-serif;
+	  font-size: 10pt;
+	  color: #000099;
+	  font-weight: bold;
+}
+#header {
+	  font-size: 16pt;
+	  color: #000099;
+	  font-weight: bold;
+}
+</style>
+
 </head>
 <body onload="onBodyLoad();">
-<div id="header">Facets Log Hound Demo Sheet (v2.0b)</header>
-
+<div id="facetsPlate">Facets Technologies Inc.</div>
+<div id="header">Log Hound Demo Sheet (v2.0b)</div>
+<div id="introduction">
+    One bright sunny day, as I sat hunched over my 
+</div
+<div>
+    <table width="100%" border="0" cellpadding="2" cellspacing="0">
+        <tr>
+            <td class="exTitle">Example 1 </td>
+        </tr>
+        <tr>
+            <td align="center"><table  border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td id="calHTML01" class="targetCell">&nbsp;</td>
+              <td width="10" rowspan="3" valign="middle">&nbsp;</td>
+              <td width="1" rowspan="3" valign="middle"><a href="javascript:void(0);" onClick="cal1.show(event);" onMouseOver="cal1.setStatusOn(); return true;" onMouseOut="cal1.setStatusOff()"><img src="images/calendar.gif" alt="Toggle Calendar" name="newCalendar" width="34" height="21" border="0" id="newCalendar"></a></td>
+            </tr>
+            <tr>
+              <td height="4"></td>
+            </tr>
+            <tr>
+              <td><input name="calForm01" type="text" id="calForm01" size="30" maxlength="30"></td>
+            </tr>
+        </table></td>
+      </tr>
+      <tr>
+        <td height="5"></td>
+      </tr>
+      <tr>
+        <td>Settings:</td>
+      </tr>
+      <tr>
+        <td class="settingsList"><ul>
+            <li>Lock date</li>
+            <li>No title bar</li>
+            <li>Horizontal offset -50 </li>
+            <li>Set 'calForm01' to date format of<br> 
+              &quot;mmmm dd, yyyy&quot;</li>
+            <li>Set 'calForm02' to date format of<br> 
+              &quot;mmm ppdd, yy&quot;</li>
+            <li>Set 'calHTML01' to date format of <br>
+              &quot;mm/ppdd/yyyy&quot;</li>
+        </ul></td>
+      </tr>
+    </table>
+</div>
 </body>
 </html>
