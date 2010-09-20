@@ -141,7 +141,7 @@ LogHound.prototype.doSetup = function() {
     this.logPlateHead.setAttribute('id', 'lhPlateHead');
     var titlebar = '<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr>';
     titlebar +=    '<td><span id="lhTitleToggleShowHide" class="lhTitleCtrl lhBtn" title="Hide">^</span></td>';
-    titlebar +=    '<td class="lhTitle">Log Hound v'+LogHoundVer+'</td>'
+    titlebar +=    '<td class="lhTitle">Log Hound v'+LogHoundVer.getLongText()+'</td>'
     titlebar +=    '<td><span id="lhTitleToggleCtrl" class="lhTitleCtrl lhBtn" title="Toggle Control Panel">&#149;</span></td>'
     titlebar +=    '</tr></table>';
     this.logPlateHead.innerHTML = titlebar;
