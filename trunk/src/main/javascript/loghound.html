@@ -7,8 +7,34 @@
 <script language="JavaScript" src="fcts_lib.js" type="text/JavaScript"></script>
 <script language="JavaScript" src="loghound.js" type="text/JavaScript"></script>
 <script language="JavaScript" type="text/JavaScript">
+function addLogLevels() {
+    var lvlSelect = document.getElementById('logMsgLevelSelect');
+	var level;
+    for(idx = 0; idx<LogHoundLevels.length; idx++) {
+	    level = LogHoundLevels[idx];
+	    lvlSelect.options[lvlSelect.length] = new Option(level.getText(),level.getId());
+	}
+}
+
+function enterLogMessage() {
+    var levelId = document.getElementById('logMsgLevelSelect').value;
+	var msg = document.getElementById('logMsgText').value;
+	var what = LogHoundLevels.getById(levelId);
+	var tags = document.getElementById('logMsgTags').value;
+	var tagArray = null;
+	if(tags.indexOf('\r\n')>=0) {
+	    tagArray = tags.split('\r\n');
+	} else {
+	    tagArray = tags.split('\n');
+	}
+	window.logHound.log(LogHoundLevels.getById(levelId),msg,tagArray);
+}
+
 function onBodyLoad() {
     window.logHound.doSetup();
+	document.getElementById('lhVersion').innerHTML = '(v'+LogHoundVer.getLongText()+')';
+	addLogLevels();
+	document.getElementById('logMessage').onclick = enterLogMessage;
 }
 </script>
 <style type="text/css">
@@ -34,58 +60,44 @@ body {
     margin-top: 15px;
     font-size: 10pt;
 }
+
+#logGeneratorPlate {
+	margin-top: 20px;
+	width: 400px;
+}
+#genHeader {
+    display: block;
+	margin: 0px auto;
+    font-size: 16px;
+	font-weight: bold;
+}
+#logTagsPlate {
+    width: 250px;
+}
+
 </style>
 
 </head>
-<body onload="onBodyLoad();">
+<body onLoad="onBodyLoad();">
 <div id="facetsPlate">Facets Technologies Inc.</div>
-<div id="header">Log Hound Demo Sheet (v2.0b)</div>
+<div id="header">Log Hound Demo Sheet <span id="lhVersion">?</span></div>
 <div id="introduction" class="introduction">
     One bright sunny day, as I sat hunched over my keyboard busily typing in "alert(..." over and over again in an attempt to debug a very intractable problem, I dreamed that there had to be a better way.  Using alert sucks in many ways.  One major sticking point is that when you are finished with them, you have to either erase them or comment them out.  If you erase them and there's a problem, you have to type them in again, which is less painfull then having to uncomment existing lines.
 </div>
-<div id="examples">
-  
-<div>
-<div>
-    <table width="100%" border="0" cellpadding="2" cellspacing="0">
-        <tr>
-            <td class="exTitle">Example 1 </td>
-        </tr>
-        <tr>
-            <td align="center"><table  border="0" cellspacing="0" cellpadding="0">
-            <tr>
-              <td id="calHTML01" class="targetCell">&nbsp;</td>
-              <td width="10" rowspan="3" valign="middle">&nbsp;</td>
-              <td width="1" rowspan="3" valign="middle"><a href="javascript:void(0);" onClick="cal1.show(event);" onMouseOver="cal1.setStatusOn(); return true;" onMouseOut="cal1.setStatusOff()"><img src="images/calendar.gif" alt="Toggle Calendar" name="newCalendar" width="34" height="21" border="0" id="newCalendar"></a></td>
-            </tr>
-            <tr>
-              <td height="4"></td>
-            </tr>
-            <tr>
-              <td><input name="calForm01" type="text" id="calForm01" size="30" maxlength="30"></td>
-            </tr>
-        </table></td>
-      </tr>
-      <tr>
-        <td height="5"></td>
-      </tr>
-      <tr>
-        <td>Settings:</td>
-      </tr>
-      <tr>
-        <td class="settingsList"><ul>
-            <li>Lock date</li>
-            <li>No title bar</li>
-            <li>Horizontal offset -50 </li>
-            <li>Set 'calForm01' to date format of<br> 
-              &quot;mmmm dd, yyyy&quot;</li>
-            <li>Set 'calForm02' to date format of<br> 
-              &quot;mmm ppdd, yy&quot;</li>
-            <li>Set 'calHTML01' to date format of <br>
-              &quot;mm/ppdd/yyyy&quot;</li>
-        </ul></td>
-      </tr>
-    </table>
+<div id="logGeneratorPlate">
+    <span id="genHeader">Log Message Generator</span>
+    <label for="logMsgLevelSelect">Select Level:</label>
+    <select id="logMsgLevelSelect" name="logMsgLevelSelect"></select>
+    <div id="logTagsPlate">
+    <label for="logMsgTags">Enter Message Tags:</label>
+    <textarea id="logMsgTags" name="logMsgTags" cols="20" rows="4"></textarea>
+    </div>
+    <div id="logMessagePlate">
+    <label for="logMsgText">Enter Message Text:</label>
+    <textarea id="logMsgText" name="logMsgText" cols="40" rows="4"></textarea>
+    </div>
+    <input id="logMessage" name="logMessage" type="button" value="Enter">
 </div>
+
 </body>
 </html>

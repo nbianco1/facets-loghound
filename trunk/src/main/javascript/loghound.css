@@ -1,6 +1,3 @@
-#lhPlateCtrlPanel {
-    text-align:left;
-}
 /*
 #D79900
 #91B4DE
@@ -117,6 +114,16 @@
     padding: 0px 4px;
     display: none;
 }
+#lhPlateTagPanel {
+    -moz-border-radius: 5px 5px 5px 5px;
+    font-family: Verdana, Tahoma, Helvetica, Arial;
+    font-size: 7pt;
+    overflow: auto;
+    background-color: #DFEAF8;
+    border-bottom: 3px solid #688DE0;
+    padding: 2px;
+    display: none;
+}
 #lhPlateBodyBox {
     clear: both;
     height: 81px;
@@ -182,15 +189,6 @@
     background-color: #A1C5FF;
 }
 
-#lhPlateTagPanel {
-    -moz-border-radius: 5px 5px 5px 5px;
-    font-family: Verdana, Tahoma, Helvetica, Arial;
-    font-size: 7pt;
-    overflow: auto;
-    background-color: #DFEAF8;
-    border-bottom: 3px solid #688DE0;
-    padding: 2px;
-}
 
 #lhAvailTagsPlate {
     width: 150px;
@@ -223,4 +221,3 @@
 #lhViewTagsSelect {
     width: 150px;
 }
-

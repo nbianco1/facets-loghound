@@ -10,8 +10,18 @@
  *
  */
 
-var LogHoundVer = '2.0 alpha';
- 
+var LogHoundVer = new Array();
+LogHoundVer['major'] = '2';
+LogHoundVer['minor'] = '0';
+LogHoundVer['fix'] = '0';
+LogHoundVer['release'] = 'alpha';
+LogHoundVer.getLongText = function() {
+    return this.major+'.'+this.minor+'.'+this.fix+' '+this.release;
+}
+LogHoundVer.getShortText = function() {
+    return 'v'+this.major+'.'+this.minor+'.'+this.fix+' '+this.release;
+}
+
 var LogHoundUtils = new Object();
 LogHoundUtils.extractMessage = function(argz) {
     return LogHoundUtils.extract(argz, 'message');
@@ -35,6 +45,13 @@ LogHoundUtils.extract = function(argz, target) {
  * Object array defining all the log level objects and their specific attributes.
  */
 var LogHoundLevels = new Array();
+LogHoundLevels.getById = function(id) {
+    for(idx=0; idx<this.length; idx++) {
+        if(this[idx].getId() == id) {
+            return this[idx];
+        }
+    }
+}
 function LogHoundLevel(id, text, enabled) {
     this.id = id;
     this.text = text;
@@ -52,6 +69,7 @@ LogHoundLevel.prototype.isEnabled = function() {
 LogHoundLevel.prototype.setEnabled = function(enable) {
     this.enabled = enable;
 }
+// Fatal Log Level
 function FatalLogHoundLevel() {
     FatalLogHoundLevel.baseConstructor.call(this, 100, 'fatal', true);
 }
@@ -79,12 +97,14 @@ function InfoLogHoundLevel() {
 FctsTools.extend(InfoLogHoundLevel, LogHoundLevel);
 LogHoundLevels['INFO'] = new InfoLogHoundLevel();
 LogHoundLevels.push(LogHoundLevels['INFO']);
+// Debug Log Level
 function DebugLogHoundLevel() {
     DebugLogHoundLevel.baseConstructor.call(this, 60, 'debug', true);
 }
 FctsTools.extend(DebugLogHoundLevel, LogHoundLevel);
 LogHoundLevels['DEBUG'] = new DebugLogHoundLevel();
 LogHoundLevels.push(LogHoundLevels['DEBUG']);
+// Trace Log Level
 function TraceLogHoundLevel() {
     TraceLogHoundLevel.baseConstructor.call(this, 50, 'trace', true);
 }
