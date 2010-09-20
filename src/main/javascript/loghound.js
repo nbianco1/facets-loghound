@@ -40,7 +40,6 @@ LogHoundUtils.extract = function(argz, target) {
         }
     }
 }
-
 /**
  * Object array defining all the log level objects and their specific attributes.
  */
@@ -142,18 +141,18 @@ LogHound.prototype.doSetup = function() {
     var titlebar = '<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr>';
     titlebar +=    '<td><span id="lhTitleToggleShowHide" class="lhTitleCtrl lhBtn" title="Hide">^</span></td>';
     titlebar +=    '<td class="lhTitle">Log Hound v'+LogHoundVer.getLongText()+'</td>'
+    titlebar +=    '<td><span id="lhCtrlTags" class="lhCtrlTags lhBtn">T</span></td>';
     titlebar +=    '<td><span id="lhTitleToggleCtrl" class="lhTitleCtrl lhBtn" title="Toggle Control Panel">&#149;</span></td>'
     titlebar +=    '</tr></table>';
     this.logPlateHead.innerHTML = titlebar;
     this.logPlate.appendChild(this.logPlateHead);
 
+    // Control panel creation code.
     this.logPlateCtrlPanel = document.createElement('DIV');
     this.logPlateCtrlPanel.setAttribute('id', 'lhPlateCtrlPanel');
     var ctrlbar = '<table border="0" cellspacing="0" cellpadding="0"><tr>';
     ctrlbar +=    '<td><span id="lhCtrlMore" class="lhCtrl lhBtn" title="Show More">v</span></td>';
     ctrlbar +=    '<td><span id="lhCtrlLess" class="lhCtrl lhBtn" title="Show Less">^</span></td>';
-    ctrlbar +=    '<td><span class="lhCtrl lhSpace">&nbsp;</span></td>';
-    ctrlbar +=    '<td><span id="lhCtrlTags" class="lhCtrlTags lhBtn">Tags</span></td>';
     ctrlbar +=    '<td><span class="lhCtrl lhSpace">&nbsp;</span></td>';
     ctrlbar +=    '<td><span id="lhCtrlLvlFatal" class="lhFatalMsg lhCtrlLvl lhCtrl lhBtn" title="Fatal">+</span></td>';
     ctrlbar +=    '<td><span id="lhCtrlLvlError" class="lhErrorMsg lhCtrlLvl lhCtrl lhBtn" title="Error">+</span></td>';
@@ -166,6 +165,7 @@ LogHound.prototype.doSetup = function() {
     this.logPlateCtrlPanel.innerHTML = ctrlbar;
     this.logPlate.appendChild(this.logPlateCtrlPanel);
     
+    // Tag panel creation code
     this.logPlateTagPanel = document.createElement('DIV');
     this.logPlateTagPanel.setAttribute('id', 'lhPlateTagPanel');
     var tagbar = '';
@@ -358,7 +358,7 @@ LogHound.prototype.getLogLevelObject = function(name) {
         return null;
     }
     name = name.toLowerCase();
-    for(idx in LogHoundLevels) {
+    for(idx=0; idx<LogHoundLevels.length; idx++) {
         if(LogHoundLevels[idx].getText()==name) {
             return LogHoundLevels[idx];
         }
@@ -567,6 +567,7 @@ LogHound.prototype.addTags = function(tagz) {
                continue foundMatch;
             } 
         }
+        if(tagz[tagIdx]==null || tagz[tagIdx]=='') { continue; }
         this.msgTags.push(tagz[tagIdx]);
         tagsSelect.options[tagsSelect.length] = new Option(tagz[tagIdx], tagz[tagIdx]);
     }
@@ -596,7 +597,10 @@ LogHound.prototype.log = function() {
         }
     }
     // Since the ESP code is not finished, we cannot do anything without a log level.
-    if(level==null || message==null || this.logLevel.getId()>level.getId()) {
+    if(level==null || this.logLevel.getId()>level.getId()) {
+        return;
+    }
+    if(message==null || message=='') {
         return;
     }
     // add all unique tags to master active tag list

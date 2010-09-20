@@ -132,6 +132,7 @@
     overflow-x: hidden;
     overflow-y: scroll;
     background-color: #DFEAF8;
+    display: none;
 }
 #lhPlateBody {
     position: relative;
