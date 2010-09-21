@@ -189,6 +189,7 @@ LogHound.prototype.doSetup = function() {
 
     this.logPlateBodyBox = document.createElement('DIV');
     this.logPlateBodyBox.setAttribute('id', 'lhPlateBodyBox');
+    this.logPlateBodyBox.style.display = 'none';
     this.logPlate.appendChild(this.logPlateBodyBox);
 
     this.logPlateBody = document.createElement('DIV');
@@ -428,8 +429,21 @@ LogHound.prototype.filterMsg = function(msgRec) {
     }
     return true;
 }
-LogHound.prototype.toggleDisplay = function() {
+LogHound.prototype.toggleDisplay = function(show) {
     var toggleBtn = document.getElementById('lhTitleToggleShowHide');
+    show = (show==null ? this.logPlateBodyBox.style.display == 'none' : show);
+    if(show) {
+        this.logPlateBodyBox.style.display = 'block';
+        this.adjustPlateSize();
+        toggleBtn.innerHTML = '^';
+    } else {
+        this.logPlateBodyBox.style.display = 'none';
+        this.logPlateTagPanel.style.display = 'none';
+        this.logPlateCtrlPanel.style.display = 'none';
+        this.logPlate.style.height = this.logPlateHead.offsetHeight;
+        toggleBtn.innerHTML = 'v';
+    }
+    /*
     var ctrlChar = toggleBtn.innerHTML;
     //var ctrlChar = $('#lhTitleToggleShowHide').html();
     if(ctrlChar=='^') {
@@ -445,6 +459,7 @@ LogHound.prototype.toggleDisplay = function() {
         toggleBtn.innerHTML = '^';
         //$('#lhTitleToggleShowHide').html('^')
     }
+    */
 };
 LogHound.prototype.toggleCtrlPanel = function() {
     var displayVal = this.logPlateCtrlPanel.style.display;
