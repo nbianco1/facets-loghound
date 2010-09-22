@@ -18,7 +18,7 @@ function addLogLevels() {
 
 function enterLogMessage() {
     var levelId = document.getElementById('logMsgLevelSelect').value;
-	var msg = document.getElementById('logMsgText').value;
+    var msg = document.getElementById('logMsgText').value;
 	var what = LogHoundLevels.getById(levelId);
 	var tags = document.getElementById('logMsgTags').value;
 	var tagArray = null;
@@ -35,6 +35,11 @@ function onBodyLoad() {
 	document.getElementById('lhVersion').innerHTML = '(v'+LogHoundVer.getLongText()+')';
 	addLogLevels();
 	document.getElementById('logMessage').onclick = enterLogMessage;
+	window.logHound.logWarn('This is a warning message tagged Tag1, AllTags',['Tag1','AllTags']);
+	window.logHound.logInfo('This is an info message tagged Tag2',['Tag2']);
+	window.logHound.logError('This is an error message tagged Tag3, AllTags',['Tag3','AllTags']);
+	window.logHound.logInfo('This is an info message tagged Tag4',['Tag4']);
+	window.logHound.logWarn('This is a warn message tagged Tag5, AllTags',['Tag5','AllTags']);
 }
 </script>
 <style type="text/css">

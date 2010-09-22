@@ -165,7 +165,7 @@ LogHound.prototype.doSetup = function() {
     ctrlbar +=    '</tr></table>';
     this.logPlateCtrlPanel.innerHTML = ctrlbar;
     this.logPlate.appendChild(this.logPlateCtrlPanel);
-    
+
     // Tag panel creation code
     this.logPlateTagPanel = document.createElement('DIV');
     this.logPlateTagPanel.setAttribute('id', 'lhPlateTagPanel');
@@ -175,7 +175,7 @@ LogHound.prototype.doSetup = function() {
     tagbar +=    '<span>Tags:</span>';
     tagbar +=    '<div><select id="lhAvailTagsSelect" class="lhInput" multiple="multiple" size="4"></select></div>';
     tagbar +=    '</div>';
-    
+
     tagbar +=    '<div id="lhCtrlTagsPlate">';
     tagbar +=    '<span id="lhTagCtrlAddBtn" class="lhTagCtrl lhBtn">&gt;</span>';
     tagbar +=    '<span id="lhTagCtrlAddAllBtn" class="lhTagCtrl lhBtn">&gt;&gt;</span>';
@@ -228,7 +228,7 @@ LogHound.prototype.doSetup = function() {
         $(this).removeClass('lhBtnOver').addClass('lhBtnOut');
     });
     */
-    
+
     var addTagsBtn = document.getElementById('lhTagCtrlAddBtn');
     addTagsBtn.onclick = function(event) {
         window.logHound.moveTagAssignments('add');
@@ -245,7 +245,7 @@ LogHound.prototype.doSetup = function() {
     addAllTagsBtn.onclick = function(event) {
         window.logHound.moveTagAssignments('addAll');
     }
-     
+
     var ctrlMore = document.getElementById('lhCtrlMore');
     ctrlMore.onclick = function(event) {
         window.logHound.showMoreMessages();
@@ -255,7 +255,7 @@ LogHound.prototype.doSetup = function() {
         window.logHound.showMoreMessages();
     });
     */
-    
+
 
     document.getElementById('lhCtrlLess').onclick = function(event) {
         window.logHound.showLessMessages();
@@ -308,22 +308,22 @@ LogHound.prototype.doSetup = function() {
         window.logHound.toggleCtrlPanel();
     });
     */
-    
+
     document.getElementById('lhCtrlTags').onclick = function(event) {
         window.logHound.toggleTagCtrlPanel();
     }
     document.getElementById('lhCtrlTags').onclick = function(event) {
         window.logHound.toggleTagCtrlPanel();
     }
-    
+
     document.getElementById('lhTagCtrlAnyBtn').onclick = function(event) {
         window.logHound.setTagFilterMode('A');
     };
-    
+
     document.getElementById('lhTagCtrlIntBtn').onclick = function(event) {
         window.logHound.setTagFilterMode('I');
     };
-    
+
     document.getElementById('lhTagCtrlExcBtn').onclick = function(event) {
         window.logHound.setTagFilterMode('E');
     };
@@ -609,7 +609,7 @@ LogHound.prototype.addTags = function(tagz) {
         for(allIdx in this.msgTags) {
             if(tagz[tagIdx]==this.msgTags[allIdx]) {
                continue foundMatch;
-            } 
+            }
         }
         if(tagz[tagIdx]==null || tagz[tagIdx]=='') { continue; }
         this.msgTags.push(tagz[tagIdx]);
@@ -649,7 +649,7 @@ LogHound.prototype.log = function() {
     }
     // add all unique tags to master active tag list
     this.addTags(tags);
-    
+
     // Create message record
     var msgRec = new Array();
     msgRec['level'] = level;
@@ -784,20 +784,33 @@ LogHoundMessageTagFilter.prototype.showMessage = function(msgRec) {
     if(this.tagz==null || this.tagz.length<1) {
         return true;
     }
+    if(this.tagMode=='I') {
+        if(!(msgRec['tags'] instanceof Array)) {
+            return false;
+        }
+        if(msgRec['tags'].length<this.tagz.length) {
+            return false;
+        }
+    }
     var matched = false;
-    for(tagIdx in msgRec['tags']) {
-        for(targetIdx in this.tagz) {
+    var intMatched = false;
+    for(targetIdx=0; targetIdx<this.tagz.length; targetIdx++) {
+        intMatched = false;
+        for(tagIdx=0; tagIdx<msgRec['tags'].length; tagIdx++) {
             matched = (msgRec['tags'][tagIdx] == this.tagz[targetIdx]);
-            if(matched && this.tagMode=='A') {
+            if(this.tagMode=='I') {
+                intMatched = (intMatched || matched);
+            } else if(matched && this.tagMode=='A') {
                 return true;
             } else if(matched && this.tagMode=='E') {
                 return false;
-            } else if(!matched && this.tagMode=='I') {
-                return false;
             }
         }
+        if(this.tagMode=='I' && !intMatched) {
+            return false;
+        }
     }
-    return this.tagMode=='E';
+    return (this.tagMode=='E' || this.tagMode=='I');
 }
 /**
  * Message text search filter.
