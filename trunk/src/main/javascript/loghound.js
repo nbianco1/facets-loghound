@@ -67,7 +67,7 @@ LogHoundLevel.prototype.isEnabled = function() {
 };
 LogHoundLevel.prototype.setEnabled = function(enable) {
     this.enabled = enable;
-}
+};
 // Fatal Log Level
 function FatalLogHoundLevel() {
     FatalLogHoundLevel.baseConstructor.call(this, 100, 'fatal', true);
@@ -126,6 +126,7 @@ LogHound.prototype.doSetup = function() {
     if(this.killSwitch) {
         return;
     }
+    this.tagMode = 'A';
     this.killSwitch = true;
     this.initialised = true;
     this.msgRecords = new Array();
@@ -139,7 +140,7 @@ LogHound.prototype.doSetup = function() {
     this.logPlateHead = document.createElement('DIV');
     this.logPlateHead.setAttribute('id', 'lhPlateHead');
     var titlebar = '<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr>';
-    titlebar +=    '<td><span id="lhTitleToggleShowHide" class="lhTitleCtrl lhBtn" title="Hide">^</span></td>';
+    titlebar +=    '<td><span id="lhTitleToggleShowHide" class="lhTitleCtrl lhBtn" title="Hide">v</span></td>';
     titlebar +=    '<td class="lhTitle">Log Hound v'+LogHoundVer.getLongText()+'</td>'
     titlebar +=    '<td><span id="lhCtrlTags" class="lhCtrlTags lhBtn">T</span></td>';
     titlebar +=    '<td><span id="lhTitleToggleCtrl" class="lhTitleCtrl lhBtn" title="Toggle Control Panel">&#149;</span></td>'
@@ -169,20 +170,30 @@ LogHound.prototype.doSetup = function() {
     this.logPlateTagPanel = document.createElement('DIV');
     this.logPlateTagPanel.setAttribute('id', 'lhPlateTagPanel');
     var tagbar = '';
+    tagbar +=    '<div class="lhShrinkWrap">';
     tagbar +=    '<div id="lhAvailTagsPlate">';
     tagbar +=    '<span>Tags:</span>';
     tagbar +=    '<div><select id="lhAvailTagsSelect" class="lhInput" multiple="multiple" size="4"></select></div>';
     tagbar +=    '</div>';
     
     tagbar +=    '<div id="lhCtrlTagsPlate">';
-    tagbar +=    '<span id="lhTagCtrlAddBtn" class="lhTagCtrl lhBtn">&gt;</span><span id="lhTagCtrlAddAllBtn" class="lhTagCtrl lhBtn">&gt;&gt;</span>';
-    tagbar +=    '<span id="lhTagCtrlRemBtn" class="lhTagCtrl lhBtn">&lt;</span><span id="lhTagCtrlRemAllBtn" class="lhTagCtrl lhBtn">&lt;&lt;</span>';
+    tagbar +=    '<span id="lhTagCtrlAddBtn" class="lhTagCtrl lhBtn">&gt;</span>';
+    tagbar +=    '<span id="lhTagCtrlAddAllBtn" class="lhTagCtrl lhBtn">&gt;&gt;</span>';
+    tagbar +=    '<span id="lhTagCtrlRemBtn" class="lhTagCtrl lhBtn">&lt;</span>';
+    tagbar +=    '<span id="lhTagCtrlRemAllBtn" class="lhTagCtrl lhBtn">&lt;&lt;</span>';
     tagbar +=    '</div>';
 
     // http://www.dhtmlgoodies.com/scripts/multiple_select/multiple_select.html
     tagbar +=    '<div id="lhViewTagsPlate">';
     tagbar +=    '<span>Viewing:</span>';
     tagbar +=    '<div><select id="lhViewTagsSelect" class="lhInput" multiple="multiple" size="4"></select></div>';
+    tagbar +=    '</div>';
+
+    tagbar +=    '<div id="lhModTagsPlate">';
+    tagbar +=    '<span id="lhTagCtrlAnyBtn" class="lhTagCtrl lhBtn">A</span>';
+    tagbar +=    '<span id="lhTagCtrlIntBtn" class="lhTagCtrl lhBtn">I</span>';
+    tagbar +=    '<span id="lhTagCtrlExcBtn" class="lhTagCtrl lhBtn">E</span>';
+    tagbar +=    '</div>';
     tagbar +=    '</div>';
     this.logPlateTagPanel.innerHTML = tagbar;
     this.logPlate.appendChild(this.logPlateTagPanel);
@@ -246,10 +257,9 @@ LogHound.prototype.doSetup = function() {
     */
     
 
-    var ctrlLess = document.getElementById('lhCtrlLess');
-    ctrlLess.onclick = function(event) {
+    document.getElementById('lhCtrlLess').onclick = function(event) {
         window.logHound.showLessMessages();
-    }
+    };
     /*
     $('#lhCtrlLess').click(function(event) {
         window.logHound.showLessMessages();
@@ -299,13 +309,26 @@ LogHound.prototype.doSetup = function() {
     });
     */
     
-    var toggleTagCtrl = document.getElementById('lhCtrlTags');
-    toggleTagCtrl.onclick = function(event) {
+    document.getElementById('lhCtrlTags').onclick = function(event) {
         window.logHound.toggleTagCtrlPanel();
     }
+    document.getElementById('lhCtrlTags').onclick = function(event) {
+        window.logHound.toggleTagCtrlPanel();
+    }
+    
+    document.getElementById('lhTagCtrlAnyBtn').onclick = function(event) {
+        window.logHound.setTagFilterMode('A');
+    };
+    
+    document.getElementById('lhTagCtrlIntBtn').onclick = function(event) {
+        window.logHound.setTagFilterMode('I');
+    };
+    
+    document.getElementById('lhTagCtrlExcBtn').onclick = function(event) {
+        window.logHound.setTagFilterMode('E');
+    };
 
     this.searchField = document.getElementById('lhSearchField');
-
 
     this.adjustPlateSize();
     this.startDebugWindowMonitor();
@@ -313,6 +336,12 @@ LogHound.prototype.doSetup = function() {
     this.logInfo('Log Hound is online...');
     var msg = '\ndocument.body.clientWidth='+document.body.clientWidth+'\ndocument.documentElement.clientWidth='+document.documentElement.clientWidth+'\nwindow.innerWidth='+window.innerWidth+'\ndocument.body.scrollWidth='+document.body.scrollWidth+'\ndocument.body.offsetWidth='+document.body.offsetWidth;
     this.logInfo(msg);
+};
+LogHound.prototype.setTagFilterMode = function(mode) {
+    this.tagMode = ((mode!='A' && mode!='I' && mode!='E') ? 'A' : mode);
+    var viewSelect = document.getElementById('lhViewTagsSelect');
+    this.addMsgFilter(new LogHoundMessageTagFilter(FctsTools.getOptionValues(viewSelect),this.tagMode));
+    this.applyMsgFilters();
 };
 LogHound.prototype.setKillSwitch = function(killSwitch) {
     if(killSwitch!=null && killSwitch==false) {
@@ -413,7 +442,7 @@ LogHound.prototype.applyMsgFilters = function() {
     var index = 0;
     var targetMsgRow = null;
     var showMsg = true;
-    for(recIdx in this.msgRecords) {
+    for(recIdx=0; recIdx<this.msgRecords.length; recIdx++) {
         this.msgRecords[recIdx]['element'].style.display = (this.filterMsg(this.msgRecords[recIdx]) ? 'block' : 'none');
     }
     //this.logTrace('Message filters applied in '+((new Date()).getTime()-ts)+'ms',['LogHound','applyMsgFilters()']);
@@ -422,8 +451,8 @@ LogHound.prototype.applyMsgFilters = function() {
  *
  */
 LogHound.prototype.filterMsg = function(msgRec) {
-    for(filterIdx in this.msgFilters) {
-        if(!this.msgFilters[filterIdx].showMessage(msgRec)) {
+    for(idx=0; idx<this.msgFilters.length; idx++) {
+        if(!this.msgFilters[idx].showMessage(msgRec)) {
             return false;
         }
     }
@@ -722,10 +751,17 @@ LogHound.prototype.moveTagAssignments = function(action) {
     }
     FctsTools.sortOptionsByText(availSelect);
     FctsTools.sortOptionsByText(viewSelect);
-    this.addMsgFilter(new LogHoundMessageTagFilter(FctsTools.getOptionValues(viewSelect)));
+    this.addMsgFilter(new LogHoundMessageTagFilter(FctsTools.getOptionValues(viewSelect),this.tagMode));
     this.applyMsgFilters();
-}
-
+};
+LogHound.prototype.getViewTags = function() {
+    var viewSelect = document.getElementById('lhViewTagsSelect');
+    return FctsTools.getOptionValues(viewSelect);
+};
+LogHound.prototype.getAvailTags = function() {
+    var availSelect = document.getElementById('lhAvailTagsSelect');
+    return FctsTools.getOptionValues(viewSelect);
+};
 function LogHoundMessageFilter(id) {
     this.id = id;
 }
@@ -738,25 +774,31 @@ LogHoundMessageFilter.prototype.showMessage = function(msgRec) {
 /**
  *
  */
-function LogHoundMessageTagFilter(tagArray) {
+function LogHoundMessageTagFilter(tagArray, tagMode) {
     LogHoundMessageTagFilter.baseConstructor.call(this, 'lhMsgTagFilter');
     this.tagz = tagArray;
+    this.tagMode = ((tagMode==null || tagMode=='') ? 'A' : tagMode);
 }
 FctsTools.extend(LogHoundMessageTagFilter, LogHoundMessageFilter);
 LogHoundMessageTagFilter.prototype.showMessage = function(msgRec) {
     if(this.tagz==null || this.tagz.length<1) {
         return true;
     }
+    var matched = false;
     for(tagIdx in msgRec['tags']) {
         for(targetIdx in this.tagz) {
-            if(msgRec['tags'][tagIdx] == this.tagz[targetIdx]) {
+            matched = (msgRec['tags'][tagIdx] == this.tagz[targetIdx]);
+            if(matched && this.tagMode=='A') {
                 return true;
+            } else if(matched && this.tagMode=='E') {
+                return false;
+            } else if(!matched && this.tagMode=='I') {
+                return false;
             }
         }
     }
-    return false;
+    return this.tagMode=='E';
 }
-
 /**
  * Message text search filter.
  */

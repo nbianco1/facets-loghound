@@ -123,6 +123,7 @@
     border-bottom: 3px solid #688DE0;
     padding: 2px;
     display: none;
+    text-align: center;
 }
 #lhPlateBodyBox {
     clear: both;
@@ -221,4 +222,16 @@
 }
 #lhViewTagsSelect {
     width: 150px;
+}
+#lhModTagsPlate {
+    margin: 12px 3px 0px 3px;
+    vertical-align: middle;
+    width: 18px;
+    text-align: center;
+    float: left;
+}
+.lhShrinkWrap {
+    margin-left: auto;
+	  margin-right: auto;
+	  display: inline-block;
 }
