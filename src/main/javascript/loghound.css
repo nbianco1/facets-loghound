@@ -28,9 +28,11 @@
     text-align:center;
     white-space:nowrap;
     height: 14px;
-    width: 18px;
     cursor:pointer;
     cursor:hand;
+}
+.lhCtrlSize {
+    float: left;
 }
 #lhCtrlTags {
     display: block;
@@ -38,9 +40,24 @@
     font-size: 8pt;
     font-weight: normal;
 }
+#lhCtrlLvlPlate {
+    margin-top: 1px;
+    margin-left: 15px;
+    float: left;
+}
 .lhCtrlLvl {
-    border: 1px #688DE0 solid;
+    /* border: 1px #688DE0 solid; */
     margin: 0px !important;
+    float: left;
+    width: 18px;
+}
+#lhCtrlMsgDispModePlate {
+    float: left;
+    margin: 1px 0px 0px 10px;   
+}
+#lhCtrlSearchPlate {
+    margin-top: 1px;
+    float: right;
 }
 .lhSearchLabel {
     font-family: Verdana, Tahoma, Helvetica, Arial;
@@ -105,13 +122,13 @@
     -moz-border-radius: 5px 5px 5px 5px;  
     position: relative;
     background-color: #DFEAF8;
-    height: 16px;
+    height: 18px;
     font-size: 8pt;
     font-weight: bold;
     color: #404040;
     font-family: Verdana, Tahoma, Helvetica, Arial;
     border-bottom: 3px solid #688DE0;
-    padding: 0px 4px;
+    padding: 0px 6px;
     display: none;
 }
 #lhPlateTagPanel {
@@ -152,9 +169,13 @@
 }
 .lhMsgTime {
     border-right: 1px black solid;
+    width: 1%;
 }
 .lhMsgTxt {
     word-wrap: break-word;
+}
+.lhMsgTxtFull {
+    border-top: 1px black solid;
 }
 .logMsg {
     border-bottom: 1px solid #688DE0;
@@ -166,6 +187,7 @@
     border-spacing: 0px;
     margin: 0px;
     padding: 0px;
+    width: 100%;
 }
 .logMsg > table > tbody {
     border-spacing: 0px;
@@ -195,6 +217,7 @@
 #lhAvailTagsPlate {
     width: 150px;
     float: left;
+    text-align: left;
 }
 #lhCtrlTagsPlate {
     margin: 8px 3px 0px 3px;
@@ -214,6 +237,7 @@
 #lhViewTagsPlate {
     width: 150px;
     float: left;
+    text-align: left;
 }
 
 
