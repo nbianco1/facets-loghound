@@ -127,7 +127,7 @@ LogHound.prototype.doSetup = function() {
         return;
     }
     this.tagMode = 'A';
-    this.msgDispMode = 'detail'; // detail, brief
+    this.msgDispMode = 'brief'; // detail, brief
     this.killSwitch = true;
     this.initialised = true;
     this.msgRecords = new Array();
@@ -273,14 +273,23 @@ LogHound.prototype.doSetup = function() {
 
     document.getElementById('lhTagCtrlAnyBtn').onclick = function(event) {
         window.logHound.setTagFilterMode('A');
+        document.getElementById('lhTagCtrlAnyBtn').style.fontWeight = 'bold';
+        document.getElementById('lhTagCtrlIntBtn').style.fontWeight = 'normal';
+        document.getElementById('lhTagCtrlExcBtn').style.fontWeight = 'normal';
     };
 
     document.getElementById('lhTagCtrlIntBtn').onclick = function(event) {
         window.logHound.setTagFilterMode('I');
+        document.getElementById('lhTagCtrlAnyBtn').style.fontWeight = 'normal';
+        document.getElementById('lhTagCtrlIntBtn').style.fontWeight = 'bold';
+        document.getElementById('lhTagCtrlExcBtn').style.fontWeight = 'normal';
     };
 
     document.getElementById('lhTagCtrlExcBtn').onclick = function(event) {
         window.logHound.setTagFilterMode('E');
+        document.getElementById('lhTagCtrlAnyBtn').style.fontWeight = 'normal';
+        document.getElementById('lhTagCtrlIntBtn').style.fontWeight = 'normal';
+        document.getElementById('lhTagCtrlExcBtn').style.fontWeight = 'bold';
     };
     document.getElementById('lhCtrlMsgDispModeBtn').onclick = function(event) {
         window.logHound.toggleMsgLayout();
@@ -639,7 +648,8 @@ LogHound.prototype.log = function() {
     msgElmt.setAttribute('lhLogLevel', msgRec['level'].getText());
     msgElmt.style.display = (msgRec['level'].isEnabled()==true ? 'block' : 'none');
 
-    var msgFullEntry = '<table cellspacing="0" class="lhMsgRecDetail"><tr>';
+    var msgFullEntryDisp = ((this.msgDispMode=='detail') ? 'block' : 'none');
+    var msgFullEntry = '<table cellspacing="0" class="lhMsgRecDetail" style="display:'+msgFullEntryDisp+'"><tr>';
     msgFullEntry +=    '<td class="lhMsgNum lhMsgElmt">'+msgRec['number']+'</td>';
     msgFullEntry +=    '<td class="lhMsgTime lhMsgElmt">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
     msgFullEntry +=    '<td class="lhMsgTxt lhMsgElmt">'+((msgRec['tags'] instanceof Array) ? msgRec['tags'] : '')+'</td>';
@@ -647,12 +657,13 @@ LogHound.prototype.log = function() {
     msgFullEntry +=    '<td colspan="3" class="lhMsgTxtFull lhMsgElmt">'+msgRec['message']+'</td>';
     msgFullEntry +=    '</tr></table>';
 
-    var msgEntry = '<table cellspacing="0" class="lhMsgRecBrief"><tr>';
+    var msgEntryDisp = ((this.msgDispMode=='brief') ? 'block' : 'none');
+    var msgEntry = '<table cellspacing="0" class="lhMsgRecBrief" style="display:'+msgEntryDisp+'"><tr>';
     msgEntry +=    '<td class="lhMsgNum lhMsgElmt">'+msgRec['number']+'</td>';
     msgEntry +=    '<td class="lhMsgTime lhMsgElmt">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
     msgEntry +=    '<td class="lhMsgTxt lhMsgElmt">'+msgRec['message']+'</td>';
     msgEntry +=    '</tr></table>';
-    
+
     msgElmt.innerHTML=msgFullEntry+msgEntry;
     var children = this.logPlateBody.childNodes;
     if(children==null || children.length<1) {
