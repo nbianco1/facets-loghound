@@ -18,3 +18,8 @@ A simple example of a logged message would look something like this:
 {{{
 window.logHound.logWarn('This is a warning message.',['methodName()','anotherTag']);
 }}}
+
+*5. What does it depend on?*
+Everything Log Hound depends on is included in the zip package.  There's no dependency on JQuery, Prototype, or any other !JavaScript framework.  Log Hound uses 100% pure ECMAScript 1.2 spec JavaScript.
+
+*6. Err... Browser Support?*
