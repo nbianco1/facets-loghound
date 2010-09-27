@@ -14,7 +14,7 @@ var LogHoundVer = new Array();
 LogHoundVer['major'] = '2';
 LogHoundVer['minor'] = '0';
 LogHoundVer['fix'] = '0';
-LogHoundVer['release'] = 'alpha';
+LogHoundVer['release'] = 'alpha 1';
 LogHoundVer.getLongText = function() {
     return this.major+'.'+this.minor+'.'+this.fix+' '+this.release;
 }
@@ -601,7 +601,7 @@ LogHound.prototype.escapeRegex = function(targetText) {
         );
     }
     return targetText.replace(arguments.callee.sRE, '\\$1');
-}
+};
 LogHound.prototype.addTags = function(tagz) {
     if(tagz==null || !tagz.length || tagz.length<1) {
         return;
@@ -618,7 +618,7 @@ LogHound.prototype.addTags = function(tagz) {
         this.msgTags.push(tagz[tagIdx]);
         tagsSelect.options[tagsSelect.length] = new Option(tagz[tagIdx], tagz[tagIdx]);
     }
-}
+};
 /**
  * Main logging function - this is where all log messages go to die... or be displayed.
  * @param level The log level of the message.
@@ -769,10 +769,10 @@ function LogHoundMessageFilter(id) {
 }
 LogHoundMessageFilter.prototype.getId = function() {
     return this.id;
-}
+};
 LogHoundMessageFilter.prototype.showMessage = function(msgRec) {
     return true;
-}
+};
 /**
  *
  */
