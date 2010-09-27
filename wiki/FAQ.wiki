@@ -22,9 +22,14 @@ window.logHound.logWarn('This is a warning message.',['methodName()','anotherTag
 }}}
 
 *5. What does it depend on?*
+
 Everything Log Hound depends on is included in the zip package.  There's no dependency on JQuery, Prototype, or any other !JavaScript framework.  Log Hound uses 100% pure ECMAScript 1.2 spec JavaScript.
 
 *6. Err... Browser Support?*
+
 Log Hound is being coded to work perfectly in Firefox, Chrome, Opera, and probably Safari if it doesn't tick me off.  As for IE, well, I'll make an effort.  The point is that W3C standards come first.  Crappy maniacal insecure monopoly-driven browsers come second.
 
-*7. What about {insert favourite JS framework name here}??? Why did you bother not just using {framework name here again to up it's google score}?  You are an idiot and wasting time if you don't use {name framework for third time to summon its planar avatar to destroy non-utilizing projects} instead of writing all that lame JS code.
+*7. What about _{insert favourite JS framework name here}_??? Why did you bother not just using _{framework name here again to up it's google score}_?  You are an idiot and wasting time if you don't use _{name framework for third time to summon its planar avatar to destroy non-utilizing projects}_ instead of writing all that lame JS code.
+
+{Sigh}.  Let's get one thing straight - I, and any competent !JavaScript coder, can do anything with standard JS that you can do with your awesome framework.  The ONLY things frameworks like JQuery and Prototype give you is some brevity of code and respite from having to figure out some browser quirks on your own.  And let's be brutally honest here - THERE ARE DRAWBACKS!  Some projects require more than your say-so to decide to use a JS framework for larger projects.  Most of the time, you - the coder that needs to use something like Log Hound, is so far removed from those that make the decision whether or not you can add Dojo, et al, to the project, that you make kindergarten kids look like the power brokers of their classroom.
+So the answer to this question is this: We are coding Log Hound to be usable by everyone first.  There will be time later to contemplate integration with the larger !JavaScript frameworks in the market.
