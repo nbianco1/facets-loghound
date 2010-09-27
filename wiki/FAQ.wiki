@@ -1,8 +1,17 @@
-1. What the hell?
+*1. What the hell?*
 
-Yes - it's another !JavaScript thingy.  But this one might actually be very helpful.  Log Hound wasn't designed in absentia of any driving need.  On the contrary, I developed this little utility while wading my way through over a thousand lines of combined ECMAscript, !JQuery, and Microsoft !JScript being used solely on IE 7 and 8.  If that doesn't scare a developer into wanting to find a better way to debug, then I don't know what would.
+Yes - it's another !JavaScript thingy.  But this one might actually be very helpful.  Log Hound wasn't designed in absentia of any driving need.  On the contrary, I developed this little utility whilst wading my way through over a thousand lines of combined !ECMAscript, !JQuery, and Microsoft !JScript, all of which were going to be used solely on IE 7 and 8.  If that doesn't scare a developer into wanting to find a better way to debug, then I don't know what would.
 
-2. Why???
+*2. Why???*
 
-Firebug really isn't an option for JavaScript problems in IE.  If your first thought-reaction to that is "Why not just use IE Web Developer Toolbar", then you haven't used WDT on large complicated JavaScript projects.  If you have, then I sincerely hope you are getting paid more than me.
+Firebug really isn't an option for JavaScript problems in IE.  If your first thought-reaction to that is "Why not just use IE Web Developer Toolbar", then you haven't used WDT on large complicated !JavaScript projects.  If you have, then I sincerely hope you are getting paid more than me.
+
+*3. Seriously?????*
+
+Your banal questions bore me.  Bring it.
+
+*4. Seriously - what does it do?*
+
+As of today (9/27/2010), Log Hound is only a JavaScript logger.  It provides a framework by which you can use JavaScript methods to store messages in the order they were received so that they may be displayed in the Log Hound User interface.  Using the Log Hound interface, you can select which log messages to view based on several different criteria provided by the many interface controls.
+In cyber-colloquial terms, it throws strings at a floating div and allows you to block/none records using multivariate analysis. Word.
   
