@@ -40,9 +40,17 @@
     font-size: 8pt;
     font-weight: normal;
 }
+#lhCtrlLvlSelectPlate {
+    margin-left: 10px;
+    float: left;
+}
+#lhLvlSelect {
+    font-family: Verdana, Tahoma, Helvetica, Arial;
+    font-size: 8pt;
+}
 #lhCtrlLvlPlate {
     margin-top: 1px;
-    margin-left: 15px;
+    margin-left: 7px;
     float: left;
 }
 .lhCtrlLvl {
@@ -53,11 +61,16 @@
 }
 #lhCtrlMsgDispModePlate {
     float: left;
-    margin: 1px 0px 0px 10px;   
+    margin: 1px 0px 0px 7px;   
 }
 #lhCtrlSearchPlate {
     margin-top: 1px;
     float: right;
+}
+.lhDispModeLable {
+    font-family: Verdana, Tahoma, Helvetica, Arial;
+    font-size: 7pt;
+    font-weight: bold;    
 }
 .lhSearchLabel {
     font-family: Verdana, Tahoma, Helvetica, Arial;
@@ -68,7 +81,9 @@
     text-align: right;
     display: block;
     white-space:nowrap;
-    margin-left: 10px;
+}
+#lhCtrlMsgDispModeBtn {
+    font-weight: normal;
 }
 .lhSearchField {
     font-family: Verdana, Tahoma, Helvetica, Arial;
@@ -128,7 +143,7 @@
     color: #404040;
     font-family: Verdana, Tahoma, Helvetica, Arial;
     border-bottom: 3px solid #688DE0;
-    padding: 0px 6px;
+    padding: 1px 6px 0px 6px;
     display: none;
 }
 #lhPlateTagPanel {
