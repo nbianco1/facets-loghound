@@ -25,3 +25,6 @@ window.logHound.logWarn('This is a warning message.',['methodName()','anotherTag
 Everything Log Hound depends on is included in the zip package.  There's no dependency on JQuery, Prototype, or any other !JavaScript framework.  Log Hound uses 100% pure ECMAScript 1.2 spec JavaScript.
 
 *6. Err... Browser Support?*
+Log Hound is being coded to work perfectly in Firefox, Chrome, Opera, and probably Safari if it doesn't tick me off.  As for IE, well, I'll make an effort.  The point is that W3C standards come first.  Crappy maniacal insecure monopoly-driven browsers come second.
+
+*7. What about {insert favourite JS framework name here}??? Why did you bother not just using {framework name here again to up it's google score}?  You are an idiot and wasting time if you don't use {name framework for third time to summon its planar avatar to destroy non-utilizing projects} instead of writing all that lame JS code.
