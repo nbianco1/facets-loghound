@@ -32,14 +32,16 @@ function enterLogMessage() {
 
 function onBodyLoad() {
     window.logHound.doSetup();
+    window.logHound.setLogLevel(LogHoundLevels['TRACE']);
 	document.getElementById('lhVersion').innerHTML = '(v'+LogHoundVer.getLongText()+')';
 	addLogLevels();
 	document.getElementById('logMessage').onclick = enterLogMessage;
-	window.logHound.logWarn('This is a warning message tagged Tag1, AllTags',['Tag1','AllTags']);
-	window.logHound.logInfo('This is an info message tagged Tag2',['Tag2']);
-	window.logHound.logError('This is an error message tagged Tag3, AllTags',['Tag3','AllTags']);
-	window.logHound.logInfo('This is an info message tagged Tag4',['Tag4']);
-	window.logHound.logWarn('This is a warn message tagged Tag5, AllTags',['Tag5','AllTags']);
+	window.logHound.logFatal('Fatal: If you see this, your app is toast.',['Tag1','AllTags']);
+	window.logHound.logError('Error: Very bad things have happened.',['Tag2']);
+	window.logHound.logWarn('Warn: Hey!  Something\'s off here.',['Tag2']);
+	window.logHound.logInfo('Info: FYI...',['Tag3','AllTags']);
+	window.logHound.logDebug('Debug: Getting into the nitty-gritty of what your app is thinking.',['Tag4']);
+	window.logHound.logTrace('Trace: Two functions and 3454920 log messages later...',['Tag5','AllTags']);
 }
 </script>
 <style type="text/css">
