@@ -1,6 +1,3 @@
-  # [FAQ#What_the_hell?]
-
-
 ====1. What the hell?====
 
 Yes - it's another !JavaScript thingy.  But this one might actually be very helpful.  Log Hound wasn't designed in absentia of any driving need.  On the contrary, I developed this little utility whilst wading my way through over a thousand lines of combined ECMAscript, JQuery, and Microsoft JScript, all of which were going to be used solely on IE 7 and 8.  If that doesn't scare a developer into wanting to find a better way to debug, then I don't know what would.
