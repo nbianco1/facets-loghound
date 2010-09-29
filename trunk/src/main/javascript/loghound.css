@@ -25,20 +25,30 @@
     font-family: Verdana, Tahoma, Helvetica, Arial;
     font-size: 8pt;
     font-weight: bold;
-    text-align:center;
-    white-space:nowrap;
+    text-align: center;
+    white-space: nowrap;
     height: 14px;
-    cursor:pointer;
-    cursor:hand;
+    cursor: pointer;
+    cursor: hand;
 }
 .lhCtrlSize {
     float: left;
+}
+#lhCtrlHelp {
+    display: block;
+    font-family: Verdana, Tahoma, Helvetica, Arial;
+    font-size: 8pt;
+    font-weight: normal;
+    width: 15px;
+    text-align:center;
 }
 #lhCtrlTags {
     display: block;
     font-family: Verdana, Tahoma, Helvetica, Arial;
     font-size: 8pt;
     font-weight: normal;
+    width: 15px;
+    text-align: center;
 }
 #lhCtrlLvlSelectPlate {
     margin-left: 10px;
@@ -61,7 +71,7 @@
 }
 #lhCtrlMsgDispModePlate {
     float: left;
-    margin: 1px 0px 0px 7px;   
+    margin: 1px 0px 0px 7px;
 }
 #lhCtrlSearchPlate {
     margin-top: 1px;
@@ -70,7 +80,7 @@
 .lhDispModeLable {
     font-family: Verdana, Tahoma, Helvetica, Arial;
     font-size: 7pt;
-    font-weight: bold;    
+    font-weight: bold;
 }
 .lhSearchLabel {
     font-family: Verdana, Tahoma, Helvetica, Arial;
@@ -124,7 +134,7 @@
     display: none;
 }
 #lhPlateHead {
-    -moz-border-radius: 5px 5px 5px 5px; 
+    -moz-border-radius: 5px 5px 5px 5px;
     background-color: #DFEAF8;
     height: 16px;
     font-size: 8pt;
@@ -133,8 +143,8 @@
     border-bottom: 3px solid #688DE0;
     padding: 0px 4px;
 }
-#lhPlateCtrlPanel {
-    -moz-border-radius: 5px 5px 5px 5px;  
+#lhPlateCtrlPanel, #lhPlateHelpPanel{
+    -moz-border-radius: 5px 5px 5px 5px;
     position: relative;
     background-color: #DFEAF8;
     height: 18px;
