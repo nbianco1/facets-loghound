@@ -17,13 +17,29 @@ LogHoundVer['fix'] = '0';
 LogHoundVer['release'] = 'alpha 1';
 LogHoundVer.getLongText = function() {
     return this.major+'.'+this.minor+'.'+this.fix+' '+this.release;
-}
+};
 LogHoundVer.getShortText = function() {
     return 'v'+this.major+'.'+this.minor+'.'+this.fix+' '+this.release;
-}
+};
+
+
 
 var LogHoundHelp = new Array();
-LogHoundHelp['TagPanelToggle'] = 'Tag Panel Toggle: Opens and closes the tag control panel.';
+LogHoundHelp[LogHoundHelp.length] = ['lhCtrlShadeToggle','Shade Mode Toggle: Toggles the Log Hound interface between shade display mode and normal display mode.'];
+LogHoundHelp[LogHoundHelp.length] = ['lhCtrlHelp','Help Panel Toggle: Opens and closes the help panel.'];
+LogHoundHelp[LogHoundHelp.length] = ['lhCtrlTags','Tag Panel Toggle: Opens and closes the tag control panel.'];
+
+LogHoundHelp.enableHelp = function() {
+    var target = null;
+    var curMouseOver
+    for(i=0; i<this.length; i++) {
+        target = document.getElementById(this[i][0]);
+        //target.onmouseover()
+    }
+};
+
+
+
 
 var LogHoundUtils = new Object();
 LogHoundUtils.extractMessage = function(argz) {
@@ -163,7 +179,7 @@ LogHound.prototype.doSetup = function() {
     this.logPlateHead = document.createElement('DIV');
     this.logPlateHead.setAttribute('id', 'lhPlateHead');
     var titlebar = '<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr>';
-    titlebar +=    '<td><span id="lhTitleToggleShowHide" class="lhTitleCtrl lhBtn" title="Hide">v</span></td>';
+    titlebar +=    '<td><span id="lhCtrlShadeToggle" class="lhTitleCtrl lhBtn" title="Hide">v</span></td>';
     titlebar +=    '<td class="lhTitle">Log Hound v'+LogHoundVer.getLongText()+'</td>'
     titlebar +=    '<td><span id="lhCtrlHelp" class="lhCtrlHelp lhBtn">?</span></td>';
     titlebar +=    '<td><span id="lhCtrlTags" class="lhCtrlTags lhBtn">T</span></td>';
@@ -289,7 +305,7 @@ LogHound.prototype.doSetup = function() {
             window.logHound.toggleMsgLvl(this);
         }
     }
-    document.getElementById('lhTitleToggleShowHide').onclick = function(event) {
+    document.getElementById('lhCtrlShadeToggle').onclick = function(event) {
         window.logHound.toggleDisplay();
     };
     // Help panel toggle
@@ -497,7 +513,7 @@ LogHound.prototype.filterMsg = function(msgRec) {
     return true;
 };
 LogHound.prototype.toggleDisplay = function(show) {
-    var toggleBtn = document.getElementById('lhTitleToggleShowHide');
+    var toggleBtn = document.getElementById('lhCtrlShadeToggle');
     show = (show==null ? this.logPlateBodyBox.style.display == 'none' : show);
     if(show) {
         this.logPlateBodyBox.style.display = 'block';
@@ -591,19 +607,10 @@ LogHound.prototype.stickLogPlateTopRight = function() {
 };
 LogHound.prototype.stickLogPlateBottomLeft = function() {
     var plateHeight = this.logPlate.offsetHeight;
-    var plateWidth = this.logPlate.offsetWidth;
     var winHeight = FctsTools.windowHeight();
-    var winWidth = FctsTools.windowWidth();
     var scrollTop = FctsTools.scrollTop();
-    var scrollLeft = FctsTools.scrollLeft();
-    /*
-    var winHeight = $(window).height();
-    var winWidth = $(window).width();
-    var scrollTop = $(window).scrollTop();
-    var scrollLeft = $(window).scrollLeft();
-    */
     this.logPlate.style.left=0;
-    this.logPlate.style.top=(winHeight-plateHeight+scrollHeight);
+    this.logPlate.style.top=(winHeight-plateHeight+scrollTop);
     this.logPlate.style.zIndex=500;
 };
 LogHound.prototype.search = function(textToMatch) {
