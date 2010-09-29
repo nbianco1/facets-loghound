@@ -1,13 +1,6 @@
-#summary One-sentence summary of this page.
-
-= Introduction =
-
-Add your content here.
-
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+==What does Log Hound Do?==
+Log Hound is a !JavaScript logger.  This is to say that you can have lines like this in your code:
+{{{
+window.logHound.logInfo('Info: FYI...',['Tag3','AllTags']);
+}}}
+...and you get a log message in the Log Hound interface like this:
