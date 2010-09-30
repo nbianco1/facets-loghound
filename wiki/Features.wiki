@@ -8,3 +8,33 @@ window.logHound.logInfo('Info: FYI...',['Tag3','AllTags']);
 ...and you get a log message in the Log Hound interface like this:
 
 <img align="center" src="https://facets-loghound.googlecode.com/svn/wiki/images/exInfoMsgBrief.png"></img>
+
+Out of the box, Log Hound supports your six basic logging levels: Fatal, Error, Warn, Info, Debug, and Trace.
+
+----
+===Define Your Own Log Levels===
+
+{{{
+function ErrorLogHoundLevel() {
+    ErrorLogHoundLevel.baseConstructor.call(this, 90, 'error', true);
+}
+FctsTools.extend(ErrorLogHoundLevel, LogHoundLevel);
+LogHoundLevels['ERROR'] = new ErrorLogHoundLevel();
+LogHoundLevels.push(LogHoundLevels['ERROR']);
+}}}
+
+----
+===Message Tags===
+Logged messages can be tagged.  Tags allow you to manipulate and search through the log messages in new and unique ways.  Tags are applied by adding an array argument to the log method call:
+
+{{{
+window.logHound.logInfo('Info: FYI...',['Tag3','AllTags']);
+}}}
+
+In this case the tags for the message are "Tag3" and "AllTags".  Other tags you could add to a message are: 
+ # the name of the function the message is logged in
+ # the name of the script the message is from
+
+Tags can be utilized by the Log Hound interface with the tag controls:
+
+<img align="center" src="https://facets-loghound.googlecode.com/svn/wiki/images/exTagCtrls.png"></img>
