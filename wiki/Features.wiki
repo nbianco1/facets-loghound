@@ -41,3 +41,5 @@ In this case the tags for the message are "Tag3" and "!AllTags".  Other tags you
 Tags can be utilized by the Log Hound interface with the tag controls:
 
 <img align="center" src="https://facets-loghound.googlecode.com/svn/wiki/images/exTagCtrls.png"></img>
+
+----
