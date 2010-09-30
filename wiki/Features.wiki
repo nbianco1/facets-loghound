@@ -11,15 +11,20 @@ Out of the box, Log Hound supports your six basic logging levels: Fatal, Error, 
 
 ----
 ===Define Your Own Log Levels===
+You can easily define your own log levels to Log Hound.  As an example, here's how the Trace log level is defined:
 
 {{{
-function ErrorLogHoundLevel() {
-    ErrorLogHoundLevel.baseConstructor.call(this, 90, 'error', true);
+function TraceLogHoundLevel() {
+    TraceLogHoundLevel.baseConstructor.call(this, 50, 'trace', true);
 }
-FctsTools.extend(ErrorLogHoundLevel, LogHoundLevel);
-LogHoundLevels['ERROR'] = new ErrorLogHoundLevel();
-LogHoundLevels.push(LogHoundLevels['ERROR']);
+LogHoundLevels.addLevel(TraceLogHoundLevel);
 }}}
+
+The important parts are to give your log level function a unique name and to be sure to include the base constructor line.  For the base constructor line:
+ * 'this' = don't change this.
+ * '50' = this is the integer level weight of the log message and should reflect the position the message would represent.  Trace is 50 and Fatal is 100, the intervening levels occupying the multiples of ten.  If your message is more detailed than Trace (really???), then set it at a lower number than 50.  You get the idea.
+ * 'trace' = the string name of the level.  Alpha characters only.  Must be unique.
+ * 'true' = Whether or not the level is enabled.  This is used internally, but can be used to initially disable a logging level until it is turned on in the interface.
 
 ----
 ===Message Tags===
