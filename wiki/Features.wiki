@@ -1,4 +1,6 @@
 ==What does Log Hound Do?==
+
+===Log Messages===
 Log Hound is a !JavaScript logger.  This is to say that you can have lines like this in your code:
 {{{
 window.logHound.logInfo('Info: FYI...',['Tag3','AllTags']);
