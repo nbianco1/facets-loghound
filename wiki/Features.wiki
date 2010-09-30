@@ -5,4 +5,4 @@ window.logHound.logInfo('Info: FYI...',['Tag3','AllTags']);
 }}}
 ...and you get a log message in the Log Hound interface like this:
 
-<img align="right" src="https://facets-loghound.googlecode.com/svn/wiki/images/exInfoMsgBrief.png"></img>
+<img align="center" src="https://facets-loghound.googlecode.com/svn/wiki/images/exInfoMsgBrief.png"></img>
