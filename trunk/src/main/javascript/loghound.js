@@ -1,10 +1,6 @@
 /**
  * LogHound is a Javascript logger you can use to gain insight into what is going on in your
  * Javascript code.
- * To show this on a page you are working on, you need only add the following to the body.onLoad
- * event:
- *
- *     window.logHound.show(true);
  *
  * ['message',LogHoundLevels['DEBUG'],{'tags','group1 group2'},errorObj]
  *
@@ -64,7 +60,6 @@ LogHoundUtils.extract = function(argz, target) {
  */
 var LogHoundLevels = new Array();
 LogHoundLevels.getByText = function(text) {
-
     for(idx=0; idx<this.length; idx++) {
         if(this[idx].getText() == text) {
             return this[idx];
@@ -88,6 +83,12 @@ LogHoundLevels.getLevel = function(level) {
     }
     return level;
 };
+LogHoundLevels.addLevel = function(newLevelFn) {
+    FctsTools.extend(newLevelFn, LogHoundLevel);
+    var newLevel = new newLevelFn();
+    LogHoundLevels[newLevel.getText().toUpperCase()] = newLevel;
+    LogHoundLevels.push(newLevel);
+};
 
 function LogHoundLevel(id, text, enabled) {
     this.id = id;
@@ -110,44 +111,46 @@ LogHoundLevel.prototype.setEnabled = function(enable) {
 function FatalLogHoundLevel() {
     FatalLogHoundLevel.baseConstructor.call(this, 100, 'fatal', true);
 }
-FctsTools.extend(FatalLogHoundLevel, LogHoundLevel);
-LogHoundLevels['FATAL'] = new FatalLogHoundLevel();
-LogHoundLevels.push(LogHoundLevels['FATAL']);
+LogHoundLevels.addLevel(FatalLogHoundLevel);
 // Error Log Level
 function ErrorLogHoundLevel() {
     ErrorLogHoundLevel.baseConstructor.call(this, 90, 'error', true);
 }
-FctsTools.extend(ErrorLogHoundLevel, LogHoundLevel);
-LogHoundLevels['ERROR'] = new ErrorLogHoundLevel();
-LogHoundLevels.push(LogHoundLevels['ERROR']);
+LogHoundLevels.addLevel(ErrorLogHoundLevel);
 // Warn Log Level
 function WarnLogHoundLevel() {
     WarnLogHoundLevel.baseConstructor.call(this, 80, 'warn', true);
 }
-FctsTools.extend(WarnLogHoundLevel, LogHoundLevel);
-LogHoundLevels['WARN'] = new WarnLogHoundLevel();
-LogHoundLevels.push(LogHoundLevels['WARN']);
+LogHoundLevels.addLevel(WarnLogHoundLevel);
 // Info Log Level
 function InfoLogHoundLevel() {
     InfoLogHoundLevel.baseConstructor.call(this, 70, 'info', true);
 }
-FctsTools.extend(InfoLogHoundLevel, LogHoundLevel);
-LogHoundLevels['INFO'] = new InfoLogHoundLevel();
-LogHoundLevels.push(LogHoundLevels['INFO']);
+LogHoundLevels.addLevel(InfoLogHoundLevel);
 // Debug Log Level
 function DebugLogHoundLevel() {
     DebugLogHoundLevel.baseConstructor.call(this, 60, 'debug', true);
 }
-FctsTools.extend(DebugLogHoundLevel, LogHoundLevel);
-LogHoundLevels['DEBUG'] = new DebugLogHoundLevel();
-LogHoundLevels.push(LogHoundLevels['DEBUG']);
+LogHoundLevels.addLevel(DebugLogHoundLevel);
 // Trace Log Level
 function TraceLogHoundLevel() {
     TraceLogHoundLevel.baseConstructor.call(this, 50, 'trace', true);
 }
-FctsTools.extend(TraceLogHoundLevel, LogHoundLevel);
-LogHoundLevels['TRACE'] = new TraceLogHoundLevel();
-LogHoundLevels.push(LogHoundLevels['TRACE']);
+LogHoundLevels.addLevel(TraceLogHoundLevel);
+
+function PageLogHoundLevel() {
+    TraceLogHoundLevel.baseConstructor.call(this, 40, 'page', true);
+}
+var LogHoundLevelPreload = new Array();
+LogHoundLevelPreload[0] = PageLogHoundLevel;
+
+// Load predefined extra log levels
+if(LogHoundLevelPreload!=null && (LogHoundLevelPreload instanceof Array)) {
+    for(i=0; i<LogHoundLevelPreload.length; i++) {
+        LogHoundLevels.addLevel(LogHoundLevelPreload[i]);
+    }
+}
+
 
 /**
  * Javascript logger.
@@ -376,12 +379,9 @@ LogHound.prototype.toggleMsgLayout = function() {
 };
 LogHound.prototype.setTagFilterMode = function(mode) {
     this.tagMode = ((mode!='A' && mode!='I' && mode!='E') ? 'A' : mode);
-
     document.getElementById('lhTagCtrlAnyBtn').style.fontWeight = (this.tagMode=='A' ? 'bold' : 'normal');
     document.getElementById('lhTagCtrlIntBtn').style.fontWeight = (this.tagMode=='I' ? 'bold' : 'normal');
     document.getElementById('lhTagCtrlExcBtn').style.fontWeight = (this.tagMode=='E' ? 'bold' : 'normal');
-
-
     var viewSelect = document.getElementById('lhViewTagsSelect');
     this.addMsgFilter(new LogHoundMessageTagFilter(FctsTools.getOptionValues(viewSelect),this.tagMode));
     this.applyMsgFilters();
