@@ -23,9 +23,22 @@ LogHoundLevelPreload[0] = PageLogHoundLevel;
 
 The important parts are to give your log level function a unique name and to be sure to include the base constructor line.  For the base constructor line:
  * 'this' = don't change this.
- * '50' = this is the integer level weight of the log message and should reflect the position the message would represent.  Trace is 50 and Fatal is 100, the intervening levels occupying the multiples of ten.  If your message is more detailed than Trace (really???), then set it at a lower number than 50.  You get the idea.
- * 'trace' = the string name of the level.  Alpha characters only.  Must be unique.
+ * '40' = this is the integer level weight of the log message and should reflect the position the message would represent.  Trace is 50 and Fatal is 100, the intervening levels occupying the multiples of ten.  If your message is more detailed than Trace (really???), then set it at a lower number than 50.  You get the idea.
+ * 'page' = the string name of the level.  Alpha characters only.  Must be unique.
  * 'true' = Whether or not the level is enabled.  This is used internally, but can be used to initially disable a logging level until it is turned on in the interface. Keep this as "true" unless you know what you are doing.
+
+The array declaration must be done by you and must occur before the javascript include for Log Hound.  This ensures that you can create a list of log levels that will be loaded when Log Hound is initialized.  If you create the array with the name "!LogHoundLevelPreload", Log Hound will check for it and that it contains an array when the !JavaScript include is executed.  Log Hound will then attempt to load all items in the array as log level functions.
+----
+===Control Bar===
+<img align="center" src="https://facets-loghound.googlecode.com/svn/wiki/images/exCtrlBar.png"></img>
+
+From left to right:
+ # "v" = Show more log messages.
+ # "^" = Show less log messages.
+ # Select box = Set new log level.  Messages will only be logged for level selected and those levels above it in the list.  This allows you to dynamically change the log level during execution of your scripts.
+ # Coloured squares = Show level message toggles. Each of these coloured boxes represents a log message level.  Click on a box to hide the messages of that level in the display. Click again to show them.
+ # "D" = Detail mode. This toggles the log message lines in the display to show more information about the messages.
+ # Search text box = As you type in this text field, Log Hound will match the entered text to text in any of the messages and hide those messages that don't match.  Clear the field to show all messages again.
 
 ----
 ===Message Tags===
