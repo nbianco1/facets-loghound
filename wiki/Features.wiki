@@ -14,10 +14,11 @@ Out of the box, Log Hound supports your six basic logging levels: Fatal, Error, 
 You can easily define your own log levels to Log Hound.  As an example, here's how the Trace log level is defined:
 
 {{{
-function TraceLogHoundLevel() {
-    TraceLogHoundLevel.baseConstructor.call(this, 50, 'trace', true);
+function PageLogHoundLevel() {
+    TraceLogHoundLevel.baseConstructor.call(this, 40, 'page', true);
 }
-LogHoundLevels.addLevel(TraceLogHoundLevel);
+var LogHoundLevelPreload = new Array();
+LogHoundLevelPreload[0] = PageLogHoundLevel;
 }}}
 
 The important parts are to give your log level function a unique name and to be sure to include the base constructor line.  For the base constructor line:
