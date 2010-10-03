@@ -18,25 +18,6 @@ LogHoundVer.getShortText = function() {
     return 'v'+this.major+'.'+this.minor+'.'+this.fix+' '+this.release;
 };
 
-
-
-var LogHoundHelp = new Array();
-LogHoundHelp[LogHoundHelp.length] = ['lhCtrlShadeToggle','Shade Mode Toggle: Toggles the Log Hound interface between shade display mode and normal display mode.'];
-LogHoundHelp[LogHoundHelp.length] = ['lhCtrlHelp','Help Panel Toggle: Opens and closes the help panel.'];
-LogHoundHelp[LogHoundHelp.length] = ['lhCtrlTags','Tag Panel Toggle: Opens and closes the tag control panel.'];
-
-LogHoundHelp.enableHelp = function() {
-    var target = null;
-    var curMouseOver
-    for(i=0; i<this.length; i++) {
-        target = document.getElementById(this[i][0]);
-        //target.onmouseover()
-    }
-};
-
-
-
-
 var LogHoundUtils = new Object();
 LogHoundUtils.extractMessage = function(argz) {
     return LogHoundUtils.extract(argz, 'message');
@@ -151,7 +132,6 @@ if(LogHoundLevelPreload!=null && (LogHoundLevelPreload instanceof Array)) {
     }
 }
 
-
 /**
  * Javascript logger.
  */
@@ -162,6 +142,7 @@ function LogHound() {
     this.killSwitch = false;
     this.enabled = true;
     this.initialised = false;
+    this.helpEnabled = false;
 }
 LogHound.prototype.doSetup = function() {
     if(this.killSwitch) {
@@ -171,22 +152,25 @@ LogHound.prototype.doSetup = function() {
     this.msgDispMode = 'brief'; // detail, brief
     this.killSwitch = true;
     this.initialised = true;
+    this.helpEntries = new Array();
     this.msgRecords = new Array();
     this.msgTags = new Array();
     this.msgFilters = new Array();
     this.msgFilters.push(new LogHoundMessageLevelFilter());
     var logPlate = document.createElement('DIV');
     logPlate.setAttribute('id', 'lhPlate');
+    logPlate.setAttribute('class', 'lhRndCorners');
     this.logPlate = document.body.appendChild(logPlate);
 
     this.logPlateHead = document.createElement('DIV');
     this.logPlateHead.setAttribute('id', 'lhPlateHead');
+    this.logPlateHead.setAttribute('class', 'lhRndCorners lhPlateColor');
     var titlebar = '<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr>';
     titlebar +=    '<td><span id="lhCtrlShadeToggle" class="lhTitleCtrl lhBtn" title="Hide">v</span></td>';
     titlebar +=    '<td class="lhTitle">Log Hound v'+LogHoundVer.getLongText()+'</td>'
     titlebar +=    '<td><span id="lhCtrlHelp" class="lhCtrlHelp lhBtn">?</span></td>';
     titlebar +=    '<td><span id="lhCtrlTags" class="lhCtrlTags lhBtn">T</span></td>';
-    titlebar +=    '<td><span id="lhTitleToggleCtrl" class="lhTitleCtrl lhBtn" title="Toggle Control Panel">&#149;</span></td>'
+    titlebar +=    '<td><span id="lhCtrlMsgs" class="lhTitleCtrl lhBtn" title="Toggle Control Panel">&#149;</span></td>'
     titlebar +=    '</tr></table>';
     this.logPlateHead.innerHTML = titlebar;
     this.logPlate.appendChild(this.logPlateHead);
@@ -194,15 +178,17 @@ LogHound.prototype.doSetup = function() {
     // Help panel creation code.
     this.logPlateHelpPanel = document.createElement('DIV');
     this.logPlateHelpPanel.setAttribute('id', 'lhPlateHelpPanel');
+    this.logPlateHelpPanel.setAttribute('class', 'lhRndCorners lhPlateColor');
     this.logPlateHelpPanel.innerHTML = 'Help Bar';
     this.logPlate.appendChild(this.logPlateHelpPanel);
 
     // Control panel creation code.
     this.logPlateCtrlPanel = document.createElement('DIV');
     this.logPlateCtrlPanel.setAttribute('id', 'lhPlateCtrlPanel');
+    this.logPlateCtrlPanel.setAttribute('class', 'lhRndCorners lhPlateColor');
     var ctrlbar = '<div id="lhCtrlMore" class="lhCtrlSize lhCtrl lhBtn" title="Show More">v</div>';
     ctrlbar +=    '<div id="lhCtrlLess" class="lhCtrlSize lhCtrl lhBtn" title="Show Less">^</div>';
-    ctrlbar +=    '<div id="lhCtrlLvlSelectPlate"><select id="lhLvlSelect" name="lhLvlSelect"></select></div>';
+    ctrlbar +=    '<div id="lhCtrlLvlSelectPlate"><select id="lhLvlSelect" name="lhLvlSelect" class="lhFont"></select></div>';
     ctrlbar +=    '<div id="lhCtrlLvlPlate">';
     ctrlbar +=    '<span id="lhCtrlLvlFatal" class="lhFatalMsg lhCtrlLvl lhCtrl lhBtn" title="Fatal">+</span>';
     ctrlbar +=    '<span id="lhCtrlLvlError" class="lhErrorMsg lhCtrlLvl lhCtrl lhBtn" title="Error">+</span>';
@@ -215,32 +201,34 @@ LogHound.prototype.doSetup = function() {
     ctrlbar +=    '<span id="lhCtrlMsgDispModeBtn" class="lhDispModeLable lhCtrl lhBtn" title="Toggle message display mode">D</span>';
     ctrlbar +=    '</div>';
     ctrlbar +=    '<div id="lhCtrlSearchPlate">';
-    ctrlbar +=    '<label for="lhSearchField" class="lhSearchLabel lhCtrl">Search:</label>';
+    ctrlbar +=    '<label for="lhSearchField" class="lhSearchLabel lhCtrl lhFont">Search:</label>';
     ctrlbar +=    '<input type="text" id="lhSearchField" name="lhSearchField" class="lhSearchField" onkeyup="window.logHound.search()"/>';
     ctrlbar +=    '</div>';
     this.logPlateCtrlPanel.innerHTML = ctrlbar;
+    this.logPlateCtrlPanel.lhPanelState = 'closed';
     this.logPlate.appendChild(this.logPlateCtrlPanel);
 
     // Tag panel creation code
     this.logPlateTagPanel = document.createElement('DIV');
     this.logPlateTagPanel.setAttribute('id', 'lhPlateTagPanel');
+    this.logPlateTagPanel.setAttribute('class', 'lhRndCorners lhPlateColor');
     var tagbar = '';
     tagbar +=    '<div class="lhShrinkWrap">';
     tagbar +=    '<div id="lhAvailTagsPlate">';
-    tagbar +=    '<span>Tags:</span>';
-    tagbar +=    '<div><select id="lhAvailTagsSelect" class="lhInput" multiple="multiple" size="4"></select></div>';
+    tagbar +=    '<span class="lhFont">Tags:</span>';
+    tagbar +=    '<div><select id="lhAvailTagsSelect" class="lhInput lhFont" multiple="multiple" size="4"></select></div>';
     tagbar +=    '</div>';
 
     tagbar +=    '<div id="lhCtrlTagsPlate">';
-    tagbar +=    '<span id="lhTagCtrlAddBtn" class="lhTagCtrl lhBtn">&gt;</span>';
-    tagbar +=    '<span id="lhTagCtrlAddAllBtn" class="lhTagCtrl lhBtn">&gt;&gt;</span>';
-    tagbar +=    '<span id="lhTagCtrlRemBtn" class="lhTagCtrl lhBtn">&lt;</span>';
-    tagbar +=    '<span id="lhTagCtrlRemAllBtn" class="lhTagCtrl lhBtn">&lt;&lt;</span>';
+    tagbar +=    '<span id="lhTagCtrlAddBtn" class="lhTagCtrl lhBtn lhFont">&gt;</span>';
+    tagbar +=    '<span id="lhTagCtrlAddAllBtn" class="lhTagCtrl lhBtn lhFont">&gt;&gt;</span>';
+    tagbar +=    '<span id="lhTagCtrlRemBtn" class="lhTagCtrl lhBtn lhFont">&lt;</span>';
+    tagbar +=    '<span id="lhTagCtrlRemAllBtn" class="lhTagCtrl lhBtn lhFont">&lt;&lt;</span>';
     tagbar +=    '</div>';
 
     // http://www.dhtmlgoodies.com/scripts/multiple_select/multiple_select.html
     tagbar +=    '<div id="lhViewTagsPlate">';
-    tagbar +=    '<span>Viewing:</span>';
+    tagbar +=    '<span class="lhFont">Viewing:</span>';
     tagbar +=    '<div><select id="lhViewTagsSelect" class="lhInput" multiple="multiple" size="4"></select></div>';
     tagbar +=    '</div>';
 
@@ -251,10 +239,12 @@ LogHound.prototype.doSetup = function() {
     tagbar +=    '</div>';
     tagbar +=    '</div>';
     this.logPlateTagPanel.innerHTML = tagbar;
+    this.logPlateTagPanel.lhPanelState = 'closed';
     this.logPlate.appendChild(this.logPlateTagPanel);
 
     this.logPlateBodyBox = document.createElement('DIV');
     this.logPlateBodyBox.setAttribute('id', 'lhPlateBodyBox');
+    this.logPlateBodyBox.setAttribute('class', 'lhRndCorners lhPlateColor');
     this.logPlateBodyBox.style.display = 'none';
     this.logPlate.appendChild(this.logPlateBodyBox);
 
@@ -311,12 +301,15 @@ LogHound.prototype.doSetup = function() {
     document.getElementById('lhCtrlShadeToggle').onclick = function(event) {
         window.logHound.toggleDisplay();
     };
-    // Help panel toggle
-    var toggleHelp = document.getElementById('lhCtrlHelp');
-    toggleHelp.onclick = function(event) {
-        window.logHound.toggleHelpPanel();
+    this.addHelpEntry(['lhCtrlShadeToggle','Shade Mode Toggle: Toggles the Log Hound interface between shade display mode and normal display mode.']);
+    // Help panel setup
+    document.getElementById('lhCtrlHelp').onclick = function(event) {
+        window.logHound.toggleHelpPanel('toggle');
     };
-    var toggleCtrl = document.getElementById('lhTitleToggleCtrl');
+    this.addHelpEntry(['lhCtrlHelp','Help Panel Toggle: Opens and closes the help panel.']);
+
+    // Message panel setup
+    var toggleCtrl = document.getElementById('lhCtrlMsgs');
     toggleCtrl.onmouseover = function(event) {
         this.innerHTML = '&curren;';
     };
@@ -324,14 +317,15 @@ LogHound.prototype.doSetup = function() {
         this.innerHTML = '&#149;';
     };
     toggleCtrl.onclick = function(event) {
-        window.logHound.toggleCtrlPanel();
+        window.logHound.toggleCtrlPanel('toggle');
     };
+    // Tag panel setup
+
     document.getElementById('lhCtrlTags').onclick = function(event) {
-        window.logHound.toggleTagCtrlPanel();
+        window.logHound.toggleTagCtrlPanel('toggle');
     };
-    document.getElementById('lhCtrlTags').onclick = function(event) {
-        window.logHound.toggleTagCtrlPanel();
-    };
+    this.addHelpEntry(['lhCtrlTags','Tag Panel Toggle: Opens and closes the tag control panel.']);
+
 
     document.getElementById('lhTagCtrlAnyBtn').onclick = function(event) {
         window.logHound.setTagFilterMode('A');
@@ -358,12 +352,44 @@ LogHound.prototype.doSetup = function() {
     this.adjustPlateSize();
     this.startDebugWindowMonitor();
     this.show(true);
+
     this.logInfo('Log Hound is online...');
     var msg = 'document.body.clientWidth='+document.body.clientWidth+'<br/>document.documentElement.clientWidth='+document.documentElement.clientWidth+'<br/>window.innerWidth='+window.innerWidth+'<br/>document.body.scrollWidth='+document.body.scrollWidth+'<br/>document.body.offsetWidth='+document.body.offsetWidth;
     //this.logInfo(msg);
 };
-LogHound.prototype.showHelp = function(helpNode) {
-    this.logPlateHelpPanel.innerHTML = LogHoundHelp[helpNode];
+LogHound.prototype.addHelpEntry = function(entry) {
+    this.helpEntries[this.helpEntries.length] = entry;
+};
+LogHound.prototype.toggleHelp = function(enable) {
+    if(enable!=null && enable) {
+        if(this.helpEnabled) { return; }
+        this.helpEnabled = true;
+        var target = null;
+        for(i=0; i<this.helpEntries.length; i++) {
+            target = document.getElementById(this.helpEntries[i][0]);
+            target.lhHelpTxt = this.helpEntries[i][1];
+            target.lhOrigMouseOver = target.onmouseover;
+            target.lhOrigMouseOut = target.onmouseout;
+            target.onmouseover = function() {
+                this.lhOrigMouseOver();
+                document.getElementById('lhPlateHelpPanel').innerHTML = this.lhHelpTxt;
+            };
+            target.onmouseout = function() {
+                this.lhOrigMouseOut();
+                document.getElementById('lhPlateHelpPanel').innerHTML = '';
+            }
+        }
+    } else {
+        if(!this.helpEnabled) { return; }
+        this.helpEnabled = false;
+        var target = null;
+        for(i=0; i<this.helpEntries.length; i++) {
+            target = document.getElementById(this.helpEntries[i][0]);
+            target.lhHelpTxt = this.helpEntries[i][1];
+            target.onmouseover = target.lhOrigMouseOver;
+            target.onmouseout = target.lhOrigMouseOut;
+        }
+    }
 };
 LogHound.prototype.toggleMsgLayout = function() {
     this.msgDispMode= (this.msgDispMode=='brief' ? 'detail' : 'brief');
@@ -393,6 +419,12 @@ LogHound.prototype.setKillSwitch = function(killSwitch) {
         this.killSwitch = true;
     }
 };
+/*
+ * Enable or disable logging. When set to false, logging is completely disabled,
+ * which means no messages are processed or stored and Log Hound is basically
+ * turned "off".
+ * @param enable Set to "true" to enable logging, otherwise "false"
+ */
 LogHound.prototype.enableLogging = function(enable) {
     if(enable!=null && enable==false) {
         this.enabled = false;
@@ -517,44 +549,84 @@ LogHound.prototype.toggleDisplay = function(show) {
     show = (show==null ? this.logPlateBodyBox.style.display == 'none' : show);
     if(show) {
         this.logPlateBodyBox.style.display = 'block';
+        this.toggleTagCtrlPanel('restore');
+        this.toggleHelpPanel('restore');
+        this.toggleCtrlPanel('restore');
         this.adjustPlateSize();
         toggleBtn.innerHTML = '^';
     } else {
         this.logPlateBodyBox.style.display = 'none';
+        this.logPlateHelpPanel.style.display = 'none';
         this.logPlateTagPanel.style.display = 'none';
         this.logPlateCtrlPanel.style.display = 'none';
         this.logPlate.style.height = this.logPlateHead.offsetHeight;
         toggleBtn.innerHTML = 'v';
     }
 };
-LogHound.prototype.toggleHelpPanel = function() {
-    var displayVal = this.logPlateHelpPanel.style.display;
-    if(displayVal==null || displayVal=='' || displayVal=='none') {
-        displayVal = 'block';
-    } else {
-        displayVal = 'none';
+/*
+ * @param cmd Can be one of four strings: display, hide, toggle, or restore.
+ * display:  Displays the panel.
+ * hide:     Hides the panel.
+ * toggle:   Toggles the panel from the saved state.
+ * restore:  Restores the panel to the saved state.
+ */
+LogHound.prototype.toggleHelpPanel = function(cmd) {
+    if(cmd=='restore') {
+        cmd = this.logPlateHelpPanel.lhPanelState;
+    } else if(cmd=='toggle') {
+        cmd = (this.logPlateHelpPanel.lhPanelState=='hide' ? 'display' : 'hide');
     }
-    this.logPlateHelpPanel.style.display = displayVal;
+    if(cmd=='display') {
+        this.logPlateHelpPanel.style.display = 'block';
+        this.logPlateHelpPanel.lhPanelState = 'display';
+    } else {
+        this.logPlateHelpPanel.style.display = 'none';
+        this.logPlateHelpPanel.lhPanelState = 'hide';
+    }
     this.adjustPlateSize();
 };
-LogHound.prototype.toggleCtrlPanel = function() {
-    var displayVal = this.logPlateCtrlPanel.style.display;
-    if(displayVal==null || displayVal=='' || displayVal=='none') {
-        displayVal = 'block';
-    } else {
-        displayVal = 'none';
+/*
+ * @param cmd Can be one of four strings: display, hide, toggle, or restore.
+ * display:  Displays the panel.
+ * hide:     Hides the panel.
+ * toggle:   Toggles the panel from the saved state.
+ * restore:  Restores the panel to the saved state.
+ */
+LogHound.prototype.toggleCtrlPanel = function(cmd) {
+    if(cmd=='restore') {
+        cmd = this.logPlateCtrlPanel.lhPanelState;
+    } else if(cmd=='toggle') {
+        cmd = (this.logPlateCtrlPanel.lhPanelState=='hide' ? 'display' : 'hide');
     }
-    this.logPlateCtrlPanel.style.display = displayVal;
+    if(cmd=='display') {
+        this.logPlateCtrlPanel.style.display = 'block';
+        this.logPlateCtrlPanel.lhPanelState = 'display';
+    } else {
+        this.logPlateCtrlPanel.style.display = 'none';
+        this.logPlateCtrlPanel.lhPanelState = 'hide';
+    }
     this.adjustPlateSize();
 };
-LogHound.prototype.toggleTagCtrlPanel = function() {
-    var displayVal = this.logPlateTagPanel.style.display;
-    if(displayVal==null || displayVal=='' || displayVal=='none') {
-        displayVal = 'block';
-    } else {
-        displayVal = 'none';
+/*
+ * @param cmd Can be one of four strings: display, hide, toggle, or restore.
+ * display:  Displays the panel.
+ * hide:     Hides the panel.
+ * toggle:   Toggles the panel from the saved state.
+ * restore:  Restores the panel to the saved state.
+ */
+LogHound.prototype.toggleTagCtrlPanel = function(cmd) {
+    if(cmd=='restore') {
+        cmd = this.logPlateTagPanel.lhPanelState;
+    } else if(cmd=='toggle') {
+        cmd = (this.logPlateTagPanel.lhPanelState=='hide' ? 'display' : 'hide');
     }
-    this.logPlateTagPanel.style.display = displayVal;
+    if(cmd=='display') {
+        this.logPlateTagPanel.style.display = 'block';
+        this.logPlateTagPanel.lhPanelState = 'display';
+    } else {
+        this.logPlateTagPanel.style.display = 'none';
+        this.logPlateTagPanel.lhPanelState = 'hide';
+    }
     this.adjustPlateSize();
 };
 LogHound.prototype.showMoreMessages = function() {
@@ -711,18 +783,18 @@ LogHound.prototype.log = function() {
 
     var msgFullEntryDisp = ((this.msgDispMode=='detail') ? 'block' : 'none');
     var msgFullEntry = '<table cellspacing="0" class="lhMsgRecDetail" style="display:'+msgFullEntryDisp+'"><tr>';
-    msgFullEntry +=    '<td class="lhMsgNum lhMsgElmt">'+msgRec['number']+'</td>';
-    msgFullEntry +=    '<td class="lhMsgTime lhMsgElmt">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
-    msgFullEntry +=    '<td class="lhMsgTxt lhMsgElmt">'+((msgRec['tags'] instanceof Array) ? msgRec['tags'] : '')+'</td>';
+    msgFullEntry +=    '<td class="lhMsgNum lhMsgElmt lhFont">'+msgRec['number']+'</td>';
+    msgFullEntry +=    '<td class="lhMsgTime lhMsgElmt lhFont">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
+    msgFullEntry +=    '<td class="lhMsgTxt lhMsgElmt lhFont">'+((msgRec['tags'] instanceof Array) ? msgRec['tags'] : '')+'</td>';
     msgFullEntry +=    '</tr><tr>';
-    msgFullEntry +=    '<td colspan="3" class="lhMsgTxtFull lhMsgElmt">'+msgRec['message']+'</td>';
+    msgFullEntry +=    '<td colspan="3" class="lhMsgTxtFull lhMsgElmt lhFont">'+msgRec['message']+'</td>';
     msgFullEntry +=    '</tr></table>';
 
     var msgEntryDisp = ((this.msgDispMode=='brief') ? 'block' : 'none');
     var msgEntry = '<table cellspacing="0" class="lhMsgRecBrief" style="display:'+msgEntryDisp+'"><tr>';
-    msgEntry +=    '<td class="lhMsgNum lhMsgElmt">'+msgRec['number']+'</td>';
-    msgEntry +=    '<td class="lhMsgTime lhMsgElmt">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
-    msgEntry +=    '<td class="lhMsgTxt lhMsgElmt">'+msgRec['message']+'</td>';
+    msgEntry +=    '<td class="lhMsgNum lhMsgElmt lhFont">'+msgRec['number']+'</td>';
+    msgEntry +=    '<td class="lhMsgTime lhMsgElmt lhFont">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
+    msgEntry +=    '<td class="lhMsgTxt lhMsgElmt lhFont">'+msgRec['message']+'</td>';
     msgEntry +=    '</tr></table>';
 
     msgElmt.innerHTML=msgFullEntry+msgEntry;
