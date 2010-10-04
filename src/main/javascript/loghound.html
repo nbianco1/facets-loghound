@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Facets Log Hound (Alpha 2.0) Demo Page</title>
-<link href="loghound.css" rel="stylesheet" type="text/css">
+<link href="loghound.css" rel="stylesheet" type="text/css" />
 <script language="JavaScript" src="fcts_lib.js" type="text/JavaScript"></script>
 <script language="JavaScript" src="loghound.js" type="text/JavaScript"></script>
 <script language="JavaScript" type="text/JavaScript">
@@ -15,7 +15,6 @@ function addLogLevels() {
 	    lvlSelect.options[lvlSelect.length] = new Option(level.getText(),level.getId());
 	}
 }
-
 function enterLogMessage() {
     var levelId = document.getElementById('logMsgLevelSelect').value;
     var msg = document.getElementById('logMsgText').value;
@@ -29,7 +28,6 @@ function enterLogMessage() {
 	}
 	window.logHound.log(LogHoundLevels.getById(levelId),msg,tagArray);
 }
-
 function onBodyLoad() {
     window.logHound.doSetup();
     window.logHound.setLogLevel(LogHoundLevels['TRACE']);
@@ -42,12 +40,10 @@ function onBodyLoad() {
 	window.logHound.logInfo('Info: FYI...',['Tag3','AllTags']);
 	window.logHound.logDebug('Debug: Getting into the nitty-gritty of what your app is thinking.',['Tag4']);
 	window.logHound.logTrace('Trace: Two functions and 3454920 log messages later...',['Tag5','AllTags']);
-
-	LogHoundHelp.toggleHelp(true);
+	return true;
 }
 </script>
 <style type="text/css">
-<!--
 body {
     font-family: Arial, Helvetica, serif;
     font-size: 12px;
@@ -84,7 +80,6 @@ body {
 #logTagsPlate {
     width: 250px;
 }
-
 </style>
 
 </head>

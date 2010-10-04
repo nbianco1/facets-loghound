@@ -68,7 +68,6 @@ document.addStyleClass = function(elmt, classname) {
     classes.push(classname);
     elmt.className = classes.join(' ');
 }
-
 document.removeStyleClass = function(elmt, classname) {
     if(elmt.className==null || elmt.className=='') {
         return;
@@ -85,6 +84,10 @@ document.removeStyleClass = function(elmt, classname) {
         newNames.push(classes[idx]);
     }
     elmt.className = newNames.join(' ');
+}
+document.replaceStyleClass = function(elmt, remClass, addClass) {
+    document.removeStyleClass(elmt, remClass);
+    document.addStyleClass(elmt, addClass);
 }
 var FctsTools = new Array();
 FctsTools.windowHeight = function() {
