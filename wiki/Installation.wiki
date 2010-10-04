@@ -1,0 +1,37 @@
+There are a few things that need to happen in order to get Log Hound up and running on your page.  The examples page in the repository can be used as a hard example of how to include and turn on Log Hound, but here's a more in-depth instruction.
+
+===Simple===
+This is the the base, no frills install example:
+{{{
+1   <link href="/styles/loghound.css" rel="stylesheet" type="text/css" />
+2   <script type="text/javascript" src="/js/loghound.js"></script>
+3   function onBodyLoad() {
+4       window.logHound.doSetup();
+5   }
+6   </script>
+7   <body onLoad="onBodyLoad();">
+}}}
+
+ * 1) Link in the style sheet.
+ * 2) Include the Log Hound code.
+ * 3-6) Create a function for the body onLoad event that calls Log Hound's doSetup() function.
+ * 7) Make sure to call the body onLoad function!
+
+===More Complex===
+{{{
+1   <link href="/styles/loghound.css" rel="stylesheet" type="text/css" />
+2   <script type="text/javascript" src="/js/loghound.js"></script>
+3
+4   <script type="text/javascript">
+5   function loghoundControl() {
+6       var loghoundSwitch = document.getElementById('lhKillSwitch').value;
+7       window.logHound.setKillSwitch(!(loghoundSwitch!=null && loghoundSwitch=='on'));
+8   }
+9   function onBodyLoad() {
+10      loghoundControl();
+11      window.logHound.doSetup();
+12  }
+13  </script>
+14  <body onLoad="onBodyLoad();">
+15  <input type="hidden" id="lhKillSwitch" name="lhKillSwitch" value="on" />
+}}}
