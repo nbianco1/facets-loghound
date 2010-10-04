@@ -376,6 +376,19 @@ LogHound.prototype.doSetup = function() {
     var msg = 'document.body.clientWidth='+document.body.clientWidth+'<br/>document.documentElement.clientWidth='+document.documentElement.clientWidth+'<br/>window.innerWidth='+window.innerWidth+'<br/>document.body.scrollWidth='+document.body.scrollWidth+'<br/>document.body.offsetWidth='+document.body.offsetWidth;
     //this.logInfo(msg);
 };
+LogHound.prototype.activateTagMode = function(btn) {
+    var excBtn = document.getElementById('lhTagCtrlExcBtn');
+    var anyBtn = document.getElementById('lhTagCtrlAnyBtn');
+    var intBtn = document.getElementById('lhTagCtrlIntBtn');
+    excBtn.lhBtnState = 'off';
+    anyBtn.lhBtnState = 'off';
+    intBtn.lhBtnState = 'off';
+
+    document.replaceStyleClass(this, 'lhBtnOut');
+    document.removeStyleClass(this, 'lhBtnOn');
+    document.addStyleClass(this, 'lhBtnOver');
+
+};
 LogHound.prototype.addHelpEntry = function(entry) {
     this.helpEntries[this.helpEntries.length] = entry;
 };
