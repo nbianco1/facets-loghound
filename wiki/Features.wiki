@@ -56,4 +56,7 @@ Tags can be utilized by the Log Hound interface with the tag controls:
 
 <img align="center" src="https://facets-loghound.googlecode.com/svn/wiki/images/exTagCtrls.png"></img>
 
+ # "A" = Any: Messages sporting any of the tags listed in the "Viewing" column will be display, and all others will be hidden.
+ # "I" = Intersection: Only messages with all the tags listed in the "Viewing" column will be displayed.  They can have other tags as well, but they must have all the viewing tags.
+ # "E" = Exclusion: Only messages that have _none_ of the tags in the "Viewing" column will be visible.
 ----
