@@ -164,7 +164,7 @@ LogHound.prototype.doSetup = function() {
 
     this.logPlateHead = document.createElement('DIV');
     this.logPlateHead.setAttribute('id', 'lhPlateHead');
-    this.logPlateHead.setAttribute('class', 'lhRndCorners lhPlateColor');
+    this.logPlateHead.setAttribute('class', 'lhPlateColor lhRndCorners');
     var titlebar = '<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr>';
     titlebar +=    '<td><span id="lhBtnShade" class="lhBtnShade lhCtrl lhBtn" title="Toggle Message Panel">v</span></td>';
     titlebar +=    '<td class="lhTitle">Log Hound v'+LogHoundVer.getLongText()+'</td>'
@@ -178,7 +178,7 @@ LogHound.prototype.doSetup = function() {
     // Help panel creation code.
     this.logPlateHelpPanel = document.createElement('DIV');
     this.logPlateHelpPanel.setAttribute('id', 'lhPlateHelpPanel');
-    this.logPlateHelpPanel.setAttribute('class', 'lhRndCorners lhPlateColor');
+    this.logPlateHelpPanel.setAttribute('class', 'lhPlateColor lhRndCorners');
     var helpBarInfo = 'Mouse over any interface element to see help for that element here.';
     this.logPlateHelpPanel.innerHTML = helpBarInfo;
     this.logPlateHelpPanel.lhDfltTxt = helpBarInfo;
@@ -188,7 +188,7 @@ LogHound.prototype.doSetup = function() {
     // Control panel creation code.
     this.logPlateCtrlPanel = document.createElement('DIV');
     this.logPlateCtrlPanel.setAttribute('id', 'lhPlateCtrlPanel');
-    this.logPlateCtrlPanel.setAttribute('class', 'lhRndCorners lhPlateColor');
+    this.logPlateCtrlPanel.setAttribute('class', 'lhPlateColor lhRndCorners');
     var ctrlbar = '<div id="lhCtrlMore" class="lhCtrlSize lhCtrl lhBtn" title="Show More">v</div>';
     ctrlbar +=    '<div id="lhCtrlLess" class="lhCtrlSize lhCtrl lhBtn" title="Show Less">^</div>';
     ctrlbar +=    '<div id="lhCtrlLvlSelectPlate"><select id="lhLvlSelect" name="lhLvlSelect" class="lhFont"></select></div>';
@@ -210,11 +210,12 @@ LogHound.prototype.doSetup = function() {
     this.logPlateCtrlPanel.innerHTML = ctrlbar;
     this.logPlateCtrlPanel.lhPanelState = 'hide';
     this.logPlate.appendChild(this.logPlateCtrlPanel);
+    this.addHelpEntry(['lhSearchField','Search text entry: Message text is matched as you type, with non-matching log messages being automatically hidden.']);
 
     // Tag panel creation code
     this.logPlateTagPanel = document.createElement('DIV');
     this.logPlateTagPanel.setAttribute('id', 'lhPlateTagPanel');
-    this.logPlateTagPanel.setAttribute('class', 'lhRndCorners lhPlateColor');
+    this.logPlateTagPanel.setAttribute('class', 'lhPlateColor lhRndCorners');
     var tagbar = '';
     tagbar +=    '<div class="lhShrinkWrap">';
     tagbar +=    '<div id="lhAvailTagsPlate">';
@@ -254,7 +255,7 @@ LogHound.prototype.doSetup = function() {
 
     this.logPlateBodyBox = document.createElement('DIV');
     this.logPlateBodyBox.setAttribute('id', 'lhPlateBodyBox');
-    this.logPlateBodyBox.setAttribute('class', 'lhRndCorners lhPlateColor');
+    this.logPlateBodyBox.setAttribute('class', 'lhPlateColor lhRndCorners');
     this.logPlateBodyBox.style.display = 'none';
     this.logPlate.appendChild(this.logPlateBodyBox);
 
@@ -285,7 +286,7 @@ LogHound.prototype.doSetup = function() {
             if(this.lhBtnState=='on') {
                 document.addStyleClass(this, 'lhBtnOn');
             } else {
-                document.addStyleClass(this, 'lhBtnOut');
+                document.replaceStyleClass(this, 'lhBtnOn', 'lhBtnOut');
             }
         }
         btns[btnIdx].lhBtnState = 'off';
@@ -331,7 +332,7 @@ LogHound.prototype.doSetup = function() {
     };
     this.addHelpEntry(['lhBtnCtrls','Control Panel Toggle: Opens and closes the control panel.']);
 
-    
+
     // Tag panel setup
     document.getElementById('lhBtnTags').onclick = function(event) {
         window.logHound.toggleTagCtrlPanel('toggle');
@@ -339,32 +340,28 @@ LogHound.prototype.doSetup = function() {
     this.addHelpEntry(['lhBtnTags','Tag Panel Toggle: Opens and closes the tag control panel.']);
     document.getElementById('lhTagCtrlAnyBtn').onclick = function(event) {
         window.logHound.setTagFilterMode('A');
-        document.getElementById('lhTagCtrlExcBtn').lhBtnState = 'off';
-        document.getElementById('lhTagCtrlIntBtn').lhBtnState = 'off';
-        this.lhBtnState = 'on';
+        window.logHound.activateTagMode(document.getElementById('lhTagCtrlAnyBtn'));
     };
     this.addHelpEntry(['lhTagCtrlAnyBtn','"Any" Tags Modifier: Messages with any of the viewing tags will be visible.']);
     document.getElementById('lhTagCtrlIntBtn').onclick = function(event) {
         window.logHound.setTagFilterMode('I');
-        document.getElementById('lhTagCtrlExcBtn').lhBtnState = 'off';
-        document.getElementById('lhTagCtrlAnyBtn').lhBtnState = 'off';
-        this.lhBtnState = 'on';
+        window.logHound.activateTagMode(document.getElementById('lhTagCtrlIntBtn'));
     };
     this.addHelpEntry(['lhTagCtrlIntBtn','"Intersection" Tags Modifier: Only messages that have all of the viewing tags will be visible.']);
     document.getElementById('lhTagCtrlExcBtn').onclick = function(event) {
         window.logHound.setTagFilterMode('E');
-        document.getElementById('lhTagCtrlAnyBtn').lhBtnState = 'off';
-        document.getElementById('lhTagCtrlIntBtn').lhBtnState = 'off';
-        this.lhBtnState = 'on';
+        window.logHound.activateTagMode(document.getElementById('lhTagCtrlExcBtn'));
     };
     this.addHelpEntry(['lhTagCtrlExcBtn','"Exclusion" Tags Modifier: Only messages that have none of the viewing tags will be visible.']);
+
+
     document.getElementById('lhCtrlMsgDispModeBtn').onclick = function(event) {
         window.logHound.toggleMsgLayout();
     };
-
     document.getElementById('lhLvlSelect').onchange = function(event) {
         window.logHound.setLogLevel(parseInt(this.value));
     }
+    this.addHelpEntry(['lhLvlSelect','Level Select: Levels are in descending order. Only messages corresponding to the level shown and those above will be logged after change.']);
 
     this.searchField = document.getElementById('lhSearchField');
 
@@ -381,13 +378,18 @@ LogHound.prototype.activateTagMode = function(btn) {
     var anyBtn = document.getElementById('lhTagCtrlAnyBtn');
     var intBtn = document.getElementById('lhTagCtrlIntBtn');
     excBtn.lhBtnState = 'off';
+    document.removeStyleClass(excBtn, 'lhBtnOn');
     anyBtn.lhBtnState = 'off';
+    document.removeStyleClass(anyBtn, 'lhBtnOn');
     intBtn.lhBtnState = 'off';
+    document.removeStyleClass(intBtn, 'lhBtnOn');
 
-    document.replaceStyleClass(this, 'lhBtnOut');
-    document.removeStyleClass(this, 'lhBtnOn');
-    document.addStyleClass(this, 'lhBtnOver');
+    btn.lhBtnState = 'on';
+    document.addStyleClass(btn, 'lhBtnOn');
 
+    //document.replaceStyleClass(this, 'lhBtnOut');
+    //document.removeStyleClass(this, 'lhBtnOn');
+    //document.addStyleClass(this, 'lhBtnOver');
 };
 LogHound.prototype.addHelpEntry = function(entry) {
     this.helpEntries[this.helpEntries.length] = entry;
@@ -485,17 +487,17 @@ LogHound.prototype.setLogLevel = function(level) {
     level = LogHoundLevels.getLevel(level);
     if(level==null) { return; }
     this.logLevel = level;
-    this.setLogLevelSelect();
+//    this.setLogLevelSelect();
 };
-LogHound.prototype.setLogLevelSelect = function() {
-    var lvlSelect = document.getElementById('lhLvlSelect');
-    for(i=0; i<lvlSelect.options.length; i++) {
-        if(lvlSelect.options[i].value==this.logLevel.getId()) {
-            lvlSelect.options[i].selected = true;
-            break;
-        }
-    }
-};
+//LogHound.prototype.setLogLevelSelect = function() {
+//    var lvlSelect = document.getElementById('lhLvlSelect');
+//    for(i=0; i<lvlSelect.options.length; i++) {
+//        if(lvlSelect.options[i].value==this.logLevel.getId()) {
+//            lvlSelect.options[i].selected = true;
+//            break;
+//        }
+//    }
+//};
 LogHound.prototype.startInterfaceMonitor = function() {
     this.debugWindowMonitorRef = setInterval('window.logHound.stickLogPlateTopRight()', 500);
 };
