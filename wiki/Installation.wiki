@@ -1,5 +1,7 @@
 There are a few things that need to happen in order to get Log Hound up and running on your page.  The examples page in the repository can be used as a hard example of how to include and turn on Log Hound, but here's a more in-depth instruction.
 
+*For the impatient* - what are you doing reading the instructions?!? Well, since you're here, check out the [Installation#Examples examples] below.
+
 ----
 
 ===How It Starts===
