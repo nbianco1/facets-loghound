@@ -10,8 +10,11 @@
     font-family: Verdana,Tahoma,Arial,Helvetica,sans-serif;
     letter-spacing: -0.02em;
 }
-.lhRndCorners {
-    -moz-border-radius: 5px 5px 5px 5px;
+* .lhRndCorners {
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    -moz-border-radius: 5px;
+	border-radius: 5px;
 }
 .lhPlateColor {
     background-color: #DFEAF8;
