@@ -22,7 +22,7 @@ window.logHound.logWarn('This is a warning message.',['methodName()','anotherTag
 
 ====5. What does it depend on?====
 
-Everything Log Hound depends on is included in the zip package.  There's no dependency on JQuery, Prototype, or any other !JavaScript framework.  Log Hound uses 100% pure ECMAScript 1.2 spec JavaScript.
+Everything Log Hound depends on is included in the zip package.  There's no dependency on JQuery, Prototype, or any other !JavaScript framework.  Log Hound uses 100% pure ECMA-262 edition 3 spec !JavaScript (Basically !JavaScript v 1.5, since only Firefox and Chrome supports 1.6 or above)
 
 ====6. Err... Browser Support?====
 
