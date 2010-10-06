@@ -10,7 +10,12 @@ var LogHoundVer = new Array();
 LogHoundVer['major'] = '2';
 LogHoundVer['minor'] = '0';
 LogHoundVer['fix'] = '0';
-LogHoundVer['build'] = '$Rev$'.substring(5).split(' ')[1];
+LogHoundVer['build'] = '$Rev$';
+if(LogHoundVer['build'].length>5) {
+    LogHoundVer['build'] = LogHoundVer['build'].substring(5).split(' ')[1];
+} else {
+    LogHoundVer['build'] = '-';
+}
 LogHoundVer['release'] = 'alpha 2';
 LogHoundVer.getLongText = function() {
     return this.major+'.'+this.minor+'.'+this.fix+'.'+this.build+' '+this.release;
