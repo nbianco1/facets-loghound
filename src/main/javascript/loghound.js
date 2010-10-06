@@ -10,10 +10,10 @@ var LogHoundVer = new Array();
 LogHoundVer['major'] = '2';
 LogHoundVer['minor'] = '0';
 LogHoundVer['fix'] = '0';
-LogHoundVer['build'] = '$Rev$';
+LogHoundVer['build'] = '$Rev$'.substring(5).split(' ')[1];
 LogHoundVer['release'] = 'alpha 2';
 LogHoundVer.getLongText = function() {
-    return this.major+'.'+this.minor+'.'+this.fix+' '+this.build+' '+this.release;
+    return this.major+'.'+this.minor+'.'+this.fix+'.'+this.build+' '+this.release;
 };
 LogHoundVer.getShortText = function() {
     return 'v'+this.major+'.'+this.minor+'.'+this.fix+' '+this.release;
