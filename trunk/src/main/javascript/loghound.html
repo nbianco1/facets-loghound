@@ -36,10 +36,20 @@ function onBodyLoad() {
 	document.getElementById('logMessage').onclick = enterLogMessage;
 	window.logHound.logFatal('Fatal: If you see this, your app is toast.',['Tag1','AllTags']);
 	window.logHound.logError('Error: Very bad things have happened.',['Tag2']);
-	window.logHound.logWarn('Warn: Hey!  Something\'s off here.',['Tag2']);
-	window.logHound.logInfo('Info: FYI...',['Tag3','AllTags']);
-	window.logHound.logDebug('Debug: Getting into the nitty-gritty of what your app is thinking.',['Tag4']);
-	window.logHound.logTrace('Trace: Two functions and 3454920 log messages later...',['Tag5','AllTags']);
+	window.logHound.logWarn('Warn: Hey!  Something\'s off here.',['Tag3']);
+	window.logHound.logInfo('Info: FYI...',['Tag4','AllTags']);
+	window.logHound.logDebug('Debug: Getting into the nitty-gritty of what your app is thinking.',['Tag5']);
+	window.logHound.logTrace('Trace: Two functions and 3454920 log messages later...',['Tag6','AllTags']);
+	
+    try{
+        document.body.filters[0].apply()
+    } catch(e){
+        var badErr = e;
+        window.logHound.logError('Logging a JavaScript error...',['Tag2','AllTags'],badErr);
+        //alert('typeof e: '+(typeof e));
+        //alert(e.name + "\n" + e.message)
+    }
+	
 	return true;
 }
 </script>
