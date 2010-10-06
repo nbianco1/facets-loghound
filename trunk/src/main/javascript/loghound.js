@@ -124,7 +124,7 @@ function LogHound() {
     this.enabled = true;
     this.initialised = false;
     this.helpEnabled = false;
-    this.tagNameRegex = new RegExp('^[a-z][-a-z0-9_]*$','i'); 
+    this.tagNameRegex = new RegExp('^[a-z][-a-z0-9_]+$','i');
 }
 LogHound.prototype.doSetup = function() {
     if(this.killSwitch) {
@@ -721,32 +721,36 @@ LogHound.prototype.escapeRegex = function(targetText) {
     }
     return targetText.replace(arguments.callee.sRE, '\\$1');
 };
+/**
+ * @return true if all the argumented tags were accepted, otherwise false.
+ */
 LogHound.prototype.addTags = function(tagz) {
     if(tagz==null || !tagz.length || tagz.length<1) {
         return;
     }
+    for(var i=0;i<tagz.length; i++) {
+        if(!(this.tagNameRegex.test(tagz[i]))) {
+            return false;
+        }
+    }
     var tagsSelect = document.getElementById('lhAvailTagsSelect');
     foundMatch:
-    for(tagIdx in tagz) {
-        var what = this.tagNameRegex.test(tagz[tagIdx]);
-        if(!(this.tagNameRegex.test(tagz[tagIdx]))) {
-            alert('Bad tag: '+tagz[tagIdx]);
-            continue;
-        }
+    for(var i=0;i<tagz.length; i++) {
         for(allIdx in this.msgTags) {
-            if(tagz[tagIdx]==this.msgTags[allIdx]) {
+            if(tagz[i]==this.msgTags[allIdx]) {
                continue foundMatch;
             }
         }
-        if(tagz[tagIdx]==null || tagz[tagIdx]=='') { continue; }
-        this.msgTags.push(tagz[tagIdx]);
-        tagsSelect.options[tagsSelect.length] = new Option(tagz[tagIdx], tagz[tagIdx]);
+        if(tagz[i]==null || tagz[i]=='') { continue; }
+        this.msgTags.push(tagz[i]);
+        tagsSelect.options[tagsSelect.length] = new Option(tagz[i], tagz[i]);
     }
+    return true;
 };
 /*
  * {'level':LogHoundLevels['TRACE'],'text':'This is message text','error':e,'tags':['tag1','tag2']}
- * 
- */ 
+ *
+ */
 LogHound.prototype.logTrace = function() {
     this.log(LogHoundLevels['TRACE'],arguments);
 };
@@ -798,7 +802,7 @@ LogHound.prototype.parseLogData = function() {
 LogHound.prototype.log = function() {
     // If the kill switch is enabled, throw away messages and do absolutely nothing.
     if(!this.initialised || !this.enabled) {
-        return;
+        return false;
     }
     var msgRec = this.parseLogData(arguments);
     msgRec['tags'] = (msgRec['tags']==null ? {} : msgRec['tags']);
@@ -806,16 +810,18 @@ LogHound.prototype.log = function() {
     msgRec['number'] = this.msgCount;
     this.msgRecords.push(msgRec);
     this.msgCount++;
-    
+
     // Since the ESP code is not finished, we cannot do anything without a log level.
     if(msgRec['level']==null || this.logLevel.getId()>msgRec['level'].getId()) {
-        return;
+        return false;
     }
     if(msgRec['text']==null || msgRec['text']=='') {
-        return;
+        return false;
     }
     // add all unique tags to master active tag list
-    this.addTags(msgRec['tags']);
+    if(!this.addTags(msgRec['tags'])) {
+        return false;
+    }
 
     // Add message to display
     var msgElmt = document.createElement('DIV');
@@ -862,6 +868,7 @@ LogHound.prototype.log = function() {
 
     // Add message DOM element to record.
     msgRec['element'] = document.getElementById(msgId);
+    return true;
 };
 LogHound.prototype.getTimestampText = function(ts) {
     var hour = ts.getHours();
