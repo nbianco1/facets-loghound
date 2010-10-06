@@ -70,3 +70,5 @@ This is the the base, no frills install example:
  * 11) If the kill switch was not set to true by the function call on the previous line, this line will instantiate one (there can be only ONE!) copy of Log Hound and show the user interface.
  * 14) Make sure the body onload event does the needful.
  * 15) This is the hidden field with the value set by whatever server side script you are using.
+ * 16) ...
+ * 17) profit!
