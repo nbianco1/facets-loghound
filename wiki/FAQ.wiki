@@ -14,6 +14,7 @@ Your banal questions bore me.  Bring it.
 
 As of today (9/27/2010), Log Hound is only a !JavaScript logger.  It provides a framework by which you can use !JavaScript methods to store messages in the order they were received so that they may be displayed in the Log Hound User interface.  Using the Log Hound interface, you can select which log messages to view based on several different criteria provided by the many interface controls.
 Translated into cyber-colloquial terms: it throws strings at a floating div and allows you to block/none records using multivariate analysis. Word.
+
 A simple example of logging a message would look something like this:
 {{{
 window.logHound.logWarn('This is a warning message.',['methodName()','anotherTag']);
