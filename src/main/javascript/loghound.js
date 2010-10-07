@@ -5,7 +5,6 @@
  * ['text',LogHoundLevels['DEBUG'],{'tags','group1 group2'},errorObj]
  *
  */
-
 var LogHoundVer = new Array();
 LogHoundVer['major'] = '2';
 LogHoundVer['minor'] = '0';
@@ -754,33 +753,20 @@ LogHound.prototype.addTags = function(tagz) {
  * {'level':LogHoundLevels['TRACE'],'text':'This is message text','error':e,'tags':['tag1','tag2']}
  *
  */
-LogHound.prototype.logTrace = function() {
-    this.log(LogHoundLevels['TRACE'],arguments);
-};
-LogHound.prototype.logDebug = function() {
-    this.log(LogHoundLevels['DEBUG'],arguments);
-};
-LogHound.prototype.logInfo = function() {
-    this.log(LogHoundLevels['INFO'],arguments);
-};
-LogHound.prototype.logWarn = function() {
-    this.log(LogHoundLevels['WARN'],arguments);
-};
-LogHound.prototype.logError = function() {
-    this.log(LogHoundLevels['ERROR'],arguments);
-};
-LogHound.prototype.logFatal = function() {
-    this.log(LogHoundLevels['FATAL'],arguments);
-};
+LogHound.prototype.logTrace = function() { this.log(LogHoundLevels['TRACE'],arguments); };
+LogHound.prototype.logDebug = function() { this.log(LogHoundLevels['DEBUG'],arguments); };
+LogHound.prototype.logInfo = function() { this.log(LogHoundLevels['INFO'],arguments); };
+LogHound.prototype.logWarn = function() { this.log(LogHoundLevels['WARN'],arguments); };
+LogHound.prototype.logError = function() { this.log(LogHoundLevels['ERROR'],arguments); };
+LogHound.prototype.logFatal = function() { this.log(LogHoundLevels['FATAL'],arguments); };
 LogHound.prototype.parseLogData = function() {
     var argArray = new Array();
     for(var i=0; i<arguments.length; i++) {
         argArray[i] = arguments[i];
     }
     var msgRec = new Array();
-    var arg = null;
     for(var i=0; i<argArray.length; i++) {
-        arg = argArray[i];
+        if(argArray[i]==null) { continue; }
         if((typeof argArray[i])=='object' && !(argArray[i] instanceof Array) && argArray[i].length) {
             for(var j=0; j<argArray[i].length; j++) {
                 argArray[argArray.length] = argArray[i][j];
@@ -868,8 +854,6 @@ LogHound.prototype.log = function() {
     } else {
         this.logPlateBody.insertBefore(msgElmt,children[0]);
     }
-    //msgElmt.setAttribute('innerHTML',msgEntry);
-
     // Add message DOM element to record.
     msgRec['element'] = document.getElementById(msgId);
     return true;
