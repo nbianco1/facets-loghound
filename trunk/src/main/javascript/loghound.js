@@ -726,7 +726,7 @@ LogHound.prototype.escapeRegex = function(targetText) {
  */
 LogHound.prototype.addTags = function(tagz) {
     if(tagz==null || !tagz.length || tagz.length<1) {
-        return;
+        return true;
     }
     for(var i=0;i<tagz.length; i++) {
         if(!(this.tagNameRegex.test(tagz[i]))) {
@@ -807,9 +807,6 @@ LogHound.prototype.log = function() {
     var msgRec = this.parseLogData(arguments);
     msgRec['tags'] = (msgRec['tags']==null ? {} : msgRec['tags']);
     msgRec['timestamp'] = new Date();
-    msgRec['number'] = this.msgCount;
-    this.msgRecords.push(msgRec);
-    this.msgCount++;
 
     // Since the ESP code is not finished, we cannot do anything without a log level.
     if(msgRec['level']==null || this.logLevel.getId()>msgRec['level'].getId()) {
@@ -822,6 +819,9 @@ LogHound.prototype.log = function() {
     if(!this.addTags(msgRec['tags'])) {
         return false;
     }
+    msgRec['number'] = this.msgCount;
+    this.msgRecords.push(msgRec);
+    this.msgCount++;
 
     // Add message to display
     var msgElmt = document.createElement('DIV');
