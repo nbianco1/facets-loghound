@@ -737,7 +737,9 @@ LogHound.prototype.addTags = function(tagz) {
     foundMatch:
     for(var i=0;i<tagz.length; i++) {
         for(allIdx in this.msgTags) {
-            if(tagz[i]==this.msgTags[allIdx]) {
+            var t1 = tagz[i].toLowerCase();
+            var t2 = this.msgTags[allIdx].toLowerCase();
+            if(tagz[i].toLowerCase()==this.msgTags[allIdx].toLowerCase()) {
                continue foundMatch;
             }
         }
@@ -745,6 +747,7 @@ LogHound.prototype.addTags = function(tagz) {
         this.msgTags.push(tagz[i]);
         tagsSelect.options[tagsSelect.length] = new Option(tagz[i], tagz[i]);
     }
+    FctsTools.sortOptionsByText(tagsSelect);
     return true;
 };
 /*
@@ -812,7 +815,7 @@ LogHound.prototype.log = function() {
     if(msgRec['level']==null || this.logLevel.getId()>msgRec['level'].getId()) {
         return false;
     }
-    if(msgRec['text']==null || msgRec['text']=='') {
+    if(FctsTools.isBlank(msgRec['text'])) {
         return false;
     }
     // add all unique tags to master active tag list
@@ -844,10 +847,11 @@ LogHound.prototype.log = function() {
     var msgFullEntryDisp = ((this.msgDispMode=='detail') ? 'block' : 'none');
     var msgFullEntry = '<table cellspacing="0" class="lhMsgRecDetail" style="display:'+msgFullEntryDisp+'"><tr>';
     msgFullEntry +=    '<td class="lhMsgNum lhMsgElmt lhFont">'+msgRec['number']+'</td>';
+    msgFullEntry +=    '<td class="lhMsgLvl lhMsgElmt lhFont">'+msgRec['level'].getText()+'</td>';
     msgFullEntry +=    '<td class="lhMsgTime lhMsgElmt lhFont">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
     msgFullEntry +=    '<td class="lhMsgTxt lhMsgElmt lhFont">'+((msgRec['tags'] instanceof Array) ? msgRec['tags'] : '')+'</td>';
     msgFullEntry +=    '</tr><tr>';
-    msgFullEntry +=    '<td colspan="3" class="lhMsgTxtFull lhMsgElmt lhFont">'+msgText+'</td>';
+    msgFullEntry +=    '<td colspan="4" class="lhMsgTxtFull lhMsgElmt lhFont">'+msgText+'</td>';
     msgFullEntry +=    '</tr></table>';
 
     var msgEntryDisp = ((this.msgDispMode=='brief') ? 'block' : 'none');

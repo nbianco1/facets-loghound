@@ -10,7 +10,7 @@
     font-family: Verdana,Tahoma,Arial,Helvetica,sans-serif;
     letter-spacing: -0.02em;
 }
-* .lhRndCorners {
+.lhRndCorners {
 /*
     -webkit-border-radius: 5px;
     -khtml-border-radius: 5px;
@@ -190,6 +190,10 @@
     border-right: 1px #777777 solid;
     width: 20px;
 }
+.lhMsgLvl {
+    border-right: 1px #777777 solid;
+    width: 50px;
+}
 .lhMsgTime {
     border-right: 1px #777777 solid;
     width: 1%;
@@ -218,22 +222,22 @@
     padding: 0px;
 }
 .lhFatalMsg {
-    background-color: #FFA1FD;
+    background-color: #FFBFFB;
 }
 .lhErrorMsg {
-    background-color: #FFA1A1;
+    background-color: #FFBFBF;
 }
 .lhWarnMsg {
-    background-color: #FAFFA1;
+    background-color: #FBFFBF;
 }
 .lhInfoMsg {
-    background-color: #A1FFA1;
+    background-color: #BFFFBF;
 }
 .lhDebugMsg {
-    background-color: #A1FDFF;
+    background-color: #BFFDFF;
 }
 .lhTraceMsg {
-    background-color: #A1C5FF;
+    background-color: #BFD7FF;
 }
 
 
