@@ -1,6 +1,22 @@
 /**
- * LogHound is a Javascript logger you can use to gain insight into what is going on in your
- * Javascript code.
+ * Software License Agreement (Apache License 2.0)
+ * 
+ * Copyright (c) 2010,  Facets Technologies, Inc.
+ * All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License. 
+ * -----------------------------------------------------------------------------
+ *
+ * LogHound is a Javascript logger you can use to gain insight into what is
+ * going on in your Javascript code.
  *
  * ['text',LogHoundLevels['DEBUG'],{'tags','group1 group2'},errorObj]
  *
@@ -347,25 +363,13 @@ LogHound.prototype.doSetup = function() {
         window.logHound.setLogLevel(parseInt(this.value));
     }
 
-
-
-
-    //this.setLogLevel(document.getElementById('lhLvlSelect'));
-
-
-
-
-
-
-
     this.addHelpEntry(['lhLvlSelect','Level Select: Levels are in descending order. Only messages corresponding to the level shown and those above will be logged after change.']);
 
     this.searchField = document.getElementById('lhSearchField');
 
     this.adjustPlateSize();
     this.startInterfaceMonitor();
-    this.show(true);
-
+    setTimeout('window[\'logHound\'].show(true)',800);
     this.logInfo('Log Hound is online...');
     var msg = 'document.body.clientWidth='+document.body.clientWidth+'<br/>document.documentElement.clientWidth='+document.documentElement.clientWidth+'<br/>window.innerWidth='+window.innerWidth+'<br/>document.body.scrollWidth='+document.body.scrollWidth+'<br/>document.body.offsetWidth='+document.body.offsetWidth;
     //this.logInfo(msg);
@@ -545,7 +549,7 @@ LogHound.prototype.addMsgFilter = function(newFilter) {
     }
     this.msgFilters = newFilterArray;
     this.msgFilters.push(newFilter);
-}
+};
 /**
  * Applies all the currently active message filters to the displayed message rows.
  */
@@ -995,9 +999,7 @@ LogHoundMessageLevelFilter.prototype.showMessage = function(msgRec) {
     return msgRec['level'].isEnabled();
 }
 if(window['logHound']==null) {
-    var tempHound = new LogHound();
-    window['logHound'] = tempHound;
-    var stalling = 'What the hell?'
+    window['logHound'] = new LogHound();
 }
 
 
