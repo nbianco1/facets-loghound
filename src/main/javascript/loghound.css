@@ -187,22 +187,22 @@
     margin: 0px;
 }
 .lhMsgNum {
-    border-right: 1px #777777 solid;
+    border-right: 1px #AAAAAA solid;
     width: 20px;
 }
 .lhMsgLvl {
-    border-right: 1px #777777 solid;
-    width: 50px;
+    border-right: 1px #AAAAAA solid;
+    width: 40px;
 }
 .lhMsgTime {
-    border-right: 1px #777777 solid;
+    border-right: 1px #AAAAAA solid;
     width: 1%;
 }
 .lhMsgTxt {
     word-wrap: break-word;
 }
 .lhMsgTxtFull {
-    border-top: 1px #777777 solid;
+    border-top: 1px #AAAAAA solid;
 }
 .logMsg {
     border-bottom: 1px solid black;
@@ -286,4 +286,8 @@
     margin-left: auto;
 	  margin-right: auto;
 	  display: inline-block;
+}
+div#lhPlateHead
+{
+ *     zoom: 1;
 }

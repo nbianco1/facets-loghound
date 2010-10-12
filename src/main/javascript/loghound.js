@@ -346,6 +346,18 @@ LogHound.prototype.doSetup = function() {
     document.getElementById('lhLvlSelect').onchange = function(event) {
         window.logHound.setLogLevel(parseInt(this.value));
     }
+
+
+
+
+    //this.setLogLevel(document.getElementById('lhLvlSelect'));
+
+
+
+
+
+
+
     this.addHelpEntry(['lhLvlSelect','Level Select: Levels are in descending order. Only messages corresponding to the level shown and those above will be logged after change.']);
 
     this.searchField = document.getElementById('lhSearchField');
@@ -471,6 +483,13 @@ LogHound.prototype.setLogLevel = function(level) {
     level = LogHoundLevels.getLevel(level);
     if(level==null) { return; }
     this.logLevel = level;
+    var lvlSelect = document.getElementById('lhLvlSelect')
+
+//    if(this.logLevel.getId()!=lvlSelect.value) {
+//        lvlSelect.selected
+//    .onchange = function(event) {
+//        window.logHound.setLogLevel(parseInt(this.value));
+//    }
 //    this.setLogLevelSelect();
 };
 LogHound.prototype.startInterfaceMonitor = function() {
