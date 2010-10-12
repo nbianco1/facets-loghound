@@ -15,7 +15,7 @@ if(LogHoundVer['build'].length>5) {
 } else {
     LogHoundVer['build'] = '-';
 }
-LogHoundVer['release'] = 'alpha 2';
+LogHoundVer['release'] = 'alpha 3';
 LogHoundVer.getLongText = function() {
     return this.major+'.'+this.minor+'.'+this.fix+'.'+this.build+' '+this.release;
 };
@@ -483,14 +483,14 @@ LogHound.prototype.setLogLevel = function(level) {
     level = LogHoundLevels.getLevel(level);
     if(level==null) { return; }
     this.logLevel = level;
-    var lvlSelect = document.getElementById('lhLvlSelect')
-
-//    if(this.logLevel.getId()!=lvlSelect.value) {
-//        lvlSelect.selected
-//    .onchange = function(event) {
-//        window.logHound.setLogLevel(parseInt(this.value));
-//    }
-//    this.setLogLevelSelect();
+    var lvlSelect = document.getElementById('lhLvlSelect');
+    if(level.getId()!=lvlSelect.options[lvlSelect.selectedIndex].value) {
+        for(var i=0; i<lvlSelect.options.length; i++) {
+            if(level.getId()==lvlSelect.options[i].value) {
+                lvlSelect.selectedIndex = i;
+            }
+        }
+    }
 };
 LogHound.prototype.startInterfaceMonitor = function() {
     this.debugWindowMonitorRef = setInterval('window.logHound.stickLogPlateTopRight()', 500);
@@ -659,6 +659,7 @@ LogHound.prototype.toggleTagCtrlPanel = function(cmd) {
     this.adjustPlateSize();
 };
 LogHound.prototype.showMoreMessages = function() {
+    this.toggleDisplay(true);
     var boxHeight = this.logPlateBodyBox.offsetHeight;
     if(boxHeight>600) {
         return;
