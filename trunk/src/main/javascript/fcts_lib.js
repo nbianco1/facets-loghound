@@ -196,7 +196,7 @@ FctsTools.moveAllOptions = function(fromSelectElmt, toSelectElmt) {
         tempOptArr[i] = fromSelectElmt.options[i];
     }
     for(i=0; i<tempOptArr.length; i++) {
-        toSelectElmt.options[toSelectElmt.options.length] = tempOptArr[i];
+        toSelectElmt.options[toSelectElmt.options.length] = new Option(tempOptArr[i].text, tempOptArr[i].value);
     }
     fromSelectElmt.length = 0;
 };
