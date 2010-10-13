@@ -1,6 +1,6 @@
 /**
  * Software License Agreement (Apache License 2.0)
- * 
+ *
  * Copyright (c) 2010,  Facets Technologies, Inc.
  * All rights reserved.
  *
@@ -12,7 +12,7 @@
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations
- * under the License. 
+ * under the License.
  * -----------------------------------------------------------------------------
  *
  * LogHound is a Javascript logger you can use to gain insight into what is
@@ -851,7 +851,9 @@ LogHound.prototype.log = function() {
         msgText += '<br/><hr/>';
         msgText += 'Error: '+msgRec['error'].name+' at line '+msgRec['error'].lineNumber+'<br/>';
         msgText += 'Message: '+msgRec['error'].message+'<br/>';
-        msgText += 'Stack:<br/>'+msgRec['error'].stack.replace('\n','<br/>');
+        if(msgRec['error'].stack!=null) {
+            msgText += 'Stack:<br/>'+msgRec['error'].stack.replace('\n','<br/>');
+        }
     }
 
     var msgFullEntryDisp = ((this.msgDispMode=='detail') ? 'block' : 'none');
@@ -906,12 +908,16 @@ LogHound.prototype.moveTagAssignments = function(action) {
     var availSelect = document.getElementById('lhAvailTagsSelect');
     var viewSelect = document.getElementById('lhViewTagsSelect');
     if(action == 'add') {
+        if(availSelect.options.length<1 || availSelect.selectedIndex<0) { return; }
         FctsTools.moveSelected(availSelect, viewSelect);
     } else if(action == 'addAll') {
+        if(availSelect.options.length<1) { return; }
         FctsTools.moveAllOptions(availSelect, viewSelect);
     } else if(action == 'rem') {
+        if(viewSelect.options.length<1 || viewSelect.selectedIndex<0) { return; }
         FctsTools.moveSelected(viewSelect, availSelect);
     } else if(action == 'remAll') {
+        if(viewSelect.options.length<1) { return; }
         FctsTools.moveAllOptions(viewSelect, availSelect);
     }
     FctsTools.sortOptionsByText(availSelect);
