@@ -1,3 +1,5 @@
+We've tested Log Hound with the following browsers.  If you have a browser not in the table and you find a bug or lack thereof, drop us a line and let us know so we can fill out the table.
+
 || *Browser* || *Version*     || *OS*            || *Status*      ||
 || !FireFox  ||  3.6          || Windows XP      ||  Works        ||
 || IE        ||  8(Quirks)    || Windows XP      ||  Works        ||
