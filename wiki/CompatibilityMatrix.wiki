@@ -1,5 +1,5 @@
 || *Browser* || *Version*     || *OS*            || *Status*      ||
-|| FireFox   ||  3.6          || Windows XP      ||  Works        ||
+|| !FireFox  ||  3.6          || Windows XP      ||  Works        ||
 || IE        ||  8(Quirks)    || Windows XP      ||  Works        ||
 || IE        ||  8(IE7std)    || Windows XP      ||  Works        ||
 || IE        ||  8(IE8std)    || Windows XP      ||  Works        ||
