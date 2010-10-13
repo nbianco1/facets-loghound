@@ -26,7 +26,7 @@ Everything Log Hound depends on is included in the zip package.  There's no depe
 
 ====6. Err... Browser Support?====
 
-Log Hound is being coded to work perfectly in Firefox, Chrome, Opera, and probably Safari if it doesn't tick me off.  As for IE, well, I'll make an effort.  The point is that W3C standards come first.  Crappy maniacal insecure monopoly-driven browsers come second.
+Log Hound is being coded to work perfectly in Firefox, Chrome, Opera, and probably Safari if it doesn't tick me off.  As for IE, well, I'll make an effort.  The point is that W3C standards come first.  Crappy maniacal insecure monopoly-driven browsers come second. See our [CompatibilityMatrix compatibility matrix] for more.
 
 ====7. What about _{insert favourite JS framework name here}_??? Why did you bother not just using _{framework name here again to up its google score}_?  You are an idiot and wasting time if you don't use _{name framework for third time to summon its planar avatar to destroy non-utilizing projects}_ instead of writing all that lame JS code.====
 
