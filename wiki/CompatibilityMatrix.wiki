@@ -1,6 +1,8 @@
-|| *Browser* || *Version*     || *Status*            ||
-|| FireFox   ||  3.6          ||  Works              ||
-|| IE        ||  8(Quirks)    ||  CSS+JS Problems    ||
-|| IE        ||  3.6          ||  Works              ||
-|| FireFox   ||  3.6          ||  Works              ||
-|| FireFox   ||  3.6          ||  Works              ||
+|| *Browser* || *Version*     || *OS*            || *Status*      ||
+|| FireFox   ||  3.6          || Windows XP      ||  Works        ||
+|| IE        ||  8(Quirks)    || Windows XP      ||  Works        ||
+|| IE        ||  8(IE7std)    || Windows XP      ||  Works        ||
+|| IE        ||  8(IE8std)    || Windows XP      ||  Works        ||
+|| IE        ||  7(IE7std)    || Windows XP      ||  Works        ||
+|| IE        ||  7(Quirks)    || Windows XP      ||  Works        ||
+|| Chrome    ||  6.0          || Windows XP      ||  Works        ||
