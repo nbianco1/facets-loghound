@@ -266,11 +266,18 @@ LogHound.prototype.doSetup = function() {
 
     // Add levels to level select control.
     var lvlSelect = document.getElementById('lhLvlSelect');
-	var level;
+    var level;
     for(idx = 0; idx<LogHoundLevels.length; idx++) {
-	    level = LogHoundLevels[idx];
-	    lvlSelect.options[lvlSelect.length] = new Option(level.getText(),level.getId());
-	}
+        level = LogHoundLevels[idx];
+        lvlSelect.options[lvlSelect.length] = new Option(level.getText(),level.getId());
+    }
+    FctsTools.sortOptionsByValue(lvlSelect,function(o1,o2) {
+        return parseInt(o2)-parseInt(o1);
+    });
+    document.getElementById('lhLvlSelect').onchange = function(event) {
+        window.logHound.setLogLevel(parseInt(this.value));
+    }
+    this.addHelpEntry(['lhLvlSelect','Level Select: Levels are in descending order. Only messages corresponding to the level shown and those above will be logged after change.']);
 
     var btns = document.getElementsByClassName('lhBtn');
     for(idxBtns in btns) {
@@ -359,11 +366,6 @@ LogHound.prototype.doSetup = function() {
     document.getElementById('lhCtrlMsgDispModeBtn').onclick = function(event) {
         window.logHound.toggleMsgLayout();
     };
-    document.getElementById('lhLvlSelect').onchange = function(event) {
-        window.logHound.setLogLevel(parseInt(this.value));
-    }
-
-    this.addHelpEntry(['lhLvlSelect','Level Select: Levels are in descending order. Only messages corresponding to the level shown and those above will be logged after change.']);
 
     this.searchField = document.getElementById('lhSearchField');
 

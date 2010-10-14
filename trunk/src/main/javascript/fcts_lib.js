@@ -211,6 +211,44 @@ FctsTools.isBlankRegex = new RegExp('^[ \t]+$');
 FctsTools.isBlank = function(target) {
     return (target==null || target=='' || this.isBlankRegex.test(target));
 };
+FctsTools.sortOptionsByValue = function(selectElmt, sortFn) {
+    var optionTemp = new Array();
+    var optionValues = new Array();
+    for(i=0; i<selectElmt.options.length; i++) {
+        optionTemp[i] = selectElmt.options[i];
+        optionValues[i] = selectElmt.options[i].value;
+    }
+    selectElmt.options.length = 0;
+    if(sortFn == null || !sortFn) {
+        optionValues.sort(function(o1,o2) {
+            if(FctsTools.isBlank(o1) && FctsTools.isBlank(o2)) {
+                return 0;
+            } else if(FctsTools.isBlank(o1) || FctsTools.isBlank(o2)) {
+                return (FctsTools.isBlank(o1) ? -1 : 1);
+            }
+            o1 = o1.toLowerCase();
+            o2 = o2.toLowerCase();
+            for(var i=0;i<o1.length;i++) {
+                if(o1.charCodeAt(i)==o2.charCodeAt(i)) {
+                    continue;
+                }
+                return o1.charCodeAt(i)-o2.charCodeAt(i);
+            }
+            return 0;
+        });
+    } else {
+        optionValues.sort(sortFn);
+    }
+    for(i=0; i<optionValues.length; i++) {
+        for(j=0; j<optionTemp.length; j++) {
+            if(optionValues[i] == optionTemp[j].value) {
+                selectElmt.options[selectElmt.options.length] = optionTemp[j];
+                optionTemp.splice(j--,1);
+                continue;
+            }
+        }
+    }
+};
 FctsTools.sortOptionsByText = function(selectElmt, sortFn) {
     var optionTemp = new Array();
     var optionText = new Array();
