@@ -31,7 +31,7 @@ if(LogHoundVer['build'].length>5) {
 } else {
     LogHoundVer['build'] = '-';
 }
-LogHoundVer['release'] = 'alpha 3';
+LogHoundVer['release'] = 'beta 1';
 LogHoundVer.getLongText = function() {
     return this.major+'.'+this.minor+'.'+this.fix+'.'+this.build+' '+this.release;
 };
@@ -240,6 +240,7 @@ LogHound.prototype.doSetup = function() {
     tagbar +=    '<div id="lhModTagsPlate">';
     tagbar +=    '<span id="lhTagCtrlAnyBtn" class="lhTagCtrl lhFont lhBtn" title="Any">A</span>';
     tagbar +=    '<span id="lhTagCtrlIntBtn" class="lhTagCtrl lhFont lhBtn" title="Intersection">I</span>';
+    tagbar +=    '<span id="lhTagCtrlOnyBtn" class="lhTagCtrl lhFont lhBtn" title="Only">O</span>';
     tagbar +=    '<span id="lhTagCtrlExcBtn" class="lhTagCtrl lhFont lhBtn" title="Exclusion">E</span>';
     tagbar +=    '</div>';
     tagbar +=    '</div>';
@@ -356,6 +357,11 @@ LogHound.prototype.doSetup = function() {
         window.logHound.activateTagMode(document.getElementById('lhTagCtrlIntBtn'));
     };
     this.addHelpEntry(['lhTagCtrlIntBtn','"Intersection" Tags Modifier: Only messages that have all of the viewing tags will be visible.']);
+    document.getElementById('lhTagCtrlOnyBtn').onclick = function(event) {
+        window.logHound.setTagFilterMode('O');
+        window.logHound.activateTagMode(document.getElementById('lhTagCtrlOnyBtn'));
+    };
+    this.addHelpEntry(['lhTagCtrlOnyBtn','"Only" Tags Modifier: Only messages that have all of the viewing tags and no other tags will be visible.']);
     document.getElementById('lhTagCtrlExcBtn').onclick = function(event) {
         window.logHound.setTagFilterMode('E');
         window.logHound.activateTagMode(document.getElementById('lhTagCtrlExcBtn'));
@@ -379,20 +385,19 @@ LogHound.prototype.doSetup = function() {
 LogHound.prototype.activateTagMode = function(btn) {
     var excBtn = document.getElementById('lhTagCtrlExcBtn');
     var anyBtn = document.getElementById('lhTagCtrlAnyBtn');
+    var onyBtn = document.getElementById('lhTagCtrlOnyBtn');
     var intBtn = document.getElementById('lhTagCtrlIntBtn');
     excBtn.lhBtnState = 'off';
     document.removeStyleClass(excBtn, 'lhBtnOn');
     anyBtn.lhBtnState = 'off';
     document.removeStyleClass(anyBtn, 'lhBtnOn');
+    onyBtn.lhBtnState = 'off';
+    document.removeStyleClass(onyBtn, 'lhBtnOn');
     intBtn.lhBtnState = 'off';
     document.removeStyleClass(intBtn, 'lhBtnOn');
 
     btn.lhBtnState = 'on';
     document.addStyleClass(btn, 'lhBtnOn');
-
-    //document.replaceStyleClass(this, 'lhBtnOut');
-    //document.removeStyleClass(this, 'lhBtnOn');
-    //document.addStyleClass(this, 'lhBtnOver');
 };
 LogHound.prototype.addHelpEntry = function(entry) {
     this.helpEntries[this.helpEntries.length] = entry;
@@ -441,7 +446,7 @@ LogHound.prototype.toggleMsgLayout = function() {
     }
 };
 LogHound.prototype.setTagFilterMode = function(mode) {
-    this.tagMode = ((mode!='A' && mode!='I' && mode!='E') ? 'A' : mode);
+    this.tagMode = ((mode!='A' && mode!='I' && mode!='E' && mode!='O') ? 'A' : mode);
     var viewSelect = document.getElementById('lhViewTagsSelect');
     this.addMsgFilter(new LogHoundMessageTagFilter(FctsTools.getOptionValues(viewSelect),this.tagMode));
     this.applyMsgFilters();
@@ -961,13 +966,16 @@ LogHoundMessageTagFilter.prototype.showMessage = function(msgRec) {
         if(!(msgRec['tags'] instanceof Array)) { return false; }
         if(msgRec['tags'].length<this.tagz.length) { return false; }
     }
+    if(this.tagMode=='O') {
+        if(msgRec['tags'].length!=this.tagz.length) { return false; }
+    }
     var matched = false;
     var intMatched = false;
     for(targetIdx=0; targetIdx<this.tagz.length; targetIdx++) {
         intMatched = false;
         for(tagIdx=0; tagIdx<msgRec['tags'].length; tagIdx++) {
-            matched = (msgRec['tags'][tagIdx] == this.tagz[targetIdx]);
-            if(this.tagMode=='I') {
+            matched = (msgRec['tags'][tagIdx].toLowerCase() == this.tagz[targetIdx].toLowerCase());
+            if(this.tagMode=='I' || this.tagMode=='O') {
                 intMatched = (intMatched || matched);
             } else if(matched && this.tagMode=='A') {
                 return true;
@@ -975,10 +983,18 @@ LogHoundMessageTagFilter.prototype.showMessage = function(msgRec) {
                 return false;
             }
         }
-        if(this.tagMode=='I' && !intMatched) { return false; }
+        if((this.tagMode=='I' || this.tagMode=='O') && !intMatched) { return false; }
     }
-    return (this.tagMode=='E' || this.tagMode=='I');
-}
+    return (this.tagMode=='E' || this.tagMode=='I' || this.tagMode=='O');
+};
+LogHoundMessageTagFilter.prototype.hasTag = function(tag,msgTags) {
+    for(i=0; i<msgTags.length; i++) {
+        if(msgTags[tagIdx] == tag) {
+            return true;
+        }
+    }
+    return false;
+};
 /**
  * Message text search filter.
  */
