@@ -5,8 +5,7 @@
 [http://yuilibrary.com/downloads/ YUI Compressor Download]
 
 ====Info====
-YUI Compressor seems to work well:
-
+YUI Compressor seems to work well for 2.0.0 beta 1:
 {{{
 loghound.js      43,626 bytes
 loghound-min.js  29,137 bytes
