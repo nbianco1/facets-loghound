@@ -287,3 +287,16 @@ FctsTools.sortOptionsByText = function(selectElmt, sortFn) {
         }
     }
 };
+FctsTools.escapeRegex = function(targetText) {
+    if(!arguments.callee.sRE) {
+        var specials = [
+            '/', '.', '*', '+', '?', '|',
+            '(', ')', '[', ']', '{', '}', '\\'
+        ];
+        arguments.callee.sRE = new RegExp(
+            '(\\' + specials.join('|\\') + ')', 'g'
+        );
+    }
+    return targetText.replace(arguments.callee.sRE, '\\$1');
+};
+

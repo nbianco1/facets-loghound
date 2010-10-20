@@ -8,6 +8,7 @@
 */
 .lhFont {
     font-family: Verdana,Tahoma,Arial,Helvetica,sans-serif;
+    font-size: 7pt;
     letter-spacing: -0.02em;
 }
 .lhRndCorners {
@@ -42,7 +43,6 @@
 }
 .lhCtrl {
     display: block;
-    font-size: 8pt;
     font-weight: bold;
     text-align: center;
     white-space: nowrap;
@@ -112,6 +112,7 @@
     width: 100%;
     height: 14px;
     padding-left: 5px;
+    text-align: left;
 }
 .lhBtnCtrls {
     display: block;
@@ -119,7 +120,6 @@
     font-weight: bold;
     text-align:center;
     white-space:nowrap;
-    height: 14px;
     width: 18px;
 }
 #lhPlate {
@@ -136,19 +136,20 @@
     font-weight: bold;
     border-bottom: 3px solid #688DE0;
     padding: 0px 4px;
- *  background-color: #DFEAF8;
 }
 #lhPlateHelpPanel {
     height: 3em !important;
- *  background-color: #DFEAF8;
+    border-bottom: 3px solid #688DE0;
+    padding: 0px 6px 0px 6px;
+    display: none;
+    test-align: left;
 }
-#lhPlateCtrlPanel, #lhPlateHelpPanel{
+#lhPlateCtrlPanel {
     font-size: 8pt;
     font-weight: normal;
     border-bottom: 3px solid #688DE0;
     padding: 0px 6px 0px 6px;
     display: none;
- *  background-color: #DFEAF8;
 }
 #lhPlateCtrlPanel > table {
     width: 100%;
@@ -163,7 +164,6 @@
     padding: 2px;
     display: none;
     text-align: center;
- *  background-color: #DFEAF8;
 }
 #lhPlateBodyBox {
     clear: both;
@@ -173,7 +173,6 @@
     overflow-x: hidden;
     overflow-y: scroll;
     display: none;
- *  background-color: #DFEAF8;
 }
 #lhPlateBody {
     position: relative;
@@ -181,7 +180,6 @@
 }
 .lhMsgElmt {
     font-size: 7pt;
-    word-wrap: break-word;
     padding: 1px 2px;
     margin: 0px;
 }
@@ -195,13 +193,14 @@
 }
 .lhMsgTime {
     border-right: 1px #AAAAAA solid;
-    width: 1%;
+    width: 50px;
 }
 .lhMsgTxt {
     word-wrap: break-word;
 }
 .lhMsgTxtFull {
     border-top: 1px #AAAAAA solid;
+    word-wrap: break-word;
 }
 .logMsg {
     border-bottom: 1px solid black;
@@ -238,8 +237,6 @@
 .lhTraceMsg {
     background-color: #BFD7FF;
 }
-
-
 #lhAvailTagsPlate {
     width: 150px;
     float: left;
@@ -266,8 +263,6 @@
     float: left;
     text-align: left;
 }
-
-
 #lhAvailTagsSelect {
     width: 150px;
 }
@@ -285,4 +280,6 @@
     margin-left: auto;
     margin-right: auto;
     display: inline-block;
+}
+.lhMsgRecBrief {
 }
