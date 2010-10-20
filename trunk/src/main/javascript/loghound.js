@@ -161,13 +161,19 @@ LogHound.prototype.doSetup = function() {
 
     this.logPlateHead = document.createElement('DIV');
     this.logPlateHead.setAttribute('id', 'lhPlateHead');
-    this.logPlateHead.setAttribute('class', 'lhPlateColor lhRndCorners');
+    if(document.all) {
+        var attr = document.createAttribute('class');
+        attr.value = 'lhPlateColor lhRndCorners';
+        this.logPlateHead.setAttributeNode(attr);
+    } else {
+        this.logPlateHead.setAttribute('class', 'lhPlateColor lhRndCorners');
+    }
     var titlebar = '<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr>';
-    titlebar +=    '<td><span id="lhBtnShade" class="lhBtnShade lhCtrl lhBtn" title="Toggle Message Panel">v</span></td>';
-    titlebar +=    '<td class="lhTitle">Log Hound v'+LogHoundVer.getLongText()+'</td>'
-    titlebar +=    '<td><span id="lhBtnHelp" class="lhBtnHelp lhCtrl lhBtn" title="Toggle Help Panel">?</span></td>';
-    titlebar +=    '<td><span id="lhBtnTags" class="lhBtnTags lhCtrl lhBtn" title="Toggle Tags Panel">T</span></td>';
-    titlebar +=    '<td><span id="lhBtnCtrls" class="lhBtnCtrls lhCtrl lhBtn" title="Toggle Control Panel">C</span></td>'
+    titlebar +=    '<td><span id="lhBtnShade" class="lhBtnShade lhFont lhCtrl lhBtn" title="Toggle Message Panel">v</span></td>';
+    titlebar +=    '<td class="lhTitle lhFont">Log Hound v'+LogHoundVer.getLongText()+'</td>'
+    titlebar +=    '<td><span id="lhBtnHelp" class="lhBtnHelp lhFont lhCtrl lhBtn" title="Toggle Help Panel">?</span></td>';
+    titlebar +=    '<td><span id="lhBtnTags" class="lhBtnTags lhFont lhCtrl lhBtn" title="Toggle Tags Panel">T</span></td>';
+    titlebar +=    '<td><span id="lhBtnCtrls" class="lhBtnCtrls lhFont lhCtrl lhBtn" title="Toggle Control Panel">C</span></td>'
     titlebar +=    '</tr></table>';
     this.logPlateHead.innerHTML = titlebar;
     this.logPlate.appendChild(this.logPlateHead);
@@ -175,7 +181,13 @@ LogHound.prototype.doSetup = function() {
     // Help panel creation code.
     this.logPlateHelpPanel = document.createElement('DIV');
     this.logPlateHelpPanel.setAttribute('id', 'lhPlateHelpPanel');
-    this.logPlateHelpPanel.setAttribute('class', 'lhPlateColor lhRndCorners');
+    if(document.all) {
+        var attr = document.createAttribute('class');
+        attr.value = 'lhPlateColor lhRndCorners lhFont';
+        this.logPlateHelpPanel.setAttributeNode(attr);
+    } else {
+        this.logPlateHelpPanel.setAttribute('class', 'lhPlateColor lhRndCorners lhFont');
+    }
     var helpBarInfo = 'Mouse over any interface element to see help for that element here.';
     this.logPlateHelpPanel.innerHTML = helpBarInfo;
     this.logPlateHelpPanel.lhDfltTxt = helpBarInfo;
@@ -185,23 +197,29 @@ LogHound.prototype.doSetup = function() {
     // Control panel creation code.
     this.logPlateCtrlPanel = document.createElement('DIV');
     this.logPlateCtrlPanel.setAttribute('id', 'lhPlateCtrlPanel');
-    this.logPlateCtrlPanel.setAttribute('class', 'lhPlateColor lhRndCorners');
+    if(document.all) {
+        var attr = document.createAttribute('class');
+        attr.value = 'lhPlateColor lhRndCorners';
+        this.logPlateCtrlPanel.setAttributeNode(attr);
+    } else {
+        this.logPlateCtrlPanel.setAttribute('class', 'lhPlateColor lhRndCorners');
+    }
     var ctrlbar = '<table  cellspacing="0"><tr>';
-    ctrlbar +=    '<td><span id="lhCtrlMore" class="lhCtrl lhBtn" title="Show More">v</span></td>';
-    ctrlbar +=    '<td><span id="lhCtrlLess" class="lhCtrl lhBtn" title="Show Less">^</span></td>';
+    ctrlbar +=    '<td><span id="lhCtrlMore" class="lhCtrl lhBtn lhFont" title="Show More">v</span></td>';
+    ctrlbar +=    '<td><span id="lhCtrlLess" class="lhCtrl lhBtn lhFont" title="Show Less">^</span></td>';
     ctrlbar +=    '<td><div id="lhCtrlLvlSelectPlate"><select id="lhLvlSelect" name="lhLvlSelect" class="lhFont"></select></div></td>';
     ctrlbar +=    '<td><div id="lhCtrlLvlPlate">';
-    ctrlbar +=    '<span id="lhCtrlLvlFatal" class="lhFatalMsg lhCtrlLvl lhCtrl lhBtn" title="Fatal">+</span>';
-    ctrlbar +=    '<span id="lhCtrlLvlError" class="lhErrorMsg lhCtrlLvl lhCtrl lhBtn" title="Error">+</span>';
-    ctrlbar +=    '<span id="lhCtrlLvlWarn" class="lhWarnMsg lhCtrlLvl lhCtrl lhBtn" title="Warn">+</span>';
-    ctrlbar +=    '<span id="lhCtrlLvlInfo" class="lhInfoMsg lhCtrlLvl lhCtrl lhBtn" title="Info">+</span>';
-    ctrlbar +=    '<span id="lhCtrlLvlDebug" class="lhDebugMsg lhCtrlLvl lhCtrl lhBtn" title="Debug">+</span>';
-    ctrlbar +=    '<span id="lhCtrlLvlTrace" class="lhTraceMsg lhCtrlLvl lhCtrl lhBtn" title="Trace">+</span>';
+    ctrlbar +=    '<span id="lhCtrlLvlFatal" class="lhFatalMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Fatal">+</span>';
+    ctrlbar +=    '<span id="lhCtrlLvlError" class="lhErrorMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Error">+</span>';
+    ctrlbar +=    '<span id="lhCtrlLvlWarn" class="lhWarnMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Warn">+</span>';
+    ctrlbar +=    '<span id="lhCtrlLvlInfo" class="lhInfoMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Info">+</span>';
+    ctrlbar +=    '<span id="lhCtrlLvlDebug" class="lhDebugMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Debug">+</span>';
+    ctrlbar +=    '<span id="lhCtrlLvlTrace" class="lhTraceMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Trace">+</span>';
     ctrlbar +=    '</div></td>';
     ctrlbar +=    '<td><div id="lhCtrlMsgDispModeBtn" class="lhDispModeLable lhCtrl lhBtn lhFont" title="Toggle message display mode">D</div></td>';
     ctrlbar +=    '<td><div id="lhCtrlSearchPlate">';
     ctrlbar +=    '<label for="lhSearchField" class="lhFont lhSearchLabel lhCtrl">Search:</label>';
-    ctrlbar +=    '<input type="text" id="lhSearchField" name="lhSearchField" class="lhSearchField" onkeyup="window.logHound.search()"/>';
+    ctrlbar +=    '<input type="text" id="lhSearchField" name="lhSearchField" class="lhSearchField lhFont" onkeyup="window.logHound.search()"/>';
     ctrlbar +=    '</div></td>';
     ctrlbar +=    '</tr></table>';
     this.logPlateCtrlPanel.innerHTML = ctrlbar;
@@ -216,7 +234,13 @@ LogHound.prototype.doSetup = function() {
     // Tag panel creation code
     this.logPlateTagPanel = document.createElement('DIV');
     this.logPlateTagPanel.setAttribute('id', 'lhPlateTagPanel');
-    this.logPlateTagPanel.setAttribute('class', 'lhPlateColor lhRndCorners');
+    if(document.all) {
+        var attr = document.createAttribute('class');
+        attr.value = 'lhPlateColor lhRndCorners';
+        this.logPlateTagPanel.setAttributeNode(attr);
+    } else {
+        this.logPlateTagPanel.setAttribute('class', 'lhPlateColor lhRndCorners');
+    }
     var tagbar = '';
     tagbar +=    '<div class="lhShrinkWrap">';
     tagbar +=    '<div id="lhAvailTagsPlate">';
@@ -257,7 +281,13 @@ LogHound.prototype.doSetup = function() {
 
     this.logPlateBodyBox = document.createElement('DIV');
     this.logPlateBodyBox.setAttribute('id', 'lhPlateBodyBox');
-    this.logPlateBodyBox.setAttribute('class', 'lhPlateColor lhRndCorners');
+    if(document.all) {
+        var attr = document.createAttribute('class');
+        attr.value = 'lhPlateColor lhRndCorners';
+        this.logPlateBodyBox.setAttributeNode(attr);
+    } else {
+        this.logPlateBodyBox.setAttribute('class', 'lhPlateColor lhRndCorners');
+    }
     this.logPlateBodyBox.style.display = 'none';
     this.logPlate.appendChild(this.logPlateBodyBox);
 
@@ -374,7 +404,7 @@ LogHound.prototype.doSetup = function() {
     };
 
     this.searchField = document.getElementById('lhSearchField');
-
+    this.setTagFilterMode('A');
     this.adjustPlateSize();
     this.startInterfaceMonitor();
     setTimeout('window[\'logHound\'].show(true)',800);
@@ -438,11 +468,11 @@ LogHound.prototype.toggleMsgLayout = function() {
     this.msgDispMode= (this.msgDispMode=='brief' ? 'detail' : 'brief');
     var briefMsgRecs = document.getElementsByClassName('lhMsgRecBrief');
     for(idx=0; idx<briefMsgRecs.length; idx++) {
-        briefMsgRecs[idx].style.display = (this.msgDispMode=='brief' ? 'block' : 'none');
+        briefMsgRecs[idx].style.display = (this.msgDispMode=='brief' ? '' : 'none');
     }
     var detailMsgRecs = document.getElementsByClassName('lhMsgRecDetail');
     for(idx=0; idx<detailMsgRecs.length; idx++) {
-        detailMsgRecs[idx].style.display = (this.msgDispMode=='brief' ? 'none' : 'block');
+        detailMsgRecs[idx].style.display = (this.msgDispMode=='brief' ? 'none' : '');
     }
 };
 LogHound.prototype.setTagFilterMode = function(mode) {
@@ -733,23 +763,11 @@ LogHound.prototype.search = function(textToMatch) {
     if(!textToMatch || textToMatch==null) {
         textToMatch = '';
     }
-    textToMatch = this.escapeRegex(textToMatch);
+    textToMatch = FctsTools.escapeRegex(textToMatch);
 
     var searchFilter = new LogHoundTextSearchFilter(textToMatch);
     this.addMsgFilter(searchFilter);
     this.applyMsgFilters();
-};
-LogHound.prototype.escapeRegex = function(targetText) {
-    if(!arguments.callee.sRE) {
-        var specials = [
-            '/', '.', '*', '+', '?', '|',
-            '(', ')', '[', ']', '{', '}', '\\'
-        ];
-        arguments.callee.sRE = new RegExp(
-            '(\\' + specials.join('|\\') + ')', 'g'
-        );
-    }
-    return targetText.replace(arguments.callee.sRE, '\\$1');
 };
 /**
  * @return true if all the argumented tags were accepted, otherwise false.
@@ -864,11 +882,11 @@ LogHound.prototype.log = function() {
     }
 
     var msgFullEntryDisp = ((this.msgDispMode=='detail') ? 'block' : 'none');
-    var msgFullEntry = '<table cellspacing="0" class="lhMsgRecDetail" style="display:'+msgFullEntryDisp+'"><tr>';
+    var msgFullEntry = '<table cellspacing="0" class="lhMsgRecDetail" style="display:'+msgFullEntryDisp+';"><tr>';
     msgFullEntry +=    '<td class="lhMsgNum lhMsgElmt lhFont">'+msgRec['number']+'</td>';
     msgFullEntry +=    '<td class="lhMsgLvl lhMsgElmt lhFont">'+msgRec['level'].getText()+'</td>';
     msgFullEntry +=    '<td class="lhMsgTime lhMsgElmt lhFont">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
-    msgFullEntry +=    '<td class="lhMsgTxt lhMsgElmt lhFont">'+((msgRec['tags'] instanceof Array) ? msgRec['tags'] : '')+'</td>';
+    msgFullEntry +=    '<td class="lhMsgTags lhMsgElmt lhFont">'+((msgRec['tags'] instanceof Array) ? msgRec['tags'] : '')+'</td>';
     msgFullEntry +=    '</tr><tr>';
     msgFullEntry +=    '<td colspan="4" class="lhMsgTxtFull lhMsgElmt lhFont">'+msgText+'</td>';
     msgFullEntry +=    '</tr></table>';

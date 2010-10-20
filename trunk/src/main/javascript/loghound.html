@@ -47,12 +47,13 @@ function onBodyLoad() {
 	window.logHound.logInfo('Info: FYI...',['Tag4','AllTags']);
 	window.logHound.logDebug('Debug: Getting into the nitty-gritty of what your app is thinking.',['Tag5']);
 	window.logHound.logTrace('Trace: Two functions and 3454920 log messages later...',['Tag6','AllTags']);
+	window.logHound.logFatal('Fatal: Fix long line handling: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',['Defect']);
 	
 	return true;
 }
 </script>
 <style type="text/css">
-body {
+#bodyPlate {
     font-family: Arial, Helvetica, serif;
     font-size: 12px;
     padding: 3px;
@@ -124,13 +125,15 @@ body {
     clear:both;
     float:left; 
 }
+.
 .outline {
-    /* border: 1px solid black; */
+    border: 1px solid black;
 }
 </style>
 
 </head>
 <body onLoad="onBodyLoad();">
+<div id="bodyPlate" class="outline">
 <div id="facetsPlate">Facets Technologies Inc.</div>
 <div id="header">Log Hound Demo Sheet <span id="lhVersion">?</span></div>
 <div id="introduction" class="introduction">
@@ -158,6 +161,6 @@ body {
         <textarea id="logMsgText" name="logMsgText" cols="40" rows="4"></textarea>
     </div>
 </div>
-
+</div>
 </body>
 </html>
