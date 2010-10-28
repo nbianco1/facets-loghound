@@ -7,6 +7,10 @@
 #DFEAF8
 */
 .lhFont {
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 8pt;
+}
+.lhSmFont {
     font-family: Verdana,Tahoma,Arial,Helvetica,sans-serif;
     font-size: 7pt;
     letter-spacing: -0.02em;
@@ -29,8 +33,9 @@
 .lhBtn {
     cursor:pointer;
     cursor:hand;
-    width: 15px;
     font-weight: bold;
+    text-align: center;
+    width: 15px;
 }
 .lhBtnOut {
     border: 1px solid #DFEAF8;
@@ -51,14 +56,12 @@
     display: block;
     font-size: 8pt;
     font-weight: bold;
-    width: 15px;
     text-align:center;
 }
 #lhBtnTags {
     display: block;
     font-size: 8pt;
     font-weight: bold;
-    width: 15px;
     text-align: center;
 }
 #lhCtrlLvlSelectPlate {
@@ -74,7 +77,6 @@
 .lhCtrlLvl {
     /* border: 1px #688DE0 solid; */
     margin: 0px !important;
-    width: 15px;
     float: left;
 }
 #lhCtrlMsgDispModePlate {
@@ -107,6 +109,8 @@
     height: 14px;
 }
 .lhTitle {
+    font-family: Arial,Helvetica,sans-serif;
+    letter-spacing: 0.0em;
     font-size: 8pt;
     font-weight: bold;
     width: 100%;
@@ -193,10 +197,12 @@
 }
 .lhMsgTime {
     border-right: 1px #AAAAAA solid;
-    width: 50px;
+    text-align: center;
+    width: 8em;
 }
 .lhMsgTxt {
     word-wrap: break-word;
+    overflow: visible;
 }
 .lhMsgTxtFull {
     border-top: 1px #AAAAAA solid;
@@ -206,13 +212,13 @@
     border-bottom: 1px solid black;
     border-collapse: collapse;
     text-align: left;
-    width: 100%;
 }
 .logMsg > table {
     border-spacing: 0px;
     margin: 0px;
     padding: 0px;
     width: 100%;
+    table-layout: fixed;
 }
 .logMsg > table > tbody {
     border-spacing: 0px;
