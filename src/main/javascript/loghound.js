@@ -170,7 +170,7 @@ LogHound.prototype.doSetup = function() {
     }
     var titlebar = '<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr>';
     titlebar +=    '<td><span id="lhBtnShade" class="lhBtnShade lhFont lhCtrl lhBtn" title="Toggle Message Panel">v</span></td>';
-    titlebar +=    '<td class="lhTitle lhFont">Log Hound v'+LogHoundVer.getLongText()+'</td>'
+    titlebar +=    '<td class="lhTitle">Log Hound v'+LogHoundVer.getLongText()+'</td>'
     titlebar +=    '<td><span id="lhBtnHelp" class="lhBtnHelp lhFont lhCtrl lhBtn" title="Toggle Help Panel">?</span></td>';
     titlebar +=    '<td><span id="lhBtnTags" class="lhBtnTags lhFont lhCtrl lhBtn" title="Toggle Tags Panel">T</span></td>';
     titlebar +=    '<td><span id="lhBtnCtrls" class="lhBtnCtrls lhFont lhCtrl lhBtn" title="Toggle Control Panel">C</span></td>'
@@ -216,9 +216,9 @@ LogHound.prototype.doSetup = function() {
     ctrlbar +=    '<span id="lhCtrlLvlDebug" class="lhDebugMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Debug">+</span>';
     ctrlbar +=    '<span id="lhCtrlLvlTrace" class="lhTraceMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Trace">+</span>';
     ctrlbar +=    '</div></td>';
-    ctrlbar +=    '<td><div id="lhCtrlMsgDispModeBtn" class="lhDispModeLable lhCtrl lhBtn lhFont" title="Toggle message display mode">D</div></td>';
+    ctrlbar +=    '<td><div id="lhCtrlMsgDispModeBtn" class="lhDispModeLable lhCtrl lhBtn lhSmFont" title="Toggle message display mode">D</div></td>';
     ctrlbar +=    '<td><div id="lhCtrlSearchPlate">';
-    ctrlbar +=    '<label for="lhSearchField" class="lhFont lhSearchLabel lhCtrl">Search:</label>';
+    ctrlbar +=    '<label for="lhSearchField" class="lhSmFont lhSearchLabel lhCtrl">Search:</label>';
     ctrlbar +=    '<input type="text" id="lhSearchField" name="lhSearchField" class="lhSearchField lhFont" onkeyup="window.logHound.search()"/>';
     ctrlbar +=    '</div></td>';
     ctrlbar +=    '</tr></table>';
@@ -244,8 +244,8 @@ LogHound.prototype.doSetup = function() {
     var tagbar = '';
     tagbar +=    '<div class="lhShrinkWrap">';
     tagbar +=    '<div id="lhAvailTagsPlate">';
-    tagbar +=    '<span class="lhFont">Tags:</span>';
-    tagbar +=    '<div><select id="lhAvailTagsSelect" class="lhInput lhFont" multiple="multiple" size="4"></select></div>';
+    tagbar +=    '<span class="lhSmFont">Tags:</span>';
+    tagbar +=    '<div><select id="lhAvailTagsSelect" class="lhInput lhSmFont" multiple="multiple" size="4"></select></div>';
     tagbar +=    '</div>';
 
     tagbar +=    '<div id="lhCtrlTagsPlate">';
@@ -257,15 +257,15 @@ LogHound.prototype.doSetup = function() {
 
     // http://www.dhtmlgoodies.com/scripts/multiple_select/multiple_select.html
     tagbar +=    '<div id="lhViewTagsPlate">';
-    tagbar +=    '<span class="lhFont">Viewing:</span>';
-    tagbar +=    '<div><select id="lhViewTagsSelect" class="lhInput" multiple="multiple" size="4"></select></div>';
+    tagbar +=    '<span class="lhSmFont">Viewing:</span>';
+    tagbar +=    '<div><select id="lhViewTagsSelect" class="lhInput lhSmFont" multiple="multiple" size="4"></select></div>';
     tagbar +=    '</div>';
 
     tagbar +=    '<div id="lhModTagsPlate">';
-    tagbar +=    '<span id="lhTagCtrlAnyBtn" class="lhTagCtrl lhFont lhBtn" title="Any">A</span>';
-    tagbar +=    '<span id="lhTagCtrlIntBtn" class="lhTagCtrl lhFont lhBtn" title="Intersection">I</span>';
-    tagbar +=    '<span id="lhTagCtrlOnyBtn" class="lhTagCtrl lhFont lhBtn" title="Only">O</span>';
-    tagbar +=    '<span id="lhTagCtrlExcBtn" class="lhTagCtrl lhFont lhBtn" title="Exclusion">E</span>';
+    tagbar +=    '<span id="lhTagCtrlAnyBtn" class="lhTagCtrl lhSmFont lhBtn" title="Any">A</span>';
+    tagbar +=    '<span id="lhTagCtrlIntBtn" class="lhTagCtrl lhSmFont lhBtn" title="Intersection">I</span>';
+    tagbar +=    '<span id="lhTagCtrlOnyBtn" class="lhTagCtrl lhSmFont lhBtn" title="Only">O</span>';
+    tagbar +=    '<span id="lhTagCtrlExcBtn" class="lhTagCtrl lhSmFont lhBtn" title="Exclusion">E</span>';
     tagbar +=    '</div>';
     tagbar +=    '</div>';
     this.logPlateTagPanel.innerHTML = tagbar;
@@ -409,7 +409,7 @@ LogHound.prototype.doSetup = function() {
     this.startInterfaceMonitor();
     setTimeout('window[\'logHound\'].show(true)',800);
     this.logInfo('Log Hound is online...');
-    var msg = 'document.body.clientWidth='+document.body.clientWidth+'<br/>document.documentElement.clientWidth='+document.documentElement.clientWidth+'<br/>window.innerWidth='+window.innerWidth+'<br/>document.body.scrollWidth='+document.body.scrollWidth+'<br/>document.body.offsetWidth='+document.body.offsetWidth;
+    //var msg = 'document.body.clientWidth='+document.body.clientWidth+'<br/>document.documentElement.clientWidth='+document.documentElement.clientWidth+'<br/>window.innerWidth='+window.innerWidth+'<br/>document.body.scrollWidth='+document.body.scrollWidth+'<br/>document.body.offsetWidth='+document.body.offsetWidth;
     //this.logInfo(msg);
 };
 LogHound.prototype.activateTagMode = function(btn) {
@@ -883,19 +883,19 @@ LogHound.prototype.log = function() {
 
     var msgFullEntryDisp = ((this.msgDispMode=='detail') ? 'block' : 'none');
     var msgFullEntry = '<table cellspacing="0" class="lhMsgRecDetail" style="display:'+msgFullEntryDisp+';"><tr>';
-    msgFullEntry +=    '<td class="lhMsgNum lhMsgElmt lhFont">'+msgRec['number']+'</td>';
-    msgFullEntry +=    '<td class="lhMsgLvl lhMsgElmt lhFont">'+msgRec['level'].getText()+'</td>';
-    msgFullEntry +=    '<td class="lhMsgTime lhMsgElmt lhFont">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
-    msgFullEntry +=    '<td class="lhMsgTags lhMsgElmt lhFont">'+((msgRec['tags'] instanceof Array) ? msgRec['tags'] : '')+'</td>';
+    msgFullEntry +=    '<td class="lhMsgNum lhMsgElmt lhSmFont">'+msgRec['number']+'</td>';
+    msgFullEntry +=    '<td class="lhMsgLvl lhMsgElmt lhSmFont">'+msgRec['level'].getText()+'</td>';
+    msgFullEntry +=    '<td class="lhMsgTime lhMsgElmt lhSmFont">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
+    msgFullEntry +=    '<td class="lhMsgTags lhMsgElmt lhSmFont">'+((msgRec['tags'] instanceof Array) ? msgRec['tags'] : '')+'</td>';
     msgFullEntry +=    '</tr><tr>';
-    msgFullEntry +=    '<td colspan="4" class="lhMsgTxtFull lhMsgElmt lhFont">'+msgText+'</td>';
+    msgFullEntry +=    '<td colspan="4" class="lhMsgTxtFull lhMsgElmt lhFont" style="width: 100%;">'+msgText+'</td>';
     msgFullEntry +=    '</tr></table>';
 
     var msgEntryDisp = ((this.msgDispMode=='brief') ? 'block' : 'none');
     var msgEntry = '<table cellspacing="0" class="lhMsgRecBrief" style="display:'+msgEntryDisp+'"><tr>';
-    msgEntry +=    '<td class="lhMsgNum lhMsgElmt lhFont">'+msgRec['number']+'</td>';
-    msgEntry +=    '<td class="lhMsgTime lhMsgElmt lhFont">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
-    msgEntry +=    '<td class="lhMsgTxt lhMsgElmt lhFont">'+msgText+'</td>';
+    msgEntry +=    '<td class="lhMsgNum lhMsgElmt lhSmFont">'+msgRec['number']+'</td>';
+    msgEntry +=    '<td class="lhMsgTime lhMsgElmt lhSmFont">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
+    msgEntry +=    '<td class="lhMsgTxt lhMsgElmt lhSmFont">'+msgText+'</td>';
     msgEntry +=    '</tr></table>';
 
     msgElmt.innerHTML=msgFullEntry+msgEntry;
