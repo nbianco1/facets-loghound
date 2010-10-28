@@ -822,6 +822,13 @@ LogHound.prototype.parseLogData = function() {
             }
         } else if(argArray[i] instanceof Array) {
             msgRec['tags'] = argArray[i];
+            var tmpArray = new Array();
+            for(var x=0; x<msgRec['tags'].length; x++) {
+                if(!FctsTools.isBlank(msgRec['tags'][x])) {
+                    tmpArray[tmpArray.length] = msgRec['tags'][x];
+                }
+            }
+            msgRec['tags'] = tmpArray;
         } else if(argArray[i] instanceof LogHoundLevel) {
             msgRec['level'] = argArray[i];
         } else if(argArray[i] instanceof String || (typeof argArray[i])==='string') {
@@ -882,7 +889,7 @@ LogHound.prototype.log = function() {
     }
 
     var msgFullEntryDisp = ((this.msgDispMode=='detail') ? 'block' : 'none');
-    var msgFullEntry = '<table cellspacing="0" class="lhMsgRecDetail" style="display:'+msgFullEntryDisp+';"><tr>';
+    var msgFullEntry = '<table cellspacing="0" id="lhMsgDetail_'+msgRec['number']+'" class="lhMsgRecDetail" style="display:'+msgFullEntryDisp+';"><tr>';
     msgFullEntry +=    '<td class="lhMsgNum lhMsgElmt lhSmFont">'+msgRec['number']+'</td>';
     msgFullEntry +=    '<td class="lhMsgLvl lhMsgElmt lhSmFont">'+msgRec['level'].getText()+'</td>';
     msgFullEntry +=    '<td class="lhMsgTime lhMsgElmt lhSmFont">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
@@ -892,7 +899,7 @@ LogHound.prototype.log = function() {
     msgFullEntry +=    '</tr></table>';
 
     var msgEntryDisp = ((this.msgDispMode=='brief') ? 'block' : 'none');
-    var msgEntry = '<table cellspacing="0" class="lhMsgRecBrief" style="display:'+msgEntryDisp+'"><tr>';
+    var msgEntry = '<table cellspacing="0" id="lhMsgBrief_'+msgRec['number']+'" class="lhMsgRecBrief" style="display:'+msgEntryDisp+'"><tr>';
     msgEntry +=    '<td class="lhMsgNum lhMsgElmt lhSmFont">'+msgRec['number']+'</td>';
     msgEntry +=    '<td class="lhMsgTime lhMsgElmt lhSmFont">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
     msgEntry +=    '<td class="lhMsgTxt lhMsgElmt lhSmFont">'+msgText+'</td>';
@@ -905,6 +912,11 @@ LogHound.prototype.log = function() {
     } else {
         this.logPlateBody.insertBefore(msgElmt,children[0]);
     }
+    var targetTableId = 'lhMsg'+((this.msgDispMode=='detail') ? 'Detail' : 'Brief')+'_'+msgRec['number'];
+    var targetTable = document.getElementById(targetTableId);
+    targetTable.style.display = 'none';
+    targetTable.style.display = '';
+    
     // Add message DOM element to record.
     msgRec['element'] = document.getElementById(msgId);
     return true;
