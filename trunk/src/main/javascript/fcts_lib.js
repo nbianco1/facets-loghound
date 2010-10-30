@@ -107,7 +107,15 @@ FctsTools.viewWidth = function() {
     //return Math.min(document.body.clientWidth,document.body.offsetWidth);
 };
 FctsTools.scrollTop = function() {
-    return document.body.scrollTop;
+     if(typeof pageYOffset!= 'undefined'){
+        //most browsers
+        return pageYOffset;
+    } else {
+        var B= document.body; //IE 'quirks'
+        var D= document.documentElement; //IE with doctype
+        D= (D.clientHeight)? D: B;
+        return D.scrollTop;
+    }
 };
 FctsTools.scrollLeft = function() {
     return document.body.scrollLeft;
