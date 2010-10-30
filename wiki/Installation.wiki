@@ -29,12 +29,13 @@ If the javascript file is included, and the kill switch isn't set to true, and "
 This is the the base, no frills install example:
 {{{
 1   <link href="/styles/loghound.css" rel="stylesheet" type="text/css" />
-2   <script type="text/javascript" src="/js/loghound.js"></script>
-3   function onBodyLoad() {
-4       window.logHound.doSetup();
-5   }
-6   </script>
-7   <body onLoad="onBodyLoad();">
+2   <script type="text/JavaScript" language="JavaScript" src="/js/fcts_lib.js"></script>
+3   <script type="text/javascript" language="JavaScript" src="/js/loghound.js"></script>
+4   function onBodyLoad() {
+5       window.logHound.doSetup();
+6   }
+7   </script>
+8   <body onLoad="onBodyLoad();">
 }}}
 
  * 1) Link in the style sheet.
@@ -45,20 +46,21 @@ This is the the base, no frills install example:
 ====Complex====
 {{{
 1   <link href="/styles/loghound.css" rel="stylesheet" type="text/css" />
-2   <script type="text/javascript" src="/js/loghound.js"></script>
-3
-4   <script type="text/javascript">
-5   function loghoundControl() {
-6       var loghoundSwitch = document.getElementById('lhKillSwitch').value;
-7       window.logHound.setKillSwitch(!(loghoundSwitch!=null && loghoundSwitch=='on'));
-8   }
-9   function onBodyLoad() {
-10      loghoundControl();
-11      window.logHound.doSetup();
-12  }
-13  </script>
-14  <body onLoad="onBodyLoad();">
-15  <input type="hidden" id="lhKillSwitch" name="lhKillSwitch" value="on" />
+2   <script type="text/JavaScript" language="JavaScript" src="/js/fcts_lib.js"></script>
+3   <script type="text/javascript" language="JavaScript" src="/js/loghound.js"></script>
+4
+5   <script type="text/javascript">
+6   function loghoundControl() {
+7       var loghoundSwitch = document.getElementById('lhKillSwitch').value;
+8       window.logHound.setKillSwitch(!(loghoundSwitch!=null && loghoundSwitch=='on'));
+9   }
+10  function onBodyLoad() {
+11      loghoundControl();
+12      window.logHound.doSetup();
+13  }
+14  </script>
+15  <body onLoad="onBodyLoad();">
+16  <input type="hidden" id="lhKillSwitch" name="lhKillSwitch" value="on" />
 }}}
 
  * 1) Link in the style sheet.
