@@ -11,7 +11,7 @@ Out of the box, Log Hound supports your six basic logging levels: Fatal, Error, 
 
 ----
 ===Define Your Own Log Levels===
-You can easily define your own log levels to Log Hound.  As an example, here's how the Trace log level is defined:
+You can easily define your own log levels to Log Hound.  As an example, here's how to define a log level called "page":
 
 {{{
 function PageLogHoundLevel() {
