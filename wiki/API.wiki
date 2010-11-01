@@ -1,0 +1,28 @@
+This page lists the public functions you may use to manage how Log Hound functions.
+----
+=== log() ===
+{{{log({String}msg, {Array}tags, {Error}errorObject, {LogHoundLevel}logLevel)}}}
+  * logLevel [required]: The log level of the message.
+  * msg [required]: The message to log.
+  * tags: String tags to associate with the log message.
+  * errorObject: An error object to display with the message.
+
+*Note:* The order of the arguments does not matter.  Log Hound detects the argument types and handles them as appropriate.
+  
+
+There are two ways to log messages.  You can either use the log[Level]() functions which delegate to the log() function, or you can use the log() function directly:
+
+{{{
+window.logHound.log(LogHoundLevels['FATAL'],'Fatal: If you see this, your app is toast.',['Tag1','AllTags'],errObj);
+}}}
+
+You can always use the level-specific log functions which do not need the LogHoundLevel argument. The following is exactly the same as the previous example:
+
+{{{
+window.logHound.logFatal('Fatal: If you see this, your app is toast.',['Tag1','AllTags'],errObj);
+}}}
+
+
+
+----
+===  ===
