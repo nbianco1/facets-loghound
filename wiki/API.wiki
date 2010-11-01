@@ -8,7 +8,7 @@ This page lists the public functions you may use to manage how Log Hound functio
 {{{
 activateTagMode({String}mode);
 }}}
-  * mode [required]: The tag modifier mode to activate. Must be one of the following:
+  * mode {{{[required]}}}: The tag filter mode to activate. Must be one of the following:
     * 'any'
     * 'exc'
     * 'int'
@@ -16,7 +16,7 @@ activateTagMode({String}mode);
 
 *Description:*
 
-Sets the active tag modifier mode which will change what messages are displayed based on the tags currently listed in the "View" tag list.
+Sets the active tag filter mode which will change what messages are displayed based on the tags currently listed in the "View" tag list.
 
 *Examples:*
 {{{
@@ -46,8 +46,8 @@ window.logHound.doSetup();
 log({String}msg, {Array}tags, {Error}errorObject, {LogHoundLevel}logLevel)
 }}}
 
-  * logLevel [required]: The log level of the message.
-  * msg [required]: The message to log.
+  * logLevel {{{[required]}}}: The log level of the message.
+  * msg {{{[required]}}}: The message to log.
   * tags: String tags to associate with the log message.
   * errorObject: An error object to display with the message.
 
@@ -71,3 +71,21 @@ You can always use the level-specific log functions which do not need the LogHou
 window.logHound.logFatal('Fatal: If you see this, your app is toast.',['Tag1','AllTags'],errObj);
 }}}
 
+----
+= setKillSwitch() =
+*Usage:*
+{{{
+setKillSwitch({boolean}killSwitch)
+}}}
+
+  * killSwitch {{{[required]}}}: true to completely deactivate Log Hound and prevent the "doSetup()" method from executing.
+
+*Description:*
+
+There is an internal kill switch in Log Hound that can be used to prevent the logger from initialising.  When set to true, the "doSetup()" function is short-circuited and Log Hound is effectively locked in off mode.  If subsequently set to true, a call to "doSetup()" will then execute normally.
+
+*Examples:*
+{{{
+window.logHound.killSwitch(true);
+}}}
+----
