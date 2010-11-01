@@ -82,7 +82,7 @@ setKillSwitch({boolean}killSwitch)
 
 *Description:*
 
-There is an internal kill switch in Log Hound that can be used to prevent the logger from initialising.  When set to true, the "doSetup()" function is short-circuited and Log Hound is effectively locked in off mode.  If subsequently set to true, a call to "doSetup()" will then execute normally.
+There is an internal kill switch in Log Hound that can be used to prevent the logger from initialising.  When set to true, the "doSetup()" function is short-circuited and Log Hound is effectively locked in off mode.  If subsequently set to false, a call to "doSetup()" will then execute normally.
 
 *Examples:*
 {{{
