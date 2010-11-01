@@ -260,6 +260,7 @@
     cursor:pointer;
     cursor:hand;
     margin: 0px auto;
+    line-height: 12px;
 }
 #lhTagCtrlRem {
     margin-top: 2px;
