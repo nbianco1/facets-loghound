@@ -1,8 +1,8 @@
-/** 
+/**
  * Facets General Javascript Library
  * Version 1.0
  * Just a small collection of helper functions used by most of my javascript projects.
- * 
+ *
  * Developer Notes:
  * http://stackoverflow.com/questions/210377/get-all-elements-in-an-html-document-with-a-specific-css-class
  * http://robertnyman.com/2008/05/27/the-ultimate-getelementsbyclassname-anno-2008/
@@ -19,12 +19,12 @@ if(!document.getElementsByClassName)
     var returnElements = [];
     var match, node, elements;
 
-    if(document.evaluate) {    
+    if(document.evaluate) {
         var xhtmlNamespace = "http://www.w3.org/1999/xhtml";
         var namespaceResolver = (document.documentElement.namespaceURI === xhtmlNamespace)? xhtmlNamespace:null;
 
         for(var j=0, jl=classes.length; j<jl;j+=1) {
-            classesToCheck += "[contains(concat(' ', @class, ' '), ' " + classes[j] + " ')]"; 
+            classesToCheck += "[contains(concat(' ', @class, ' '), ' " + classes[j] + " ')]";
         }
         try {
             elements = document.evaluate(".//*" + classesToCheck, document, namespaceResolver, 0, null);
@@ -49,46 +49,11 @@ if(!document.getElementsByClassName)
                 if(!match) { break; }
             }
             if(match) { returnElements.push(node); }
-        } 
+        }
     }
     return returnElements;
 }
 
-document.addStyleClass = function(elmt, classname) {
-    if(elmt.className==null || elmt.className=='') {
-        elmt.className = classname;
-        return;
-    }
-    var classes = elmt.className.split(' ');
-    for(idx in classes) {
-        if(classes[idx]==classname) {
-            return;
-        }
-    }
-    classes.push(classname);
-    elmt.className = classes.join(' ');
-}
-document.removeStyleClass = function(elmt, classname) {
-    if(elmt.className==null || elmt.className=='') {
-        return;
-    }
-    if(elmt.className==classname) {
-        elmt.className = '';
-    }
-    var classes = elmt.className.split(' ');
-    var newNames = new Array();
-    for(idx in classes) {
-        if(classes[idx]==classname) {
-            continue;
-        }
-        newNames.push(classes[idx]);
-    }
-    elmt.className = newNames.join(' ');
-}
-document.replaceStyleClass = function(elmt, remClass, addClass) {
-    document.removeStyleClass(elmt, remClass);
-    document.addStyleClass(elmt, addClass);
-}
 var FctsTools = new Array();
 FctsTools.windowHeight = function() {
     return ((window.innerHeight) ? window.innerHeight : document.body.offsetHeight);
@@ -307,4 +272,39 @@ FctsTools.escapeRegex = function(targetText) {
     }
     return targetText.replace(arguments.callee.sRE, '\\$1');
 };
+FctsTools.addStyleClass = function(elmt, classname) {
+    if(elmt.className==null || elmt.className=='') {
+        elmt.className = classname;
+        return;
+    }
+    var classes = elmt.className.split(' ');
+    for(idx in classes) {
+        if(classes[idx]==classname) {
+            return;
+        }
+    }
+    classes.push(classname);
+    elmt.className = classes.join(' ');
+}
+FctsTools.removeStyleClass = function(elmt, classname) {
+    if(elmt.className==null || elmt.className=='') {
+        return;
+    }
+    if(elmt.className==classname) {
+        elmt.className = '';
+    }
+    var classes = elmt.className.split(' ');
+    var newNames = new Array();
+    for(idx in classes) {
+        if(classes[idx]==classname) {
+            continue;
+        }
+        newNames.push(classes[idx]);
+    }
+    elmt.className = newNames.join(' ');
+}
+FctsTools.replaceStyleClass = function(elmt, remClass, addClass) {
+    this.removeStyleClass(elmt, remClass);
+    this.addStyleClass(elmt, addClass);
+}
 

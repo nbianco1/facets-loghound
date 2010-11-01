@@ -120,6 +120,22 @@ function TraceLogHoundLevel() {
     TraceLogHoundLevel.baseConstructor.call(this, 50, 'trace', true);
 }
 LogHoundLevels.addLevel(TraceLogHoundLevel);
+/**
+ *
+ */
+LogHoundLevels.getLogLevelObject = function(name) {
+    if(name==null) {
+        return null;
+    }
+    name = name.toLowerCase();
+    for(idx=0; idx<LogHoundLevels.length; idx++) {
+        if(LogHoundLevels[idx].getText()==name) {
+            return LogHoundLevels[idx];
+        }
+    }
+};
+
+
 
 // Load predefined extra log levels
 if(!(typeof(LogHoundLevelPreload)=='undefined') && (LogHoundLevelPreload instanceof Array)) {
@@ -145,7 +161,7 @@ LogHound.prototype.doSetup = function() {
     if(this.killSwitch) {
         return;
     }
-    this.tagMode = 'A';
+    this.tagMode = 'any';
     this.msgDispMode = 'brief'; // detail, brief
     this.killSwitch = true;
     this.initialised = true;
@@ -207,7 +223,7 @@ LogHound.prototype.doSetup = function() {
     var ctrlbar = '<table  cellspacing="0"><tr>';
     ctrlbar +=    '<td><span id="lhCtrlMore" class="lhCtrl lhBtn lhFont" title="Show More">v</span></td>';
     ctrlbar +=    '<td><span id="lhCtrlLess" class="lhCtrl lhBtn lhFont" title="Show Less">^</span></td>';
-    ctrlbar +=    '<td><div id="lhCtrlLvlSelectPlate"><select id="lhLvlSelect" name="lhLvlSelect" class="lhFont"></select></div></td>';
+    ctrlbar +=    '<td><div id="lhCtrlLvlSelectPlate"><select id="lhLvlSelect" name="lhLvlSelect" class="lhSmFont"></select></div></td>';
     ctrlbar +=    '<td><div id="lhCtrlLvlPlate">';
     ctrlbar +=    '<span id="lhCtrlLvlFatal" class="lhFatalMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Fatal">+</span>';
     ctrlbar +=    '<span id="lhCtrlLvlError" class="lhErrorMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Error">+</span>';
@@ -219,7 +235,7 @@ LogHound.prototype.doSetup = function() {
     ctrlbar +=    '<td><div id="lhCtrlMsgDispModeBtn" class="lhDispModeLable lhCtrl lhBtn lhSmFont" title="Toggle message display mode">D</div></td>';
     ctrlbar +=    '<td><div id="lhCtrlSearchPlate">';
     ctrlbar +=    '<label for="lhSearchField" class="lhSmFont lhSearchLabel lhCtrl">Search:</label>';
-    ctrlbar +=    '<input type="text" id="lhSearchField" name="lhSearchField" class="lhSearchField lhFont" onkeyup="window.logHound.search()"/>';
+    ctrlbar +=    '<input type="text" id="lhSearchField" name="lhSearchField" class="lhSearchField lhSmFont" onkeyup="window.logHound.search()"/>';
     ctrlbar +=    '</div></td>';
     ctrlbar +=    '</tr></table>';
     this.logPlateCtrlPanel.innerHTML = ctrlbar;
@@ -312,20 +328,20 @@ LogHound.prototype.doSetup = function() {
 
     var btns = document.getElementsByClassName('lhBtn');
     for(idxBtns in btns) {
-        document.addStyleClass(btns[idxBtns],'lhBtnOut');
+        FctsTools.addStyleClass(btns[idxBtns],'lhBtnOut');
     }
     for(btnIdx in btns) {
         btns[btnIdx].onmouseover = function(event) {
-            document.removeStyleClass(this, 'lhBtnOut');
-            document.removeStyleClass(this, 'lhBtnOn');
-            document.addStyleClass(this, 'lhBtnOver');
+            FctsTools.removeStyleClass(this, 'lhBtnOut');
+            FctsTools.removeStyleClass(this, 'lhBtnOn');
+            FctsTools.addStyleClass(this, 'lhBtnOver');
         }
         btns[btnIdx].onmouseout = function(event) {
-            document.removeStyleClass(this, 'lhBtnOver');
+            FctsTools.removeStyleClass(this, 'lhBtnOver');
             if(this.lhBtnState=='on') {
-                document.addStyleClass(this, 'lhBtnOn');
+                FctsTools.addStyleClass(this, 'lhBtnOn');
             } else {
-                document.replaceStyleClass(this, 'lhBtnOn', 'lhBtnOut');
+                FctsTools.replaceStyleClass(this, 'lhBtnOn', 'lhBtnOut');
             }
         }
         btns[btnIdx].lhBtnState = 'off';
@@ -377,24 +393,37 @@ LogHound.prototype.doSetup = function() {
         window.logHound.toggleTagCtrlPanel('toggle');
     };
     this.addHelpEntry(['lhBtnTags','Tag Panel Toggle: Opens and closes the tag control panel.']);
-    document.getElementById('lhTagCtrlAnyBtn').onclick = function(event) {
-        window.logHound.setTagFilterMode('A');
-        window.logHound.activateTagMode(document.getElementById('lhTagCtrlAnyBtn'));
+    this.tagModBtns = new Array();
+    // Tag modifier: Any button.
+    this.tagModBtnAny = document.getElementById('lhTagCtrlAnyBtn');
+    this.tagModBtns[this.tagModBtns.length] = this.tagModBtnAny;
+    this.tagModBtnAny.lhTagMode = 'any';
+    this.tagModBtnAny.onclick = function(event) {
+        window.logHound.activateTagMode('any');
     };
     this.addHelpEntry(['lhTagCtrlAnyBtn','"Any" Tags Modifier: Messages with any of the viewing tags will be visible.']);
-    document.getElementById('lhTagCtrlIntBtn').onclick = function(event) {
-        window.logHound.setTagFilterMode('I');
-        window.logHound.activateTagMode(document.getElementById('lhTagCtrlIntBtn'));
+    // Tag modifier: Intersection button.
+    this.tagModBtnInt = document.getElementById('lhTagCtrlIntBtn');
+    this.tagModBtns[this.tagModBtns.length] = this.tagModBtnInt;
+    this.tagModBtnInt.lhTagMode = 'int';
+    this.tagModBtnInt.onclick = function(event) {
+        window.logHound.activateTagMode('int');
     };
     this.addHelpEntry(['lhTagCtrlIntBtn','"Intersection" Tags Modifier: Only messages that have all of the viewing tags will be visible.']);
-    document.getElementById('lhTagCtrlOnyBtn').onclick = function(event) {
-        window.logHound.setTagFilterMode('O');
-        window.logHound.activateTagMode(document.getElementById('lhTagCtrlOnyBtn'));
+    // Tag modifier: Only button.
+    this.tagModBtnOny = document.getElementById('lhTagCtrlOnyBtn');
+    this.tagModBtns[this.tagModBtns.length] = this.tagModBtnOny;
+    this.tagModBtnOny.lhTagMode = 'ony';
+    this.tagModBtnOny.onclick = function(event) {
+        window.logHound.activateTagMode('ony');
     };
     this.addHelpEntry(['lhTagCtrlOnyBtn','"Only" Tags Modifier: Only messages that have all of the viewing tags and no other tags will be visible.']);
-    document.getElementById('lhTagCtrlExcBtn').onclick = function(event) {
-        window.logHound.setTagFilterMode('E');
-        window.logHound.activateTagMode(document.getElementById('lhTagCtrlExcBtn'));
+    // Tag modifier: Exclusion button.
+    this.tagModBtnExc = document.getElementById('lhTagCtrlExcBtn');
+    this.tagModBtns[this.tagModBtns.length] = this.tagModBtnExc;
+    this.tagModBtnExc.lhTagMode = 'exc';
+    this.tagModBtnExc.onclick = function(event) {
+        window.logHound.activateTagMode('exc');
     };
     this.addHelpEntry(['lhTagCtrlExcBtn','"Exclusion" Tags Modifier: Only messages that have none of the viewing tags will be visible.']);
 
@@ -404,7 +433,7 @@ LogHound.prototype.doSetup = function() {
     };
 
     this.searchField = document.getElementById('lhSearchField');
-    this.setTagFilterMode('A');
+    this.activateTagMode('any');
     this.adjustPlateSize();
     this.startInterfaceMonitor();
     setTimeout('window[\'logHound\'].show(true)',800);
@@ -412,22 +441,18 @@ LogHound.prototype.doSetup = function() {
     //var msg = 'document.body.clientWidth='+document.body.clientWidth+'<br/>document.documentElement.clientWidth='+document.documentElement.clientWidth+'<br/>window.innerWidth='+window.innerWidth+'<br/>document.body.scrollWidth='+document.body.scrollWidth+'<br/>document.body.offsetWidth='+document.body.offsetWidth;
     //this.logInfo(msg);
 };
-LogHound.prototype.activateTagMode = function(btn) {
-    var excBtn = document.getElementById('lhTagCtrlExcBtn');
-    var anyBtn = document.getElementById('lhTagCtrlAnyBtn');
-    var onyBtn = document.getElementById('lhTagCtrlOnyBtn');
-    var intBtn = document.getElementById('lhTagCtrlIntBtn');
-    excBtn.lhBtnState = 'off';
-    document.removeStyleClass(excBtn, 'lhBtnOn');
-    anyBtn.lhBtnState = 'off';
-    document.removeStyleClass(anyBtn, 'lhBtnOn');
-    onyBtn.lhBtnState = 'off';
-    document.removeStyleClass(onyBtn, 'lhBtnOn');
-    intBtn.lhBtnState = 'off';
-    document.removeStyleClass(intBtn, 'lhBtnOn');
-
-    btn.lhBtnState = 'on';
-    document.addStyleClass(btn, 'lhBtnOn');
+LogHound.prototype.activateTagMode = function(mode) {
+    for(var i=0; i<this.tagModBtns.length; i++) {
+        if(this.tagModBtns[i].lhTagMode == mode) {
+            this.tagModBtns[i].lhBtnState = 'on';
+            FctsTools.addStyleClass(this.tagModBtns[i], 'lhBtnOn');
+            this.setTagFilterMode(mode);
+        } else {
+            this.tagModBtns[i].lhBtnState = 'off';
+            FctsTools.removeStyleClass(this.tagModBtns[i], 'lhBtnOn');
+            FctsTools.replaceStyleClass(this.tagModBtns[i], 'lhBtnOn', 'lhBtnOut');
+        }
+    }
 };
 LogHound.prototype.addHelpEntry = function(entry) {
     this.helpEntries[this.helpEntries.length] = entry;
@@ -476,11 +501,16 @@ LogHound.prototype.toggleMsgLayout = function() {
     }
 };
 LogHound.prototype.setTagFilterMode = function(mode) {
-    this.tagMode = ((mode!='A' && mode!='I' && mode!='E' && mode!='O') ? 'A' : mode);
+    this.tagMode = ((mode!='any' && mode!='int' && mode!='exc' && mode!='ony') ? 'any' : mode);
     var viewSelect = document.getElementById('lhViewTagsSelect');
     this.addMsgFilter(new LogHoundMessageTagFilter(FctsTools.getOptionValues(viewSelect),this.tagMode));
     this.applyMsgFilters();
 };
+/**
+ * @param killSwitch Boolean argument - set to true to completely disable Log
+ * Hound. Calls to doSetup() will have no effect.  Otherwise, set to false to
+ * enable.
+ */
 LogHound.prototype.setKillSwitch = function(killSwitch) {
     if(killSwitch!=null && killSwitch==false) {
         this.killSwitch = false;
@@ -488,7 +518,7 @@ LogHound.prototype.setKillSwitch = function(killSwitch) {
         this.killSwitch = true;
     }
 };
-/*
+/**
  * Enable or disable logging. When set to false, logging is completely disabled,
  * which means no messages are processed or stored and Log Hound is basically
  * turned "off".
@@ -533,23 +563,15 @@ LogHound.prototype.setLogLevel = function(level) {
         }
     }
 };
+/**
+ * INTERNAL USE ONLY
+ */
 LogHound.prototype.startInterfaceMonitor = function() {
     this.debugWindowMonitorRef = setInterval('window.logHound.stickLogPlateTopRight()', 500);
 };
-LogHound.prototype.getLogLevelObject = function(name) {
-    if(name==null) {
-        return null;
-    }
-    name = name.toLowerCase();
-    for(idx=0; idx<LogHoundLevels.length; idx++) {
-        if(LogHoundLevels[idx].getText()==name) {
-            return LogHoundLevels[idx];
-        }
-    }
-};
 LogHound.prototype.toggleMsgLvl = function(btn) {
     var logLevelName = btn.id.slice(9);
-    var logLevel = this.getLogLevelObject(logLevelName);
+    var logLevel = LogHoundLevels.getLogLevelObject(logLevelName);
     if(btn.innerHTML=='+') {
         btn.innerHTML = '&ndash;';
         logLevel.setEnabled(false);
@@ -601,7 +623,9 @@ LogHound.prototype.applyMsgFilters = function() {
     //this.logTrace('Message filters applied in '+((new Date()).getTime()-ts)+'ms',['LogHound','applyMsgFilters()']);
 };
 /**
- *
+ * Filters a message record based on the currently active message filters.
+ * @return true if the message record should be visible based on the currently
+ * active filters, false if the record should not be visible.
  */
 LogHound.prototype.filterMsg = function(msgRec) {
     for(idx=0; idx<this.msgFilters.length; idx++) {
@@ -916,7 +940,7 @@ LogHound.prototype.log = function() {
     var targetTable = document.getElementById(targetTableId);
     targetTable.style.display = 'none';
     targetTable.style.display = '';
-    
+
     // Add message DOM element to record.
     msgRec['element'] = document.getElementById(msgId);
     return true;
@@ -985,18 +1009,18 @@ LogHoundMessageFilter.prototype.showMessage = function(msgRec) {
 function LogHoundMessageTagFilter(tagArray, tagMode) {
     LogHoundMessageTagFilter.baseConstructor.call(this, 'lhMsgTagFilter');
     this.tagz = tagArray;
-    this.tagMode = ((tagMode==null || tagMode=='') ? 'A' : tagMode);
+    this.tagMode = ((tagMode==null || tagMode=='') ? 'any' : tagMode);
 }
 FctsTools.extend(LogHoundMessageTagFilter, LogHoundMessageFilter);
 LogHoundMessageTagFilter.prototype.showMessage = function(msgRec) {
     if(this.tagz==null || this.tagz.length<1) {
         return true;
     }
-    if(this.tagMode=='I') {
+    if(this.tagMode=='int') {
         if(!(msgRec['tags'] instanceof Array)) { return false; }
         if(msgRec['tags'].length<this.tagz.length) { return false; }
     }
-    if(this.tagMode=='O') {
+    if(this.tagMode=='ony') {
         if(msgRec['tags'].length!=this.tagz.length) { return false; }
     }
     var matched = false;
@@ -1005,17 +1029,17 @@ LogHoundMessageTagFilter.prototype.showMessage = function(msgRec) {
         intMatched = false;
         for(tagIdx=0; tagIdx<msgRec['tags'].length; tagIdx++) {
             matched = (msgRec['tags'][tagIdx].toLowerCase() == this.tagz[targetIdx].toLowerCase());
-            if(this.tagMode=='I' || this.tagMode=='O') {
+            if(this.tagMode=='int' || this.tagMode=='ony') {
                 intMatched = (intMatched || matched);
-            } else if(matched && this.tagMode=='A') {
+            } else if(matched && this.tagMode=='any') {
                 return true;
-            } else if(matched && this.tagMode=='E') {
+            } else if(matched && this.tagMode=='exc') {
                 return false;
             }
         }
-        if((this.tagMode=='I' || this.tagMode=='O') && !intMatched) { return false; }
+        if((this.tagMode=='int' || this.tagMode=='ony') && !intMatched) { return false; }
     }
-    return (this.tagMode=='E' || this.tagMode=='I' || this.tagMode=='O');
+    return (this.tagMode=='exc' || this.tagMode=='int' || this.tagMode=='ony');
 };
 LogHoundMessageTagFilter.prototype.hasTag = function(tag,msgTags) {
     for(i=0; i<msgTags.length; i++) {
