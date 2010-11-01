@@ -65,8 +65,12 @@ Tags can be utilized by the Log Hound interface with the tag controls:
 Log Hound will pretty-print error information if you pass in an error object.
 {{{
 try {
-    undefinedVar.
+    document.body.filters[0].apply();
 } catch(err) {
-    window.logHound.logInfo('undefinedVar not defined.',['Tag3','AllTags'],err);
+    window.logHound.logInfo('Nuts...',['tag8','methodName'],err);
 }
 }}}
+
+
+<img align="center" src="https://facets-loghound.googlecode.com/svn/wiki/images/exErrorLogging.png"></img>
+----
