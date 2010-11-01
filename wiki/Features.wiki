@@ -61,3 +61,12 @@ Tags can be utilized by the Log Hound interface with the tag controls:
  # "O" = Only: Only messages with all the tags listed in the "Viewing" column _and no other tags_ will be displayed.
  # "E" = Exclusion: Only messages that have _none_ of the tags in the "Viewing" column will be visible.
 ----
+===Log Errors===
+Log Hound will pretty-print error information if you pass in an error object.
+{{{
+try {
+    undefinedVar.
+} catch(err) {
+    window.logHound.logInfo('undefinedVar not defined.',['Tag3','AllTags'],err);
+}
+}}}
