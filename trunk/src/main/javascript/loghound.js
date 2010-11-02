@@ -1,10 +1,12 @@
 /**
+ * @fileoverview
+ *
  * Software License Agreement (Apache License 2.0)
- *
- * Copyright (c) 2010,  Facets Technologies, Inc.
- * All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * 
+ * <p>Copyright (c) 2010,  Facets Technologies, Inc.<br/>
+ * All rights reserved.</p>
+ * 
+ * <p>Licensed under the Apache License, Version 2.0 (the "License");<br/>
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
@@ -12,14 +14,17 @@
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations
- * under the License.
- * -----------------------------------------------------------------------------
+ * under the License.</p>
+ * 
+ * <hr />
  *
- * LogHound is a Javascript logger you can use to gain insight into what is
- * going on in your Javascript code.
+ * <p>LogHound is a Javascript logger you can use to gain insight into what is
+ * going on in your Javascript code.</p>
  *
- * ['text',LogHoundLevels['DEBUG'],{'tags','group1 group2'},errorObj]
- *
+ */
+ 
+/**
+ * Log Hound version object.
  */
 var LogHoundVer = new Array();
 LogHoundVer['major'] = '2';
@@ -72,7 +77,14 @@ LogHoundLevels.addLevel = function(newLevelFn) {
     LogHoundLevels[newLevel.getText().toUpperCase()] = newLevel;
     LogHoundLevels.push(newLevel);
 };
-
+/**
+ * @class Provides the primary text searching functionality used by Log Hound.
+ * @param {integer} id An integer that specifies the ordinal level of the of the log level.
+ * @param {String} text The name of the log level.  e.g. error, info, warn, etc...
+ * @param {boolean} enabled <code>true</code> if the level should initially be enabled, 
+ * otherwise <code>false</code>.
+ * @constructor
+ */
 function LogHoundLevel(id, text, enabled) {
     this.id = id;
     this.text = text;
@@ -90,32 +102,56 @@ LogHoundLevel.prototype.isEnabled = function() {
 LogHoundLevel.prototype.setEnabled = function(enable) {
     this.enabled = enable;
 };
-// Fatal Log Level
+/**
+ * @class Fatal log level.
+ * @base LogHoundLevel
+ * @constructor
+ */
 function FatalLogHoundLevel() {
     FatalLogHoundLevel.baseConstructor.call(this, 100, 'fatal', true);
 }
 LogHoundLevels.addLevel(FatalLogHoundLevel);
-// Error Log Level
+/**
+ * @class Error log level.
+ * @base LogHoundLevel
+ * @constructor
+ */
 function ErrorLogHoundLevel() {
     ErrorLogHoundLevel.baseConstructor.call(this, 90, 'error', true);
 }
 LogHoundLevels.addLevel(ErrorLogHoundLevel);
-// Warn Log Level
+/**
+ * @class Warn log level.
+ * @base LogHoundLevel
+ * @constructor
+ */
 function WarnLogHoundLevel() {
     WarnLogHoundLevel.baseConstructor.call(this, 80, 'warn', true);
 }
 LogHoundLevels.addLevel(WarnLogHoundLevel);
-// Info Log Level
+/**
+ * @class Info log level.
+ * @base LogHoundLevel
+ * @constructor
+ */
 function InfoLogHoundLevel() {
     InfoLogHoundLevel.baseConstructor.call(this, 70, 'info', true);
 }
 LogHoundLevels.addLevel(InfoLogHoundLevel);
-// Debug Log Level
+/**
+ * @class Debug log level.
+ * @base LogHoundLevel
+ * @constructor
+ */
 function DebugLogHoundLevel() {
     DebugLogHoundLevel.baseConstructor.call(this, 60, 'debug', true);
 }
 LogHoundLevels.addLevel(DebugLogHoundLevel);
-// Trace Log Level
+/**
+ * @class Trace log level.
+ * @base LogHoundLevel
+ * @constructor
+ */
 function TraceLogHoundLevel() {
     TraceLogHoundLevel.baseConstructor.call(this, 50, 'trace', true);
 }
@@ -135,8 +171,6 @@ LogHoundLevels.getLogLevelObject = function(name) {
     }
 };
 
-
-
 // Load predefined extra log levels
 if(!(typeof(LogHoundLevelPreload)=='undefined') && (LogHoundLevelPreload instanceof Array)) {
     for(i=0; i<LogHoundLevelPreload.length; i++) {
@@ -146,6 +180,7 @@ if(!(typeof(LogHoundLevelPreload)=='undefined') && (LogHoundLevelPreload instanc
 
 /**
  * Main Log Hound object-function definition.
+ * @constructor
  */
 function LogHound() {
     this.me = this;
@@ -157,6 +192,11 @@ function LogHound() {
     this.helpEnabled = false;
     this.tagNameRegex = new RegExp('^[a-z][-a-z0-9_]+$','i');
 }
+/**
+ * Performs the main setup for the Log Hound application.  This should only be
+ * called once per page, though it protects itself against multiple calls. Log
+ * Hound will not be functional until this method is called.
+ */
 LogHound.prototype.doSetup = function() {
     if(this.killSwitch) {
         return;
@@ -441,6 +481,15 @@ LogHound.prototype.doSetup = function() {
     //var msg = 'document.body.clientWidth='+document.body.clientWidth+'<br/>document.documentElement.clientWidth='+document.documentElement.clientWidth+'<br/>window.innerWidth='+window.innerWidth+'<br/>document.body.scrollWidth='+document.body.scrollWidth+'<br/>document.body.offsetWidth='+document.body.offsetWidth;
     //this.logInfo(msg);
 };
+/**
+ * @param {String} mode The tag filter mode.  Must be one of four values:
+ * <ol>
+ * <li>any</li>
+ * <li>exc</li>
+ * <li>int</li>
+ * <li>ony</li>
+ * </ol> 
+ */
 LogHound.prototype.activateTagMode = function(mode) {
     for(var i=0; i<this.tagModBtns.length; i++) {
         if(this.tagModBtns[i].lhTagMode == mode) {
@@ -500,6 +549,16 @@ LogHound.prototype.toggleMsgLayout = function() {
         detailMsgRecs[idx].style.display = (this.msgDispMode=='brief' ? 'none' : '');
     }
 };
+/**
+ * @param {String} mode The tag filter mode.  Must be one of four values:
+ * <ol>
+ * <li>any</li>
+ * <li>exc</li>
+ * <li>int</li>
+ * <li>ony</li>
+ * </ol> 
+ * @private
+ */
 LogHound.prototype.setTagFilterMode = function(mode) {
     this.tagMode = ((mode!='any' && mode!='int' && mode!='exc' && mode!='ony') ? 'any' : mode);
     var viewSelect = document.getElementById('lhViewTagsSelect');
@@ -564,7 +623,7 @@ LogHound.prototype.setLogLevel = function(level) {
     }
 };
 /**
- * INTERNAL USE ONLY
+ * @private
  */
 LogHound.prototype.startInterfaceMonitor = function() {
     this.debugWindowMonitorRef = setInterval('window.logHound.stickLogPlateTopRight()', 500);
@@ -994,6 +1053,12 @@ LogHound.prototype.getAvailTags = function() {
     var availSelect = document.getElementById('lhAvailTagsSelect');
     return FctsTools.getOptionValues(viewSelect);
 };
+/**
+ * Base message filter class.  Extend this class and override methods to
+ * create message filters.
+ * @param {String} id A unique ID for the message filter. 
+ * @constructor
+ */
 function LogHoundMessageFilter(id) {
     this.id = id;
 }
@@ -1004,7 +1069,8 @@ LogHoundMessageFilter.prototype.showMessage = function(msgRec) {
     return true;
 };
 /**
- *
+ * @base LogHoundMessageFilter
+ * @constructor
  */
 function LogHoundMessageTagFilter(tagArray, tagMode) {
     LogHoundMessageTagFilter.baseConstructor.call(this, 'lhMsgTagFilter');
@@ -1050,7 +1116,10 @@ LogHoundMessageTagFilter.prototype.hasTag = function(tag,msgTags) {
     return false;
 };
 /**
+ * @class Provides the primary text searching functionality used by Log Hound.
  * Message text search filter.
+ * @base LogHoundMessageFilter
+ * @constructor
  */
 function LogHoundTextSearchFilter(searchText) {
     LogHoundTextSearchFilter.baseConstructor.call(this, 'lhTxtSearchFilter');
@@ -1068,6 +1137,8 @@ LogHoundTextSearchFilter.prototype.showMessage = function(msgRec) {
 }
 /**
  * Message level filter.
+ * @base LogHoundMessageFilter
+ * @constructor
  */
 function LogHoundMessageLevelFilter() {
     LogHoundTextSearchFilter.baseConstructor.call(this, 'lhMsgLvlFilter');
