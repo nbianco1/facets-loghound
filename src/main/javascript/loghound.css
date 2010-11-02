@@ -146,7 +146,7 @@
     border-bottom: 3px solid #688DE0;
     padding: 0px 6px 0px 6px;
     display: none;
-    test-align: left;
+    text-align: left;
 }
 #lhPlateCtrlPanel {
     font-size: 8pt;
