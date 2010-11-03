@@ -38,10 +38,13 @@ This is the the base, no frills install example:
 8   <body onLoad="onBodyLoad();">
 }}}
 
+*Line-by-line:*
+
  * 1) Link in the style sheet.
- * 2) Include the Log Hound code.
- * 3-6) Create a function for the body onLoad event that calls Log Hound's doSetup() function.
- * 7) Make sure to call the body onLoad function!
+ * 2) Include the Facets global code used by Log Hound.
+ * 3) Include the Log Hound code.
+ * 4-6) Create a function for the body onLoad event that calls Log Hound's doSetup() function.
+ * 8) Make sure to call the body onLoad function!
 
 ====Complex====
 {{{
@@ -63,14 +66,17 @@ This is the the base, no frills install example:
 16  <input type="hidden" id="lhKillSwitch" name="lhKillSwitch" value="on" />
 }}}
 
+*Line-by-line:*
+
  * 1) Link in the style sheet.
- * 2) Include the Log Hound code.
- * 5) New function to be executed during the body onload event.
- * 6) Retrieve the value of a field set by server side code.  This is assuming you are using aspx or jsp or php, etc...
- * 7) For this example, if the killswitch value is anything other then "on", the kill switch is set to true, disabling Log Hound permanently.
- * 10) During the body onload event, we check to see if Log Hound is allowed to live.
- * 11) If the kill switch was not set to true by the function call on the previous line, this line will instantiate one (there can be only ONE!) copy of Log Hound and show the user interface.
- * 14) Make sure the body onload event does the needful.
- * 15) This is the hidden field with the value set by whatever server side script you are using.
+ * 2) Include the Facets global code used by Log Hound.
+ * 3) Include the Log Hound code.
+ * 6) New function to be executed during the body onload event.
+ * 7) Retrieve the value of a field set by server side code.  This is assuming you are using aspx or jsp or php, etc...
+ * 8) For this example, if the killswitch value is anything other then "on", the kill switch is set to true, disabling Log Hound permanently.
+ * 11) During the body onload event, we check to see if Log Hound is allowed to live.
+ * 12) If the kill switch was not set to true by the function call on the previous line, this line will instantiate one (there can be only ONE!) copy of Log Hound and show the user interface.
+ * 15) Make sure the body onload event does the needful.
+ * 16) This is the hidden field with the value set by whatever server side script you are using.
  * 16) ...
  * 17) profit!
