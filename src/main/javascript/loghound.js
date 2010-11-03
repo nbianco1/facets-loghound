@@ -476,6 +476,7 @@ LogHound.prototype.doSetup = function() {
     this.activateTagMode('any');
     this.adjustPlateSize();
     this.startInterfaceMonitor();
+    this.setLogLevel(this.logLevel);
     setTimeout('window[\'logHound\'].show(true)',800);
     this.logInfo('Log Hound is online...');
     //var msg = 'document.body.clientWidth='+document.body.clientWidth+'<br/>document.documentElement.clientWidth='+document.documentElement.clientWidth+'<br/>window.innerWidth='+window.innerWidth+'<br/>document.body.scrollWidth='+document.body.scrollWidth+'<br/>document.body.offsetWidth='+document.body.offsetWidth;
@@ -613,6 +614,10 @@ LogHound.prototype.setLogLevel = function(level) {
     level = LogHoundLevels.getLevel(level);
     if(level==null) { return; }
     this.logLevel = level;
+    // If the kill switch is enabled, can't access non-existant UI.
+    if(!this.initialised || !this.enabled) {
+        return false;
+    }
     var lvlSelect = document.getElementById('lhLvlSelect');
     if(level.getId()!=lvlSelect.options[lvlSelect.selectedIndex].value) {
         for(var i=0; i<lvlSelect.options.length; i++) {
