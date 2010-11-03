@@ -36,7 +36,7 @@ if(LogHoundVer['build'].length>5) {
 } else {
     LogHoundVer['build'] = '-';
 }
-LogHoundVer['release'] = 'beta 1';
+LogHoundVer['release'] = 'beta 2';
 LogHoundVer.getLongText = function() {
     return this.major+'.'+this.minor+'.'+this.fix+'.'+this.build+' '+this.release;
 };
