@@ -104,6 +104,6 @@ Passing a !LogHoundLevel object to this function sets the level at which Log Hou
 
 *Examples:*
 {{{
-window.logHound.setLogLevel(!LogHoundLevels['DEBUG']);
+window.logHound.setLogLevel(LogHoundLevels['DEBUG']);
 }}}
 ----
