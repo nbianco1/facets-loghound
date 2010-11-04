@@ -96,14 +96,14 @@ window.logHound.killSwitch(true);
 setLogLevel({LogHoundLevel}level)
 }}}
 
-  * LogHoundLevel {{{[required]}}}: The level object representing the level at which and above the logger will record incoming messages. 
+  * !LogHoundLevel {{{[required]}}}: The level object representing the level at which and above the logger will record incoming messages. 
 
 *Description:*
 
-Passing a LogHoundLevel object to this function sets the level at which Log Hound will log messages.  Any messages for levels below the set level will be discarded by Log Hound, gone forever.
+Passing a !LogHoundLevel object to this function sets the level at which Log Hound will log messages.  Any messages for levels below the set level will be discarded by Log Hound, gone forever.
 
 *Examples:*
 {{{
-window.logHound.setLogLevel(LogHoundLevels['DEBUG']);
+window.logHound.setLogLevel(!LogHoundLevels['DEBUG']);
 }}}
 ----
