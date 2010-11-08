@@ -302,9 +302,26 @@ FctsTools.removeStyleClass = function(elmt, classname) {
         newNames.push(classes[idx]);
     }
     elmt.className = newNames.join(' ');
-}
+};
 FctsTools.replaceStyleClass = function(elmt, remClass, addClass) {
     this.removeStyleClass(elmt, remClass);
     this.addStyleClass(elmt, addClass);
-}
+};
+FctsTools.parseToBool = function(arg,altTrueArray) {
+    if(arg==null) { return null; }
+    if((typeof arg)=='boolean') {
+        return arg;
+    }
+    if(!(arg instanceof String) && !((typeof arg)=='string')) {
+        return null;
+    }
+    if(altTrueArray!=null && (altTrueArray instanceof Array)) {
+        for(var i=0; i<altTrueArray.length; i++) {
+            if(arg==altTrueArray[i]) {
+                return true;
+            }
+        }
+    }
+    return (arg=='true');
+};
 
