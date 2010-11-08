@@ -2,10 +2,10 @@
  * @fileoverview
  *
  * Software License Agreement (Apache License 2.0)
- * 
+ *
  * <p>Copyright (c) 2010,  Facets Technologies, Inc.<br/>
  * All rights reserved.</p>
- * 
+ *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");<br/>
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,14 +15,14 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations
  * under the License.</p>
- * 
+ *
  * <hr />
  *
  * <p>LogHound is a Javascript logger you can use to gain insight into what is
  * going on in your Javascript code.</p>
  *
  */
- 
+
 /**
  * Log Hound version object.
  */
@@ -81,7 +81,7 @@ LogHoundLevels.addLevel = function(newLevelFn) {
  * @class Provides the primary text searching functionality used by Log Hound.
  * @param {integer} id An integer that specifies the ordinal level of the of the log level.
  * @param {String} text The name of the log level.  e.g. error, info, warn, etc...
- * @param {boolean} enabled <code>true</code> if the level should initially be enabled, 
+ * @param {boolean} enabled <code>true</code> if the level should initially be enabled,
  * otherwise <code>false</code>.
  * @constructor
  */
@@ -407,11 +407,11 @@ LogHound.prototype.doSetup = function() {
     var levelControls = document.getElementsByClassName('lhCtrlLvl');
     for(idx=0; idx<levelControls.length; idx++) {
         levelControls[idx].onclick = function(event) {
-            window.logHound.toggleMsgLvl(this);
+            window.logHound.showMessageLevel(this);
         }
     }
     document.getElementById('lhBtnShade').onclick = function(event) {
-        window.logHound.toggleDisplay();
+        window.logHound.shadeMode();
     };
     this.addHelpEntry(['lhBtnShade','Shade Mode Toggle: Toggles the Log Hound interface between shade display mode and normal display mode.']);
     // Help panel setup
@@ -475,7 +475,7 @@ LogHound.prototype.doSetup = function() {
     this.searchField = document.getElementById('lhSearchField');
     this.activateTagMode('any');
     this.adjustPlateSize();
-    this.startInterfaceMonitor();
+    this.interfaceMonitor(true);
     this.setLogLevel(this.logLevel);
     setTimeout('window[\'logHound\'].show(true)',800);
     this.logInfo('Log Hound is online...');
@@ -489,7 +489,7 @@ LogHound.prototype.doSetup = function() {
  * <li>exc</li>
  * <li>int</li>
  * <li>ony</li>
- * </ol> 
+ * </ol>
  */
 LogHound.prototype.activateTagMode = function(mode) {
     for(var i=0; i<this.tagModBtns.length; i++) {
@@ -557,7 +557,7 @@ LogHound.prototype.toggleMsgLayout = function() {
  * <li>exc</li>
  * <li>int</li>
  * <li>ony</li>
- * </ol> 
+ * </ol>
  * @private
  */
 LogHound.prototype.setTagFilterMode = function(mode) {
@@ -585,21 +585,39 @@ LogHound.prototype.setKillSwitch = function(killSwitch) {
  * @param enable Set to "true" to enable logging, otherwise "false"
  */
 LogHound.prototype.enableLogging = function(enable) {
+    if(!this.initialised) { return false; }
     if(enable!=null && enable==false) {
         this.enabled = false;
     } else {
         this.enabled = true;
     }
 };
+/**
+ * If set to a value that equates to 'true', the Log Hound UI will be shown on
+ * the page.  If set to a 'false' value, Log Hound will be hidden. If no value
+ * is argumented, this function acts as a toggle. Please note that while
+ * hidden, Log Hound is still active and will continue to log messages.
+ * @param {boolean,String} show A value that equates to 'true'
+ * <p>Values that equate to true:
+ * <ul>
+ * <li>true</li>
+ * <li>'true'</li>
+ * <li>'show'</li>
+ * </ul>
+ * All other values except <code>null</code> equate to false.
+ */
 LogHound.prototype.show = function(show) {
-    // If the kill switch is enabled, do absolutely nothing.
-    if(!this.initialised || !this.enabled) {
-        return;
+    if(!this.initialised || !this.enabled) { return; }
+    show = FctsTools.parseToBool(show,['show']);
+    if(show==null) {
+        show = (this.logPlate.style.display == 'none');
     }
-    if(show!=null && show==true) {
+    if(show) {
         this.logPlate.style.display = 'block';
+        this.interfaceMonitor('start');
         this.adjustPlateSize();
     } else {
+        this.interfaceMonitor('stop');
         this.logPlate.style.display = 'none';
     }
 };
@@ -610,6 +628,10 @@ LogHound.prototype.show = function(show) {
 LogHound.prototype.getLogLevel = function() {
     return this.logLevel;
 };
+/**
+ * @param {LogHoundLevel} level The level object representing the level at
+ * which and above the logger will record incoming messages.
+ */
 LogHound.prototype.setLogLevel = function(level) {
     level = LogHoundLevels.getLevel(level);
     if(level==null) { return; }
@@ -628,12 +650,33 @@ LogHound.prototype.setLogLevel = function(level) {
     }
 };
 /**
+ * If set to a value that equates to 'true', the interface monitor will be
+ * started.  If set to a 'false' value, the interface monitor will be stopped.
+ * If no value is argumented, this function acts as a toggle.
+ * @param {boolean,String} start A value that equates to 'true'
+ * <p>Values that equate to true:
+ * <ul>
+ * <li>true</li>
+ * <li>'true'</li>
+ * <li>'start'</li>
+ * </ul>
+ * All other values except <code>null</code> equate to false.
  * @private
  */
-LogHound.prototype.startInterfaceMonitor = function() {
-    this.debugWindowMonitorRef = setInterval('window.logHound.stickLogPlateTopRight()', 500);
+LogHound.prototype.interfaceMonitor = function(start) {
+    if(!this.initialised || !this.enabled) { return; }
+    start = FctsTools.parseToBool(start,['start']);
+    if(start==null) {
+        start = (this.debugWindowMonitorRef == null);
+    }
+    if(start) {
+        this.debugWindowMonitorRef = setInterval('window.logHound.stickLogPlateTopRight()', 500);
+    } else {
+        clearInterval(this.debugWindowMonitorRef);
+        this.debugWindowMonitorRef = null;
+    }
 };
-LogHound.prototype.toggleMsgLvl = function(btn) {
+LogHound.prototype.showMessageLevel = function(btn) {
     var logLevelName = btn.id.slice(9);
     var logLevel = LogHoundLevels.getLogLevelObject(logLevelName);
     if(btn.innerHTML=='+') {
@@ -646,20 +689,14 @@ LogHound.prototype.toggleMsgLvl = function(btn) {
     this.applyMsgFilters();
 };
 /**
- * Adds a filter to the message filter array.
- * Filter object must implement two methods:
- * filter.getId() - returns an ID for the filter.
- * filter.showMessage(messageRecord) - Takes the message row record object and returns either 'true'
- * if the message should be visible, or 'false' if the message should be hidden.
- * @param filter The message filter to add to the internal array.
+ * Adds a filter which extends LogHoundMessageFilter to the message filter
+ * array.
+ * @param {LogHoundMessageFilter} newFilter The message filter to add to the
+ * internal array.
  */
 LogHound.prototype.addMsgFilter = function(newFilter) {
     if(!newFilter.getId || !(newFilter instanceof LogHoundMessageFilter)) {
         alert('Argumented object is not a LogHoundMessageFilter.');
-        return;
-    }
-    if(!newFilter.showMessage || typeof newFilter.showMessage !='function') {
-        alert('Filter.showMessage is not a function.');
         return;
     }
     var newFilterArray = new Array();
@@ -699,7 +736,7 @@ LogHound.prototype.filterMsg = function(msgRec) {
     }
     return true;
 };
-LogHound.prototype.toggleDisplay = function(show) {
+LogHound.prototype.shadeMode = function(show) {
     var toggleBtn = document.getElementById('lhBtnShade');
     show = (show==null ? this.logPlateBodyBox.style.display == 'none' : show);
     if(show) {
@@ -788,7 +825,7 @@ LogHound.prototype.toggleTagCtrlPanel = function(cmd) {
     this.adjustPlateSize();
 };
 LogHound.prototype.showMoreMessages = function() {
-    this.toggleDisplay(true);
+    this.shadeMode(true);
     var boxHeight = this.logPlateBodyBox.offsetHeight;
     if(boxHeight>600) {
         return;
@@ -1061,7 +1098,7 @@ LogHound.prototype.getAvailTags = function() {
 /**
  * Base message filter class.  Extend this class and override methods to
  * create message filters.
- * @param {String} id A unique ID for the message filter. 
+ * @param {String} id A unique ID for the message filter.
  * @constructor
  */
 function LogHoundMessageFilter(id) {
