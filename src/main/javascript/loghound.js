@@ -26,7 +26,7 @@
 /**
  * Log Hound version object.
  */
-var LogHoundVer = new Array();
+var LogHoundVer = [];
 LogHoundVer['major'] = '2';
 LogHoundVer['minor'] = '0';
 LogHoundVer['fix'] = '0';
@@ -46,7 +46,7 @@ LogHoundVer.getShortText = function() {
 /**
  * Object array defining all the log level objects and their specific attributes.
  */
-var LogHoundLevels = new Array();
+var LogHoundLevels = [];
 LogHoundLevels.getByText = function(text) {
     for(idx=0; idx<this.length; idx++) {
         if(this[idx].getText() == text) {
@@ -62,9 +62,9 @@ LogHoundLevels.getById = function(id) {
     }
 };
 LogHoundLevels.getLevel = function(level) {
-    if((typeof level)=="number") {
+    if((typeof level)=='number') {
         return this.getById(level);
-    } else if((typeof level)=="string") {
+    } else if((typeof level)=='string') {
         return this.getByText(level);
     } else if(!(level instanceof LogHoundLevel)) {
         return null;
@@ -104,7 +104,7 @@ LogHoundLevel.prototype.setEnabled = function(enable) {
 };
 /**
  * @class Fatal log level.
- * @base LogHoundLevel
+ * @augments LogHoundLevel
  * @constructor
  */
 function FatalLogHoundLevel() {
@@ -113,7 +113,7 @@ function FatalLogHoundLevel() {
 LogHoundLevels.addLevel(FatalLogHoundLevel);
 /**
  * @class Error log level.
- * @base LogHoundLevel
+ * @augments LogHoundLevel
  * @constructor
  */
 function ErrorLogHoundLevel() {
@@ -122,7 +122,7 @@ function ErrorLogHoundLevel() {
 LogHoundLevels.addLevel(ErrorLogHoundLevel);
 /**
  * @class Warn log level.
- * @base LogHoundLevel
+ * @augments LogHoundLevel
  * @constructor
  */
 function WarnLogHoundLevel() {
@@ -131,7 +131,7 @@ function WarnLogHoundLevel() {
 LogHoundLevels.addLevel(WarnLogHoundLevel);
 /**
  * @class Info log level.
- * @base LogHoundLevel
+ * @augments LogHoundLevel
  * @constructor
  */
 function InfoLogHoundLevel() {
@@ -140,7 +140,7 @@ function InfoLogHoundLevel() {
 LogHoundLevels.addLevel(InfoLogHoundLevel);
 /**
  * @class Debug log level.
- * @base LogHoundLevel
+ * @augments LogHoundLevel
  * @constructor
  */
 function DebugLogHoundLevel() {
@@ -149,7 +149,7 @@ function DebugLogHoundLevel() {
 LogHoundLevels.addLevel(DebugLogHoundLevel);
 /**
  * @class Trace log level.
- * @base LogHoundLevel
+ * @augments LogHoundLevel
  * @constructor
  */
 function TraceLogHoundLevel() {
@@ -160,9 +160,7 @@ LogHoundLevels.addLevel(TraceLogHoundLevel);
  *
  */
 LogHoundLevels.getLogLevelObject = function(name) {
-    if(name==null) {
-        return null;
-    }
+    if(name==null) { return null; }
     name = name.toLowerCase();
     for(idx=0; idx<LogHoundLevels.length; idx++) {
         if(LogHoundLevels[idx].getText()==name) {
@@ -172,7 +170,7 @@ LogHoundLevels.getLogLevelObject = function(name) {
 };
 
 // Load predefined extra log levels
-if(!(typeof(LogHoundLevelPreload)=='undefined') && (LogHoundLevelPreload instanceof Array)) {
+if((typeof(LogHoundLevelPreload)!='undefined') && (LogHoundLevelPreload instanceof Array)) {
     for(i=0; i<LogHoundLevelPreload.length; i++) {
         LogHoundLevels.addLevel(LogHoundLevelPreload[i]);
     }
@@ -186,6 +184,7 @@ function LogHound() {
     this.me = this;
     this.msgCount = 0;
     this.logLevel = LogHoundLevels['DEBUG'];
+    this.msgDispMode = 'brief'; // detail, brief
     this.killSwitch = false;
     this.enabled = true;
     this.initialised = false;
@@ -202,13 +201,12 @@ LogHound.prototype.doSetup = function() {
         return;
     }
     this.tagMode = 'any';
-    this.msgDispMode = 'brief'; // detail, brief
     this.killSwitch = true;
     this.initialised = true;
-    this.helpEntries = new Array();
-    this.msgRecords = new Array();
-    this.msgTags = new Array();
-    this.msgFilters = new Array();
+    this.helpEntries = [];
+    this.msgRecords = [];
+    this.msgTags = [];
+    this.msgFilters = [];
     this.msgFilters.push(new LogHoundMessageLevelFilter());
     var logPlate = document.createElement('DIV');
     logPlate.setAttribute('id', 'lhPlate');
@@ -227,10 +225,10 @@ LogHound.prototype.doSetup = function() {
     }
     var titlebar = '<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr>';
     titlebar +=    '<td><span id="lhBtnShade" class="lhBtnShade lhFont lhCtrl lhBtn" title="Toggle Message Panel">v</span></td>';
-    titlebar +=    '<td class="lhTitle">Log Hound v'+LogHoundVer.getLongText()+'</td>'
+    titlebar +=    '<td class="lhTitle">Log Hound v'+LogHoundVer.getLongText()+'</td>';
     titlebar +=    '<td><span id="lhBtnHelp" class="lhBtnHelp lhFont lhCtrl lhBtn" title="Toggle Help Panel">?</span></td>';
     titlebar +=    '<td><span id="lhBtnTags" class="lhBtnTags lhFont lhCtrl lhBtn" title="Toggle Tags Panel">T</span></td>';
-    titlebar +=    '<td><span id="lhBtnCtrls" class="lhBtnCtrls lhFont lhCtrl lhBtn" title="Toggle Control Panel">C</span></td>'
+    titlebar +=    '<td><span id="lhBtnCtrls" class="lhBtnCtrls lhFont lhCtrl lhBtn" title="Toggle Control Panel">C</span></td>';
     titlebar +=    '</tr></table>';
     this.logPlateHead.innerHTML = titlebar;
     this.logPlate.appendChild(this.logPlateHead);
@@ -360,32 +358,32 @@ LogHound.prototype.doSetup = function() {
         lvlSelect.options[lvlSelect.length] = new Option(level.getText(),level.getId());
     }
     FctsTools.sortOptionsByValue(lvlSelect,function(o1,o2) {
-        return parseInt(o2)-parseInt(o1);
+        return parseInt(o2,10)-parseInt(o1,10);
     });
     document.getElementById('lhLvlSelect').onchange = function(event) {
-        window.logHound.setLogLevel(parseInt(this.value));
-    }
+        window.logHound.setLogLevel(parseInt(this.value,10));
+    };
     this.addHelpEntry(['lhLvlSelect','Level Select: Levels are in descending order. Only messages corresponding to the level shown and those above will be logged after change.']);
 
     var btns = document.getElementsByClassName('lhBtn');
-    for(idxBtns in btns) {
-        FctsTools.addStyleClass(btns[idxBtns],'lhBtnOut');
+    for(i=0; i<btns.length; i++) {
+        FctsTools.addStyleClass(btns[i],'lhBtnOut');
     }
-    for(btnIdx in btns) {
-        btns[btnIdx].onmouseover = function(event) {
+    for(i=0; i<btns.length; i++) {
+        btns[i].onmouseover = function(event) {
             FctsTools.removeStyleClass(this, 'lhBtnOut');
             FctsTools.removeStyleClass(this, 'lhBtnOn');
             FctsTools.addStyleClass(this, 'lhBtnOver');
-        }
-        btns[btnIdx].onmouseout = function(event) {
+        };
+        btns[i].onmouseout = function(event) {
             FctsTools.removeStyleClass(this, 'lhBtnOver');
             if(this.lhBtnState=='on') {
                 FctsTools.addStyleClass(this, 'lhBtnOn');
             } else {
                 FctsTools.replaceStyleClass(this, 'lhBtnOn', 'lhBtnOut');
             }
-        }
-        btns[btnIdx].lhBtnState = 'off';
+        };
+        btns[i].lhBtnState = 'off';
     }
     document.getElementById('lhTagCtrlAddBtn').onclick = function(event) {
         window.logHound.moveTagAssignments('add');
@@ -409,7 +407,7 @@ LogHound.prototype.doSetup = function() {
     for(idx=0; idx<levelControls.length; idx++) {
         levelControls[idx].onclick = function(event) {
             window.logHound.showMessageLevel(this);
-        }
+        };
     }
     document.getElementById('lhBtnShade').onclick = function(event) {
         window.logHound.shadeMode();
@@ -434,7 +432,7 @@ LogHound.prototype.doSetup = function() {
         window.logHound.toggleTagCtrlPanel('toggle');
     };
     this.addHelpEntry(['lhBtnTags','Tag Panel Toggle: Opens and closes the tag control panel.']);
-    this.tagModBtns = new Array();
+    this.tagModBtns = [];
     // Tag modifier: Any button.
     this.tagModBtnAny = document.getElementById('lhTagCtrlAnyBtn');
     this.tagModBtns[this.tagModBtns.length] = this.tagModBtnAny;
@@ -470,7 +468,7 @@ LogHound.prototype.doSetup = function() {
 
 
     document.getElementById('lhCtrlMsgDispModeBtn').onclick = function(event) {
-        window.logHound.toggleMsgLayout();
+        window.logHound.setMessageLayout();
     };
 
     this.searchField = document.getElementById('lhSearchField');
@@ -478,7 +476,7 @@ LogHound.prototype.doSetup = function() {
     this.adjustPlateSize();
     this.interfaceMonitor(true);
     this.setLogLevel(this.logLevel);
-    setTimeout('window[\'logHound\'].show(true)',800);
+    setTimeout('window.logHound.show(true)',800);
     this.logInfo('Log Hound is online...');
     //var msg = 'document.body.clientWidth='+document.body.clientWidth+'<br/>document.documentElement.clientWidth='+document.documentElement.clientWidth+'<br/>window.innerWidth='+window.innerWidth+'<br/>document.body.scrollWidth='+document.body.scrollWidth+'<br/>document.body.offsetWidth='+document.body.offsetWidth;
     //this.logInfo(msg);
@@ -505,9 +503,15 @@ LogHound.prototype.activateTagMode = function(mode) {
         }
     }
 };
+/**
+ * @private
+ */
 LogHound.prototype.addHelpEntry = function(entry) {
     this.helpEntries[this.helpEntries.length] = entry;
 };
+/**
+ * @private
+ */
 LogHound.prototype.toggleHelp = function(enable) {
     if(enable!=null && enable) {
         if(this.helpEnabled) { return; }
@@ -519,14 +523,13 @@ LogHound.prototype.toggleHelp = function(enable) {
             target.lhOrigMouseOver = target.onmouseover;
             target.lhOrigMouseOut = target.onmouseout;
             target.onmouseover = function() {
-                var whatthehell = this.lhOrigMouseOver;
-                if(!(typeof(this.lhOrigMouseOver)=='undefined') && this.lhOrigMouseOver!=null) { this.lhOrigMouseOver(); }
+                if((typeof(this.lhOrigMouseOver)!='undefined') && this.lhOrigMouseOver!=null) { this.lhOrigMouseOver(); }
                 document.getElementById('lhPlateHelpPanel').innerHTML = this.lhHelpTxt;
             };
             target.onmouseout = function() {
-                if(!(typeof(this.lhOrigMouseOut)=='undefined') && this.lhOrigMouseOut!=null) { this.lhOrigMouseOut(); }
+                if((typeof(this.lhOrigMouseOut)!='undefined') && this.lhOrigMouseOut!=null) { this.lhOrigMouseOut(); }
                 document.getElementById('lhPlateHelpPanel').innerHTML = document.getElementById('lhPlateHelpPanel').lhDfltTxt;
-            }
+            };
         }
     } else {
         if(!this.helpEnabled) { return; }
@@ -540,8 +543,32 @@ LogHound.prototype.toggleHelp = function(enable) {
         }
     }
 };
-LogHound.prototype.toggleMsgLayout = function() {
-    this.msgDispMode= (this.msgDispMode=='brief' ? 'detail' : 'brief');
+/**
+ * Sets the message layout display to either 'brief' or 'detail'.  If Log Hound
+ * is active, the message layout in the UI will then be changed to the
+ * indicated layout.  If no argument or <code>null</code> is passed to this
+ * function, the message layout will be toggled between the 'brief' and
+ * 'detail' layouts.
+ * <p>The layout can be set before Log Hound is set up.</p>
+ * @param {String,null} layout Can be the values 'brief', 'display', or you can
+ * pass no value at all.
+ * @return <code>true</code> if the function call resulted in the message
+ * layout being changed, otherwise <code>false</code>.
+ * @devnote This is set up so that at some point more layout options can be
+ * handled.
+ */
+LogHound.prototype.setMessageLayout = function(layout) {
+    if(layout==null) {
+        this.msgDispMode = (this.msgDispMode=='brief' ? 'detail' : 'brief');
+    } else if((layout instanceof String) || ((typeof layout)=='string')) {
+        if(this.msgDispMode==layout) { return false; }
+        if('brief'==layout || 'detail'==layout) {
+            this.msgDispMode = layout;
+        }
+    } else {
+        return false;
+    }
+    if(!this.initialised || !this.enabled) { return false; }
     var briefMsgRecs = document.getElementsByClassName('lhMsgRecBrief');
     for(idx=0; idx<briefMsgRecs.length; idx++) {
         briefMsgRecs[idx].style.display = (this.msgDispMode=='brief' ? '' : 'none');
@@ -550,6 +577,10 @@ LogHound.prototype.toggleMsgLayout = function() {
     for(idx=0; idx<detailMsgRecs.length; idx++) {
         detailMsgRecs[idx].style.display = (this.msgDispMode=='brief' ? 'none' : '');
     }
+    return true;
+};
+LogHound.prototype.getMessageLayout = function() {
+    return this.msgDispMode;
 };
 /**
  * @param {String} mode The tag filter mode.  Must be one of four values:
@@ -568,9 +599,8 @@ LogHound.prototype.setTagFilterMode = function(mode) {
     this.applyMsgFilters();
 };
 /**
- * @param killSwitch Boolean argument - set to true to completely disable Log
- * Hound. Calls to doSetup() will have no effect.  Otherwise, set to false to
- * enable.
+ * @param {boolean} killSwitch Set to true to completely disable Log Hound.
+ * Calls to doSetup() will have no effect.  Otherwise, set to false to enable.
  */
 LogHound.prototype.setKillSwitch = function(killSwitch) {
     if(killSwitch!=null && killSwitch==false) {
@@ -630,7 +660,7 @@ LogHound.prototype.show = function(show) {
  */
 LogHound.prototype.isShowing = function() {
     return this.logPlate['lhIsShowing'];
-}
+};
 /**
  * @return {LogHoundLevel} The current logging level in the form of a
  * LogHoundLevel object.
@@ -709,10 +739,10 @@ LogHound.prototype.addMsgFilter = function(newFilter) {
         alert('Argumented object is not a LogHoundMessageFilter.');
         return;
     }
-    var newFilterArray = new Array();
+    var newFilterArray = [];
     var msgFilter = null;
-    for(idx in this.msgFilters) {
-        msgFilter = this.msgFilters[idx];
+    for(i=0; i<this.msgFilters.length; i++) {
+        msgFilter = this.msgFilters[i];
         if(msgFilter.getId()!=newFilter.getId()) {
             newFilterArray.push(msgFilter);
         }
@@ -852,7 +882,7 @@ LogHound.prototype.showLessMessages = function() {
     this.adjustPlateSize();
 };
 LogHound.prototype.adjustPlateSize = function() {
-    this.logPlate.offsetHeight
+    this.logPlate.offsetHeight;
     var totalHeight = this.logPlateHead.offsetHeight;
     totalHeight += this.logPlateHelpPanel.offsetHeight;
     totalHeight += this.logPlateCtrlPanel.offsetHeight;
@@ -911,14 +941,14 @@ LogHound.prototype.addTags = function(tagz) {
     if(tagz==null || !tagz.length || tagz.length<1) {
         return true;
     }
-    for(var i=0;i<tagz.length; i++) {
+    for(i=0;i<tagz.length; i++) {
         if(!(this.tagNameRegex.test(tagz[i]))) {
             return false;
         }
     }
     var tagsSelect = document.getElementById('lhAvailTagsSelect');
     foundMatch:
-    for(var i=0;i<tagz.length; i++) {
+    for(i=0;i<tagz.length; i++) {
         for(allIdx in this.msgTags) {
             var t1 = tagz[i].toLowerCase();
             var t2 = this.msgTags[allIdx].toLowerCase();
@@ -944,11 +974,11 @@ LogHound.prototype.logWarn = function() { this.log(LogHoundLevels['WARN'],argume
 LogHound.prototype.logError = function() { this.log(LogHoundLevels['ERROR'],arguments); };
 LogHound.prototype.logFatal = function() { this.log(LogHoundLevels['FATAL'],arguments); };
 LogHound.prototype.parseLogData = function() {
-    var argArray = new Array();
+    var argArray = [];
     for(var i=0; i<arguments.length; i++) {
         argArray[i] = arguments[i];
     }
-    var msgRec = new Array();
+    var msgRec = [];
     for(var i=0; i<argArray.length; i++) {
         if(argArray[i]==null) { continue; }
         if((typeof argArray[i])=='object' && !(argArray[i] instanceof Array) && argArray[i].length) {
@@ -957,7 +987,7 @@ LogHound.prototype.parseLogData = function() {
             }
         } else if(argArray[i] instanceof Array) {
             msgRec['tags'] = argArray[i];
-            var tmpArray = new Array();
+            var tmpArray = [];
             for(var x=0; x<msgRec['tags'].length; x++) {
                 if(!FctsTools.isBlank(msgRec['tags'][x])) {
                     tmpArray[tmpArray.length] = msgRec['tags'][x];
@@ -1114,14 +1144,22 @@ LogHound.prototype.getAvailTags = function() {
 function LogHoundMessageFilter(id) {
     this.id = id;
 }
+/**
+ * @returns {String} The filter ID.
+ */
 LogHoundMessageFilter.prototype.getId = function() {
     return this.id;
 };
+/**
+ * @param {Object}
+ * @returns {boolean} <code>true</code> if the argumented message should be
+ * shown, otherwise <code>false</code>.
+ */
 LogHoundMessageFilter.prototype.showMessage = function(msgRec) {
     return true;
 };
 /**
- * @base LogHoundMessageFilter
+ * @augments LogHoundMessageFilter
  * @constructor
  */
 function LogHoundMessageTagFilter(tagArray, tagMode) {
@@ -1168,10 +1206,9 @@ LogHoundMessageTagFilter.prototype.hasTag = function(tag,msgTags) {
     return false;
 };
 /**
- * @class Provides the primary text searching functionality used by Log Hound.
  * Message text search filter.
- * @base LogHoundMessageFilter
- * @constructor
+ * @class Provides the primary text searching functionality used by Log Hound.
+ * @augments LogHoundMessageFilter
  */
 function LogHoundTextSearchFilter(searchText) {
     LogHoundTextSearchFilter.baseConstructor.call(this, 'lhTxtSearchFilter');
@@ -1189,8 +1226,8 @@ LogHoundTextSearchFilter.prototype.showMessage = function(msgRec) {
 }
 /**
  * Message level filter.
- * @base LogHoundMessageFilter
- * @constructor
+ * @class Message filter used to filter messages by logging level.
+ * @augments LogHoundMessageFilter
  */
 function LogHoundMessageLevelFilter() {
     LogHoundTextSearchFilter.baseConstructor.call(this, 'lhMsgLvlFilter');
