@@ -16,3 +16,13 @@ To minify loghound.js:
 {{{
 java -jar yuicompressor.jar -v --charset utf-8 --line-break 4000 -o loghound-min.js loghound.js
 }}}
+
+----
+
+==!JsDoc==
+[http://code.google.com/p/jsdoc-toolkit/ JsDoc Toolkit] seems to be the tool to use.
+
+====Code====
+{{{
+java -jar jsrun.jar app/run.js loghound.js -t=templates/jsdoc
+}}}
