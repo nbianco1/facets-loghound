@@ -71,6 +71,11 @@ LogHoundLevels.getLevel = function(level) {
     }
     return level;
 };
+/**
+ * Takes a new log level definition and extends LogHoundLevel with it, then
+ * adds it to the LogHoundLevels array.
+ * @private
+ */
 LogHoundLevels.addLevel = function(newLevelFn) {
     FctsTools.extend(newLevelFn, LogHoundLevel);
     var newLevel = new newLevelFn();
@@ -83,7 +88,6 @@ LogHoundLevels.addLevel = function(newLevelFn) {
  * @param {String} text The name of the log level.  e.g. error, info, warn, etc...
  * @param {boolean} enabled <code>true</code> if the level should initially be enabled,
  * otherwise <code>false</code>.
- * @constructor
  */
 function LogHoundLevel(id, text, enabled) {
     this.id = id;
@@ -105,7 +109,6 @@ LogHoundLevel.prototype.setEnabled = function(enable) {
 /**
  * @class Fatal log level.
  * @augments LogHoundLevel
- * @constructor
  */
 function FatalLogHoundLevel() {
     FatalLogHoundLevel.baseConstructor.call(this, 100, 'fatal', true);
@@ -114,7 +117,6 @@ LogHoundLevels.addLevel(FatalLogHoundLevel);
 /**
  * @class Error log level.
  * @augments LogHoundLevel
- * @constructor
  */
 function ErrorLogHoundLevel() {
     ErrorLogHoundLevel.baseConstructor.call(this, 90, 'error', true);
@@ -123,7 +125,6 @@ LogHoundLevels.addLevel(ErrorLogHoundLevel);
 /**
  * @class Warn log level.
  * @augments LogHoundLevel
- * @constructor
  */
 function WarnLogHoundLevel() {
     WarnLogHoundLevel.baseConstructor.call(this, 80, 'warn', true);
@@ -132,7 +133,6 @@ LogHoundLevels.addLevel(WarnLogHoundLevel);
 /**
  * @class Info log level.
  * @augments LogHoundLevel
- * @constructor
  */
 function InfoLogHoundLevel() {
     InfoLogHoundLevel.baseConstructor.call(this, 70, 'info', true);
@@ -141,7 +141,6 @@ LogHoundLevels.addLevel(InfoLogHoundLevel);
 /**
  * @class Debug log level.
  * @augments LogHoundLevel
- * @constructor
  */
 function DebugLogHoundLevel() {
     DebugLogHoundLevel.baseConstructor.call(this, 60, 'debug', true);
@@ -150,7 +149,6 @@ LogHoundLevels.addLevel(DebugLogHoundLevel);
 /**
  * @class Trace log level.
  * @augments LogHoundLevel
- * @constructor
  */
 function TraceLogHoundLevel() {
     TraceLogHoundLevel.baseConstructor.call(this, 50, 'trace', true);
