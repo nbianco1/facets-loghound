@@ -214,6 +214,7 @@ LogHound.prototype.doSetup = function() {
     logPlate.setAttribute('id', 'lhPlate');
     logPlate.setAttribute('class', 'lhRndCorners');
     this.logPlate = document.body.appendChild(logPlate);
+    this.logPlate['lhIsShowing'] = true;
 
     this.logPlateHead = document.createElement('DIV');
     this.logPlateHead.setAttribute('id', 'lhPlateHead');
@@ -610,20 +611,29 @@ LogHound.prototype.show = function(show) {
     if(!this.initialised || !this.enabled) { return; }
     show = FctsTools.parseToBool(show,['show']);
     if(show==null) {
-        show = (this.logPlate.style.display == 'none');
+        show = !this.logPlate['lhIsShowing'];
     }
     if(show) {
+        this.logPlate['lhIsShowing'] = true;
         this.logPlate.style.display = 'block';
         this.interfaceMonitor('start');
         this.adjustPlateSize();
     } else {
+        this.logPlate['lhIsShowing'] = false;
         this.interfaceMonitor('stop');
         this.logPlate.style.display = 'none';
     }
 };
 /**
- *
- * @return The loglevel object
+ * @return {boolean} <code>true</code> if the UI is currently visible,
+ * otherwise <code>false</code>.
+ */
+LogHound.prototype.isShowing = function() {
+    return this.logPlate['lhIsShowing'];
+}
+/**
+ * @return {LogHoundLevel} The current logging level in the form of a
+ * LogHoundLevel object.
  */
 LogHound.prototype.getLogLevel = function() {
     return this.logLevel;

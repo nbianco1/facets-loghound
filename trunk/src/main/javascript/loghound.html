@@ -70,6 +70,7 @@ function onBodyLoad() {
     window.logHound.logTrace('Trace: Two functions and 3454920 log messages later...',['Tag6','AllTags']);
     window.logHound.logInfo('Info: Long line handling?: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',['Defect']);
     document.getElementById('showChkBx').onclick = showClicked;
+    document.getElementById('showChkBx').checked = (window.logHound.isShowing() ? 1 : 0);
     return true;
 }
 </script>
@@ -284,7 +285,7 @@ body {
 </div>
 <div id="footer">
     <hr />
-    Footer
+    Facets Technologies, Inc. © Copyright 2010
 </div>
 </div>
 </body>
