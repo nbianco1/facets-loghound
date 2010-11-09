@@ -22,6 +22,12 @@ java -jar yuicompressor.jar -v --charset utf-8 --line-break 4000 -o loghound-min
 ==!JsDoc==
 [http://code.google.com/p/jsdoc-toolkit/ JsDoc Toolkit] seems to be the tool to use.
 
+====Reference====
+
+[http://code.google.com/p/jsdoc-toolkit/wiki/CommandlineOptions]
+
+[http://code.google.com/p/jsdoc-toolkit/wiki/TagReference]
+
 ====Code====
 {{{
 java -jar jsrun.jar app/run.js loghound.js -t=templates/jsdoc
