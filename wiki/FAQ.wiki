@@ -20,19 +20,19 @@ A simple example of logging a message would look something like this:
 window.logHound.logWarn('This is a warning message.',['methodName','anotherTag']);
 }}}
 
-====5. What does it depend on?====
-
-Everything Log Hound depends on is included in the zip package.  There's no dependency on JQuery, Prototype, or any other !JavaScript framework.  Log Hound uses 100% pure ECMA-262 edition 3 spec !JavaScript (Basically !JavaScript v 1.5, since only Firefox and Chrome supports 1.6 or above)
-
-====6. Err... Browser Support?====
+====5. Err... Browser Support?====
 
 Log Hound is being coded to work perfectly in Firefox, Chrome, Opera, and probably Safari if it doesn't tick me off.  As for IE, well, I'll make an effort.  The point is that W3C standards come first.  Crappy maniacal insecure monopoly-driven browsers come second. See our [CompatibilityMatrix compatibility matrix] for more.
 
-====7. But Internet Explorer has 99% of the market!====
+====6. But Internet Explorer has 99% of the market!====
 
 No.  It doesn't.  Internet Explorer's market share world wide dropped below 50% as of October 2010.  That's what Microsoft gets for driving Netscape out of the market, then cutting the IE development team to one person for three years (basically proof that they only cared about keeping their desktop monopoly safe, not about building a good browser).
 
 Look - I've wasted almost half my time on this project trying to get the damned thing to look right in IE, instead of actually improving the functionality. Chrome, Opera, Safari, and Firefox all work with the same code, so why can't Internet Explorer?  So I've made a decision to stop worrying about it and to concentrate on building a really good tool that works on standards compliant browsers.  If someone comes along who wants to help fix the IE look and feel, I will welcome them with open arms (and probably pay them too!), otherwise, I'll make it look passable in IE.  But seriously, screw Microsoft.
+
+====7. What does it depend on?====
+
+Everything Log Hound depends on is included in the zip package.  There's no dependency on JQuery, Prototype, or any other !JavaScript framework.  Log Hound uses 100% pure ECMA-262 edition 3 spec !JavaScript (Basically !JavaScript v 1.5, since only Firefox and Chrome supports 1.6 or above)
 
 ====8. What about _{insert favourite JS framework name here}_??? Why did you bother not just using _{framework name here again to up its google score}_?  You are an idiot and wasting time if you don't use _{name framework for third time to summon its planar avatar to destroy non-utilizing projects}_ instead of writing all that lame JS code.====
 
