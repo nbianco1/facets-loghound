@@ -17,7 +17,7 @@ Translated into cyber-colloquial terms: it throws strings at a floating div and 
 
 A simple example of logging a message would look something like this:
 {{{
-window.logHound.logWarn('This is a warning message.',['methodName()','anotherTag']);
+window.logHound.logWarn('This is a warning message.',['methodName','anotherTag']);
 }}}
 
 ====5. What does it depend on?====
