@@ -28,7 +28,13 @@ Everything Log Hound depends on is included in the zip package.  There's no depe
 
 Log Hound is being coded to work perfectly in Firefox, Chrome, Opera, and probably Safari if it doesn't tick me off.  As for IE, well, I'll make an effort.  The point is that W3C standards come first.  Crappy maniacal insecure monopoly-driven browsers come second. See our [CompatibilityMatrix compatibility matrix] for more.
 
-====7. What about _{insert favourite JS framework name here}_??? Why did you bother not just using _{framework name here again to up its google score}_?  You are an idiot and wasting time if you don't use _{name framework for third time to summon its planar avatar to destroy non-utilizing projects}_ instead of writing all that lame JS code.====
+====7. But Internet Explorer has 99% of the market!====
+
+No.  It doesn't.  Internet Explorer's market share world wide dropped below 50% as of October 2010.  That's what Microsoft gets for driving Netscape out of the market, then cutting the IE development team to one person for three years (basically proof that they only cared about keeping their desktop monopoly safe, not about building a good browser).
+
+Look - I've spend almost half my time on this project trying to get the damned thing to look right in IE, instead of actually improving the functionality. Chrome, Opera, Safari, and Firefox all work with the same code, so why can't Internet Explorer?  So I've made a decision to stop worrying about it and to concentrate on building a really good tool that works on standards compliant browsers.  If someone comes along who wants to help fix the IE look and feel, I will welcome them with open arms (and probably pay them too!), otherwise, I'll make it look passable in IE.  But seriously, screw Microsoft.
+
+====8. What about _{insert favourite JS framework name here}_??? Why did you bother not just using _{framework name here again to up its google score}_?  You are an idiot and wasting time if you don't use _{name framework for third time to summon its planar avatar to destroy non-utilizing projects}_ instead of writing all that lame JS code.====
 
 {Sigh}.  Let's get one thing straight - I, and any competent !JavaScript coder, can do anything with standard JS that you can do with your awesome framework.  The ONLY things frameworks like JQuery and Prototype give you is some brevity of code and respite from having to figure out some browser quirks on your own.
 
