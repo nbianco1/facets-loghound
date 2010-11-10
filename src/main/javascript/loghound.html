@@ -35,7 +35,7 @@ function addLogLevels() {
     var level;
     for(idx = 0; idx<LogHoundLevels.length; idx++) {
         level = LogHoundLevels[idx];
-        lvlSelect.options[lvlSelect.length] = new Option(level.getText(),level.getId());
+        lvlSelect.options[lvlSelect.length] = new Option(level.getName(),level.getId());
     }
 }
 function enterLogMessage() {
@@ -123,7 +123,7 @@ body {
     padding-left: 10px;
 }
 #logGeneratorPlate {
-	overflow: auto;
+	/* overflow: auto; */
 }
 #genHeader {
 	margin-bottom: 15px;
@@ -197,7 +197,7 @@ body {
     width: 150px;
 }
 .outline {
-     /* border: 1px solid black; */
+    /* border: 1px solid black; */
 }
 .descHeader {
     margin-bottom: 2px;
