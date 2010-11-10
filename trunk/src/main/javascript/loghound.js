@@ -47,25 +47,42 @@ LogHoundVer.getShortText = function() {
  * Object array defining all the log level objects and their specific attributes.
  */
 var LogHoundLevels = [];
-LogHoundLevels.getByText = function(text) {
+/**
+ * @param {String} name The name of the log level to retrieve.
+ * @returns {LogHoundLevel} The retrieved log level, or <code>null</code> if
+ * no match for the argumented name was found.
+ */
+LogHoundLevels.getByName = function(name) {
     for(idx=0; idx<this.length; idx++) {
-        if(this[idx].getText() == text) {
+        if(this[idx].getName() == name) {
             return this[idx];
         }
     }
+    return null;
 };
+/**
+ * @param {integer} id The ID of the log level to retrieve.
+ * @returns {LogHoundLevel} The retrieved log level, or <code>null</code> if
+ * no match for the argumented ID was found.
+ */
 LogHoundLevels.getById = function(id) {
     for(idx=0; idx<this.length; idx++) {
         if(this[idx].getId() == id) {
             return this[idx];
         }
     }
+    return null;
 };
+/**
+ * @param {integer,String} level The ID or name of the log level to retrieve.
+ * @returns {LogHoundLevel} The retrieved log level, or <code>null</code> if
+ * no match for the argumented level indicator was found.
+ */
 LogHoundLevels.getLevel = function(level) {
     if((typeof level)=='number') {
         return this.getById(level);
     } else if((typeof level)=='string') {
-        return this.getByText(level);
+        return this.getByName(level);
     } else if(!(level instanceof LogHoundLevel)) {
         return null;
     }
@@ -79,7 +96,7 @@ LogHoundLevels.getLevel = function(level) {
 LogHoundLevels.addLevel = function(newLevelFn) {
     FctsTools.extend(newLevelFn, LogHoundLevel);
     var newLevel = new newLevelFn();
-    LogHoundLevels[newLevel.getText().toUpperCase()] = newLevel;
+    LogHoundLevels[newLevel.getName().toUpperCase()] = newLevel;
     LogHoundLevels.push(newLevel);
 };
 /**
@@ -94,15 +111,29 @@ function LogHoundLevel(id, text, enabled) {
     this.text = text;
     this.enabled = enabled;
 }
+/**
+ * @returns {integer} The ID number of the log level.
+ */
 LogHoundLevel.prototype.getId = function() {
     return this.id;
 };
-LogHoundLevel.prototype.getText = function() {
+/**
+ * @returns {String} The log level name or label.
+ */
+LogHoundLevel.prototype.getName = function() {
     return this.text;
 };
+/**
+ * @returns {boolean} <code>true</code> if the log level is enabled, otherwise
+ * <code>false</code>.
+ */
 LogHoundLevel.prototype.isEnabled = function() {
     return this.enabled;
 };
+/**
+ * @param {boolean} <code>true</code> if the log level should be enabled,
+ * otherwise <code>false</code>.
+ */
 LogHoundLevel.prototype.setEnabled = function(enable) {
     this.enabled = enable;
 };
@@ -161,7 +192,7 @@ LogHoundLevels.getLogLevelObject = function(name) {
     if(name==null) { return null; }
     name = name.toLowerCase();
     for(idx=0; idx<LogHoundLevels.length; idx++) {
-        if(LogHoundLevels[idx].getText()==name) {
+        if(LogHoundLevels[idx].getName()==name) {
             return LogHoundLevels[idx];
         }
     }
@@ -353,7 +384,7 @@ LogHound.prototype.doSetup = function() {
     var level;
     for(idx = 0; idx<LogHoundLevels.length; idx++) {
         level = LogHoundLevels[idx];
-        lvlSelect.options[lvlSelect.length] = new Option(level.getText(),level.getId());
+        lvlSelect.options[lvlSelect.length] = new Option(level.getName(),level.getId());
     }
     FctsTools.sortOptionsByValue(lvlSelect,function(o1,o2) {
         return parseInt(o2,10)-parseInt(o1,10);
@@ -597,8 +628,14 @@ LogHound.prototype.setTagFilterMode = function(mode) {
     this.applyMsgFilters();
 };
 /**
- * @param {boolean} killSwitch Set to true to completely disable Log Hound.
- * Calls to doSetup() will have no effect.  Otherwise, set to false to enable.
+ * When set to <code>true</code> Log Hound will be completely blocked from
+ * being initialised via the doSetup() function.  This function is usually
+ * used to prevent Log Hound from initilising on a global basis in instances
+ * where your code is in an environment that you do not want the Log Hound UI
+ * to be seen: the public version of your site as opposed to the development
+ * version of your site, for instance.
+ * @param {boolean} killSwitch Set to true to block Log Hound from being
+ * initialised.
  */
 LogHound.prototype.setKillSwitch = function(killSwitch) {
     if(killSwitch!=null && killSwitch==false) {
@@ -749,7 +786,9 @@ LogHound.prototype.addMsgFilter = function(newFilter) {
     this.msgFilters.push(newFilter);
 };
 /**
- * Applies all the currently active message filters to the displayed message rows.
+ * Applies all the currently active message filters to the displayed message
+ * rows.
+ * @private
  */
 LogHound.prototype.applyMsgFilters = function() {
     var ts = (new Date()).getTime();
@@ -1033,12 +1072,12 @@ LogHound.prototype.log = function() {
 
     // Add message to display
     var msgElmt = document.createElement('DIV');
-    var levelText = msgRec['level'].getText().charAt(0).toUpperCase() + msgRec['level'].getText().slice(1);
+    var levelText = msgRec['level'].getName().charAt(0).toUpperCase() + msgRec['level'].getName().slice(1);
     var msgId = 'logmsg'+msgRec['number'];
     msgElmt.setAttribute('id', msgId);
     msgElmt.setAttribute('class','lh'+levelText+'Msg logMsg');
     msgElmt.setAttribute('className','lh'+levelText+'Msg logMsg');
-    msgElmt.setAttribute('lhLogLevel', msgRec['level'].getText());
+    msgElmt.setAttribute('lhLogLevel', msgRec['level'].getName());
     msgElmt.style.display = (msgRec['level'].isEnabled()==true ? 'block' : 'none');
 
     var msgText = msgRec['text'];
@@ -1052,14 +1091,13 @@ LogHound.prototype.log = function() {
     }
 
     var msgFullEntryDisp = ((this.msgDispMode=='detail') ? 'block' : 'none');
-    var msgFullEntry = '<table cellspacing="0" id="lhMsgDetail_'+msgRec['number']+'" class="lhMsgRecDetail" style="display:'+msgFullEntryDisp+';"><tr>';
-    msgFullEntry +=    '<td class="lhMsgNum lhMsgElmt lhSmFont">'+msgRec['number']+'</td>';
-    msgFullEntry +=    '<td class="lhMsgLvl lhMsgElmt lhSmFont">'+msgRec['level'].getText()+'</td>';
-    msgFullEntry +=    '<td class="lhMsgTime lhMsgElmt lhSmFont">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
-    msgFullEntry +=    '<td class="lhMsgTags lhMsgElmt lhSmFont">'+((msgRec['tags'] instanceof Array) ? msgRec['tags'] : '')+'</td>';
-    msgFullEntry +=    '</tr><tr>';
-    msgFullEntry +=    '<td colspan="4" class="lhMsgTxtFull lhMsgElmt lhFont" style="width: 100%;">'+msgText+'</td>';
-    msgFullEntry +=    '</tr></table>';
+    var msgFullEntry = '<div id="lhMsgDetail_'+msgRec['number']+'" class="lhMsgRecDetail" style="display:'+msgFullEntryDisp+';">';
+    msgFullEntry +=    '<div class="lhMsgNum2 lhMsgElmt lhSmFont">'+msgRec['number']+'</div>';
+    msgFullEntry +=    '<div class="lhMsgLvl2 lhMsgElmt lhSmFont">'+msgRec['level'].getName()+'</div>';
+    msgFullEntry +=    '<div class="lhMsgTime2 lhMsgElmt lhSmFont">'+this.getTimestampText(msgRec['timestamp'])+'</div>';
+    msgFullEntry +=    '<div class="lhMsgTags2 lhMsgElmt lhSmFont">'+((msgRec['tags'] instanceof Array) ? msgRec['tags'] : '')+'</div>';
+    msgFullEntry +=    '<div class="lhMsgTxtFull2 lhMsgElmt lhFont">'+msgText+'</div>';
+    msgFullEntry +=    '</div>';
 
     var msgEntryDisp = ((this.msgDispMode=='brief') ? 'block' : 'none');
     var msgEntry = '<table cellspacing="0" id="lhMsgBrief_'+msgRec['number']+'" class="lhMsgRecBrief" style="display:'+msgEntryDisp+'"><tr>';

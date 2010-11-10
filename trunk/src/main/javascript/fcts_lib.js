@@ -182,7 +182,7 @@ FctsTools.getOptionValues = function(selectElmt) {
 };
 FctsTools.isBlankRegex = new RegExp('^[ \t]+$');
 FctsTools.isBlank = function(target) {
-    return (target==null || target=='' || this.isBlankRegex.test(target));
+    return ((typeof target)=='undefined' || target==null || target=='' || this.isBlankRegex.test(target));
 };
 FctsTools.sortOptionsByValue = function(selectElmt, sortFn) {
     var optionTemp = new Array();
@@ -198,6 +198,10 @@ FctsTools.sortOptionsByValue = function(selectElmt, sortFn) {
                 return 0;
             } else if(FctsTools.isBlank(o1) || FctsTools.isBlank(o2)) {
                 return (FctsTools.isBlank(o1) ? -1 : 1);
+            }
+            if(document.all) { // IE sucks ass.
+                o1 = new String(o1);
+                o2 = new String(o2);
             }
             o1 = o1.toLowerCase();
             o2 = o2.toLowerCase();
@@ -236,6 +240,10 @@ FctsTools.sortOptionsByText = function(selectElmt, sortFn) {
                 return 0;
             } else if(FctsTools.isBlank(o1) || FctsTools.isBlank(o2)) {
                 return (FctsTools.isBlank(o1) ? -1 : 1);
+            }
+            if(document.all) { // IE sucks ass.
+                o1 = new String(o1);
+                o2 = new String(o2);
             }
             o1 = o1.toLowerCase();
             o2 = o2.toLowerCase();

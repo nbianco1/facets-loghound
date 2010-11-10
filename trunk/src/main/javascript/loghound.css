@@ -182,23 +182,64 @@
     position: relative;
     overflow: hidden;
 }
+.lhMsgPad {
+    display: inline;
+    padding: 5px;
+}
+.lhMsgRecDetail {
+    padding: 0px;
+    margin: 0px;
+    border-collapse: collapse;
+}
 .lhMsgElmt {
     font-size: 7pt;
-    padding: 1px 2px;
+    padding: 0px;
     margin: 0px;
+}
+.lhMsgNum2 {
+    border-right: 1px #AAAAAA solid;
+    display: inline-block;
+  * display: inline;
+    width: 30px;
+    padding: 1px;
 }
 .lhMsgNum {
     border-right: 1px #AAAAAA solid;
     width: 30px;
 }
+.lhMsgLvl2 {
+    border-right: 1px #AAAAAA solid;
+    display: inline-block;
+  * display: inline;
+    width: 35px;
+    padding: 1px;
+}
 .lhMsgLvl {
     border-right: 1px #AAAAAA solid;
     width: 40px;
 }
+.lhMsgTime2 {
+    border-right: 1px #AAAAAA solid;
+    display: inline-block;
+  * display: inline;
+    padding: 1px;
+}
 .lhMsgTime {
     border-right: 1px #AAAAAA solid;
     text-align: center;
-    width: 8em;
+    width: 8.2em;
+}
+.lhMsgTags2 {
+    display: inline-block;
+  * display: inline;
+    padding: 1px;
+}
+.lhMsgTxtFull2 {
+    border-top: 1px #AAAAAA solid;
+    word-wrap: break-word;
+    white-space: normal;
+    overflow-x: auto;
+    padding: 2px;
 }
 .lhMsgTxt {
     word-wrap: break-word;
