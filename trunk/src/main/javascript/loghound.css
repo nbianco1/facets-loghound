@@ -176,11 +176,14 @@
     overflow: visible;
     overflow-x: hidden;
     overflow-y: scroll;
-    display: none;
 }
 #lhPlateBody {
     position: relative;
     overflow: hidden;
+}
+#lhInterfaceBody {
+    margin: 0px;
+    padding: 0px;
 }
 .lhMsgPad {
     display: inline;

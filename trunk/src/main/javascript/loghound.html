@@ -16,6 +16,12 @@ function changeMsgLayout() {
     var selectElmt = document.getElementById('msgLayoutSelect');
     window.logHound.setMessageLayout(selectElmt.options[selectElmt.selectedIndex].value);
 }
+function toggleLogging() {
+    window.logHound.enableLogging(document.getElementById('enableChkBx').checked);
+}
+function toggleShadeMode() {
+    window.logHound.setShadeMode(document.getElementById('shadeChkBx').checked);
+}
 function showClicked() {
     window.logHound.show(document.getElementById('showChkBx').checked);
 }
@@ -59,7 +65,6 @@ function enterLogMessage() {
     window.logHound.log(LogHoundLevels.getById(levelId),msg,tagArray,error);
 }
 function onBodyLoad() {
-    LogHoundLevels.getLogLevelObject();
     window.logHound.doSetup();
     window.logHound.setLogLevel(LogHoundLevels['TRACE']);
     document.getElementById('lhVersion').innerHTML = '(v'+LogHoundVer.getLongText()+')';
@@ -75,6 +80,10 @@ function onBodyLoad() {
     window.logHound.logInfo('Info: Long line handling?: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',['Defect']);
     document.getElementById('showChkBx').onclick = showClicked;
     document.getElementById('showChkBx').checked = (window.logHound.isShowing() ? 1 : 0);
+    document.getElementById('enableChkBx').onclick = toggleLogging;
+    document.getElementById('enableChkBx').checked = (window.logHound.isLoggingEnabled() ? 1 : 0);
+    document.getElementById('shadeChkBx').onclick = toggleShadeMode;
+    document.getElementById('shadeChkBx').checked = (window.logHound.isShaded() ? 1 : 0);
     document.getElementById('msgLayoutSelect').onchange = changeMsgLayout;
     return true;
 }
@@ -216,6 +225,9 @@ body {
 }
 #showCtrlPlate {
 }
+.nextApiExample {
+    margin-top: 5px;
+}
 #msgLayoutCtrlPlate {
     margin-top: 5px;
 }
@@ -225,7 +237,7 @@ body {
 }
 .codeEx {
     border: 1px solid black;
-    background-color: #FFC5EE;
+    background-color: #FFDDEE;
     padding: 2px;
     margin: 3px 20px;
 }
@@ -293,12 +305,22 @@ body {
 <div class="floatingDivider"><hr /></div>
 <div id="apiExamplePlate">
     <span id="genHeader">API Examples</span>
+    <div id="shadeCtrlPlate" class="outline ctrlPlate">
+        <label class="outline">Shade mode:
+        <input type="checkbox" id="shadeChkBx" name="shadeChkBx" class="checkbox" value="false" /></label>
+        <pre class="outline codeEx">window.logHound.setShadeMode()</pre>
+    </div>
     <div id="showCtrlPlate" class="outline ctrlPlate">
         <label class="outline">Show:
         <input type="checkbox" id="showChkBx" name="showChkBx" class="checkbox" value="false" /></label>
         <pre class="outline codeEx">window.logHound.show()</pre>
     </div>
-    <div id="msgLayoutCtrlPlate" class="outline ctrlPlate">
+    <div id="enableLogPlate" class="outline ctrlPlate nextApiExample">
+        <label class="outline">Enable Logging:
+        <input type="checkbox" id="enableChkBx" name="enableChkBx" class="checkbox" value="true" /></label>
+        <pre class="outline codeEx">window.logHound.enableLogging()</pre>
+    </div>
+    <div id="msgLayoutCtrlPlate" class="outline ctrlPlate nextApiExample">
         <label class="outline">Change message layout:
             <select id="msgLayoutSelect" class="mainFont" name="msgLayoutSelect">
                 <option value="brief">brief</option>
