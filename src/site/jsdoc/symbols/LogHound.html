@@ -203,6 +203,8 @@ ul.inheritsList
 	
 	<li><a href="../symbols/LogHoundLevel.html">LogHoundLevel</a></li>
 	
+	<li><a href="../symbols/LogHoundLevels.html">LogHoundLevels</a></li>
+	
 	<li><a href="../symbols/LogHoundMessageFilter.html">LogHoundMessageFilter</a></li>
 	
 	<li><a href="../symbols/LogHoundMessageLevelFilter.html">LogHoundMessageLevelFilter</a></li>
@@ -210,6 +212,8 @@ ul.inheritsList
 	<li><a href="../symbols/LogHoundMessageTagFilter.html">LogHoundMessageTagFilter</a></li>
 	
 	<li><a href="../symbols/LogHoundTextSearchFilter.html">LogHoundTextSearchFilter</a></li>
+	
+	<li><a href="../symbols/LogHoundVer.html">LogHoundVer</a></li>
 	
 	<li><a href="../symbols/TraceLogHoundLevel.html">TraceLogHoundLevel</a></li>
 	
@@ -302,24 +306,6 @@ array.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/LogHound.html#addTags">addTags</a></b>(tagz)
-								</div>
-								<div class="description"></div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/LogHound.html#applyMsgFilters">applyMsgFilters</a></b>()
-								</div>
-								<div class="description">Applies all the currently active message filters to the displayed message rows.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&nbsp;</td>
-							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/LogHound.html#doSetup">doSetup</a></b>()
 								</div>
 								<div class="description">Performs the main setup for the Log Hound application.</div>
@@ -356,6 +342,33 @@ array.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/LogHound.html#getMessageLayout">getMessageLayout</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/LogHound.html#isLoggingEnabled">isLoggingEnabled</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/LogHound.html#isShaded">isShaded</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/LogHound.html#isShowing">isShowing</a></b>()
 								</div>
 								<div class="description"></div>
@@ -365,7 +378,7 @@ array.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/LogHound.html#log">log</a></b>(level, message)
+								<div class="fixedFont"><b><a href="../symbols/LogHound.html#log">log</a></b>(---, ---, ---, ---)
 								</div>
 								<div class="description">Main logging function - this is where all log messages go to die.</div>
 							</td>
@@ -374,9 +387,64 @@ array.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/LogHound.html#moveTagAssignments">moveTagAssignments</a></b>(action)
+								<div class="fixedFont"><b><a href="../symbols/LogHound.html#logDebug">logDebug</a></b>(---, ---, ---)
 								</div>
-								<div class="description"></div>
+								<div class="description">Logs a message at the "debug" level.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/LogHound.html#logError">logError</a></b>(---, ---, ---)
+								</div>
+								<div class="description">Logs a message at the "error" level.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/LogHound.html#logFatal">logFatal</a></b>(---, ---, ---)
+								</div>
+								<div class="description">Logs a message at the "fatal" level.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/LogHound.html#logInfo">logInfo</a></b>(---, ---, ---)
+								</div>
+								<div class="description">Logs a message at the "info" level.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/LogHound.html#logTrace">logTrace</a></b>(---, ---, ---)
+								</div>
+								<div class="description">Logs a message at the "trace" level.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/LogHound.html#logWarn">logWarn</a></b>(---, ---, ---)
+								</div>
+								<div class="description">Logs a message at the "warn" level.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/LogHound.html#search">search</a></b>(textToMatch)
+								</div>
+								<div class="description">Iterates through all visible messages and hides any that do not match the
+argumented string.</div>
 							</td>
 						</tr>
 					
@@ -385,7 +453,8 @@ array.</div>
 							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/LogHound.html#setKillSwitch">setKillSwitch</a></b>(killSwitch)
 								</div>
-								<div class="description"></div>
+								<div class="description">When set to <code>true</code> Log Hound will be completely blocked from
+being initialised via the doSetup() function.</div>
 							</td>
 						</tr>
 					
@@ -410,10 +479,66 @@ array.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/LogHound.html#setMessagePaneSize">setMessagePaneSize</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/LogHound.html#setShadeMode">setShadeMode</a></b>(shade)
+								</div>
+								<div class="description">Controls whether or not the Log Hound user interface is in "shade mode",
+where only the header strip is visible in order to stay out of the user's
+way.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/LogHound.html#show">show</a></b>(show)
 								</div>
 								<div class="description">If set to a value that equates to 'true', the Log Hound UI will be shown on
 the page.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/LogHound.html#showMessageLevel">showMessageLevel</a></b>(level, show)
+								</div>
+								<div class="description">Shows or hides all messages for the specified level.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/LogHound.html#toggleCtrlPanel">toggleCtrlPanel</a></b>(cmd)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/LogHound.html#toggleHelpPanel">toggleHelpPanel</a></b>(cmd)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/LogHound.html#toggleTagCtrlPanel">toggleTagCtrlPanel</a></b>(cmd)
+								</div>
+								<div class="description"></div>
 							</td>
 						</tr>
 					
@@ -545,74 +670,6 @@ internal array.</dd>
 
 					<hr />
 				
-					<a name="addTags"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>addTags</b>(tagz)
-					
-					</div>
-					<div class="description">
-						
-						
-						
-					</div>
-					
-					
-					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<b>tagz</b>
-									
-								</dt>
-								<dd></dd>
-							
-							</dl>
-						
-						
-						
-						
-						
-							<dl class="detailList">
-							<dt class="heading">Returns:</dt>
-							
-								<dd>true if all the argumented tags were accepted, otherwise false.</dd>
-							
-							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name="applyMsgFilters"> </a>
-					<div class="fixedFont">
-					
-					
-					<b>applyMsgFilters</b>()
-					
-					</div>
-					<div class="description">
-						Applies all the currently active message filters to the displayed message rows.
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
-						
-						
-						
-
-					<hr />
-				
 					<a name="doSetup"> </a>
 					<div class="fixedFont">
 					
@@ -662,10 +719,11 @@ turned "off".
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>enable</b>
+									<span class="light fixedFont">{boolean}</span> <b>enable</b>
 									
 								</dt>
-								<dd>Set to "true" to enable logging, otherwise "false"</dd>
+								<dd>Set to <code>true</code to enable logging, otherwise
+<code>false</code>.</dd>
 							
 							</dl>
 						
@@ -681,7 +739,7 @@ turned "off".
 					<a name="filterMsg"> </a>
 					<div class="fixedFont">
 					
-					
+					<span class="light">{boolean}</span>
 					<b>filterMsg</b>(msgRec)
 					
 					</div>
@@ -698,10 +756,10 @@ turned "off".
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>msgRec</b>
+									<span class="light fixedFont">{String[]}</span> <b>msgRec</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>The target string array message record.</dd>
 							
 							</dl>
 						
@@ -712,8 +770,9 @@ turned "off".
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd>true if the message record should be visible based on the currently
-active filters, false if the record should not be visible.</dd>
+								<dd><span class="light fixedFont">{boolean}</span> <code>true</code> if the message record should be visible
+based on the currently active filters, <code>false</code> if the record
+should not be visible.</dd>
 							
 							</dl>
 						
@@ -747,6 +806,105 @@ active filters, false if the record should not be visible.</dd>
 							
 								<dd><span class="light fixedFont">{<a href="../symbols/LogHoundLevel.html">LogHoundLevel</a>}</span> The current logging level in the form of a
 LogHoundLevel object.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getMessageLayout"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{String}</span>
+					<b>getMessageLayout</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> The current message layout.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="isLoggingEnabled"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{boolean}</span>
+					<b>isLoggingEnabled</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{boolean}</span> <code>true</code> if logging is enabled.  This includes
+if the kill switch is disabled as well.  If logging is disabled or the kill
+switch is enabled, returns <code>false</code>.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="isShaded"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{boolean}</span>
+					<b>isShaded</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{boolean}</span> <code>true</code> if the interface is in shade mode,
+otherwise <code>false</code>.</dd>
 							
 							</dl>
 						
@@ -791,12 +949,14 @@ otherwise <code>false</code>.</dd>
 					<a name="log"> </a>
 					<div class="fixedFont">
 					
-					
-					<b>log</b>(level, message)
+					<span class="light">{boolean}</span>
+					<b>log</b>(---, ---, ---, ---)
 					
 					</div>
 					<div class="description">
-						Main logging function - this is where all log messages go to die... or be displayed.
+						Main logging function - this is where all log messages go to die... or be
+displayed. The arguments for this method are handled by a special argument
+parser, so the order of the arguments does not matter.
 						
 						
 					</div>
@@ -808,16 +968,28 @@ otherwise <code>false</code>.</dd>
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>level</b>
+									<span class="light fixedFont">{<a href="../symbols/LogHoundLevel.html">LogHoundLevel</a>}</span> <b>---</b>
 									
 								</dt>
 								<dd>The log level of the message.</dd>
 							
 								<dt>
-									<b>message</b>
+									<span class="light fixedFont">{String}</span> <b>---</b>
 									
 								</dt>
-								<dd>The log message.</dd>
+								<dd>The message to be logged.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String[]}</span> <b>---</b>
+									
+								</dt>
+								<dd>An array of string tags to assign to the message.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Error}</span> <b>---</b>
+									
+								</dt>
+								<dd>A javascript error to parse and display.</dd>
 							
 							</dl>
 						
@@ -825,20 +997,29 @@ otherwise <code>false</code>.</dd>
 						
 						
 						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{boolean}</span> <code>true</code> if the message was logged, or</dd>
+							
+							</dl>
+						
 						
 						
 
 					<hr />
 				
-					<a name="moveTagAssignments"> </a>
+					<a name="logDebug"> </a>
 					<div class="fixedFont">
 					
-					
-					<b>moveTagAssignments</b>(action)
+					<span class="light">{boolean}</span>
+					<b>logDebug</b>(---, ---, ---)
 					
 					</div>
 					<div class="description">
-						
+						Logs a message at the "debug" level.  The arguments for this method are
+handled by a special argument parser, so the order of the arguments does
+not matter.
 						
 						
 					</div>
@@ -850,16 +1031,358 @@ otherwise <code>false</code>.</dd>
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>action</b>
+									<span class="light fixedFont">{String}</span> <b>---</b>
 									
 								</dt>
-								<dd>Can be one of four values:
-<ul>
-    <li>'add' adds any selected tags from the available list to the "view" list.</li>
-    <li>'addAll' adds all tags from the available list to the "view" list.</li>
-    <li>'rem' removes any selected tags from the view list.</li>
-    <li>'remAll' removes all tags from the view list.</li>
-</ul></dd>
+								<dd>The message to be logged.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String[]}</span> <b>---</b>
+									
+								</dt>
+								<dd>An array of string tags to assign to the message.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Error}</span> <b>---</b>
+									
+								</dt>
+								<dd>A javascript error to parse and display.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{boolean}</span> <code>true</code> if the message was logged, or
+<code>false</code> if the message was rejected for some reason.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="logError"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{boolean}</span>
+					<b>logError</b>(---, ---, ---)
+					
+					</div>
+					<div class="description">
+						Logs a message at the "error" level.  The arguments for this method are
+handled by a special argument parser, so the order of the arguments does
+not matter.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>---</b>
+									
+								</dt>
+								<dd>The message to be logged.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String[]}</span> <b>---</b>
+									
+								</dt>
+								<dd>An array of string tags to assign to the message.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Error}</span> <b>---</b>
+									
+								</dt>
+								<dd>A javascript error to parse and display.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{boolean}</span> <code>true</code> if the message was logged, or
+<code>false</code> if the message was rejected for some reason.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="logFatal"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{boolean}</span>
+					<b>logFatal</b>(---, ---, ---)
+					
+					</div>
+					<div class="description">
+						Logs a message at the "fatal" level.  The arguments for this method are
+handled by a special argument parser, so the order of the arguments does
+not matter.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>---</b>
+									
+								</dt>
+								<dd>The message to be logged.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String[]}</span> <b>---</b>
+									
+								</dt>
+								<dd>An array of string tags to assign to the message.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Error}</span> <b>---</b>
+									
+								</dt>
+								<dd>A javascript error to parse and display.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{boolean}</span> <code>true</code> if the message was logged, or
+<code>false</code> if the message was rejected for some reason.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="logInfo"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{boolean}</span>
+					<b>logInfo</b>(---, ---, ---)
+					
+					</div>
+					<div class="description">
+						Logs a message at the "info" level.  The arguments for this method are
+handled by a special argument parser, so the order of the arguments does
+not matter.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>---</b>
+									
+								</dt>
+								<dd>The message to be logged.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String[]}</span> <b>---</b>
+									
+								</dt>
+								<dd>An array of string tags to assign to the message.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Error}</span> <b>---</b>
+									
+								</dt>
+								<dd>A javascript error to parse and display.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{boolean}</span> <code>true</code> if the message was logged, or
+<code>false</code> if the message was rejected for some reason.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="logTrace"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{boolean}</span>
+					<b>logTrace</b>(---, ---, ---)
+					
+					</div>
+					<div class="description">
+						Logs a message at the "trace" level.  The arguments for this method are
+handled by a special argument parser, so the order of the arguments does
+not matter.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>---</b>
+									
+								</dt>
+								<dd>The message to be logged.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String[]}</span> <b>---</b>
+									
+								</dt>
+								<dd>An array of string tags to assign to the message.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Error}</span> <b>---</b>
+									
+								</dt>
+								<dd>A javascript error to parse and display.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{boolean}</span> <code>true</code> if the message was logged, or
+<code>false</code> if the message was rejected for some reason.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="logWarn"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{boolean}</span>
+					<b>logWarn</b>(---, ---, ---)
+					
+					</div>
+					<div class="description">
+						Logs a message at the "warn" level.  The arguments for this method are
+handled by a special argument parser, so the order of the arguments does
+not matter.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>---</b>
+									
+								</dt>
+								<dd>The message to be logged.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String[]}</span> <b>---</b>
+									
+								</dt>
+								<dd>An array of string tags to assign to the message.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{Error}</span> <b>---</b>
+									
+								</dt>
+								<dd>A javascript error to parse and display.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{boolean}</span> <code>true</code> if the message was logged, or
+<code>false</code> if the message was rejected for some reason.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="search"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>search</b>(textToMatch)
+					
+					</div>
+					<div class="description">
+						Iterates through all visible messages and hides any that do not match the
+argumented string.  Calling this function will overwrite any existing value
+in the search text box.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>textToMatch</b>
+									
+								</dt>
+								<dd>The text to search for in any visible messages.</dd>
 							
 							</dl>
 						
@@ -880,7 +1403,12 @@ otherwise <code>false</code>.</dd>
 					
 					</div>
 					<div class="description">
-						
+						When set to <code>true</code> Log Hound will be completely blocked from
+being initialised via the doSetup() function.  This function is usually
+used to prevent Log Hound from initilising on a global basis in instances
+where your code is in an environment that you do not want the Log Hound UI
+to be seen: the public version of your site as opposed to the development
+version of your site, for instance.
 						
 						
 					</div>
@@ -895,8 +1423,8 @@ otherwise <code>false</code>.</dd>
 									<span class="light fixedFont">{boolean}</span> <b>killSwitch</b>
 									
 								</dt>
-								<dd>Set to true to completely disable Log Hound.
-Calls to doSetup() will have no effect.  Otherwise, set to false to enable.</dd>
+								<dd>Set to true to block Log Hound from being
+initialised.</dd>
 							
 							</dl>
 						
@@ -996,6 +1524,72 @@ layout being changed, otherwise <code>false</code>.</dd>
 
 					<hr />
 				
+					<a name="setMessagePaneSize"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setMessagePaneSize</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setShadeMode"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setShadeMode</b>(shade)
+					
+					</div>
+					<div class="description">
+						Controls whether or not the Log Hound user interface is in "shade mode",
+where only the header strip is visible in order to stay out of the user's
+way.  If no argument or <code>null</code> is passed, this method acts as a
+toggle.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{boolean|null}</span> <b>shade</b>
+									
+								</dt>
+								<dd><code>true</code> if the user interface should
+roll up into shade mode, <code>false</code> for the user interface to roll
+out. <code>null</code> to toggle the mode.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
 					<a name="show"> </a>
 					<div class="fixedFont">
 					
@@ -1040,6 +1634,189 @@ All other values except <code>null</code> equate to false.</dd>
 						
 						
 
+					<hr />
+				
+					<a name="showMessageLevel"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>showMessageLevel</b>(level, show)
+					
+					</div>
+					<div class="description">
+						Shows or hides all messages for the specified level. If the 'show' argument
+is null or not passed in, this function will toggle the visibility of the
+specified level messages.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String|Number|<a href="../symbols/LogHoundLevel.html">LogHoundLevel</a>}</span> <b>level</b>
+									
+								</dt>
+								<dd>The log level to show, hide, or
+toggle.</dd>
+							
+								<dt>
+									<span class="light fixedFont">{String|boolean}</span> <b>show</b>
+									
+								</dt>
+								<dd><code>true</code> if you want the messages of
+the argumented level to be visible, <code>false</code> if you want to hide
+the level messages, or <code>null</code> or do not pass a value to toggle
+the target level's messages.
+<p>Values that equate to true:
+<ul>
+<li>true</li>
+<li>'true'</li>
+<li>'show'</li>
+</ul>
+All other values except <code>null</code> equate to false.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="toggleCtrlPanel"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>toggleCtrlPanel</b>(cmd)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>cmd</b>
+									
+								</dt>
+								<dd>Can be one of four strings: display, hide, toggle, or
+restore.
+<ul>
+<li>display:  Displays the panel.</li>
+<li>hide:     Hides the panel.</li>
+<li>toggle:   Toggles the panel from the saved state.</li>
+<li>restore:  Restores the panel to the saved state.</li>
+</ul></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="toggleHelpPanel"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>toggleHelpPanel</b>(cmd)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>cmd</b>
+									
+								</dt>
+								<dd>Can be one of four strings: display, hide, toggle, or restore.
+<ul>
+<li>display:  Displays the panel.</li>
+<li>hide:     Hides the panel.</li>
+<li>toggle:   Toggles the panel from the saved state.</li>
+<li>restore:  Restores the panel to the saved state.</li>
+</ul></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="toggleTagCtrlPanel"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>toggleTagCtrlPanel</b>(cmd)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>cmd</b>
+									
+								</dt>
+								<dd>Can be one of four strings: display, hide, toggle, or
+restore.
+<ul>
+<li>display:  Displays the panel.</li>
+<li>hide:     Hides the panel.</li>
+<li>toggle:   Toggles the panel from the saved state.</li>
+<li>restore:  Restores the panel to the saved state.</li>
+</ul></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
 					
 				
 			
@@ -1054,7 +1831,7 @@ All other values except <code>null</code> equate to false.</dd>
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Wed Nov 10 2010 10:03:18 GMT-0500 (EST)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Sun Nov 14 2010 15:15:23 GMT-0500 (EST)
 		</div>
 	</body>
 </html>

@@ -316,7 +316,7 @@ FctsTools.replaceStyleClass = function(elmt, remClass, addClass) {
     this.addStyleClass(elmt, addClass);
 };
 FctsTools.parseToBool = function(arg,altTrueArray) {
-    if(arg==null) { return null; }
+    if((typeof arg)=='undefined' || arg==null) { return null; }
     if((typeof arg)=='boolean') {
         return arg;
     }
@@ -332,4 +332,6 @@ FctsTools.parseToBool = function(arg,altTrueArray) {
     }
     return (arg=='true');
 };
-
+FctsTools.capitaliseFirstLetter = function(string) {
+    return string.charAt(0).toUpperCase()+string.slice(1).toLowerCase();
+}
