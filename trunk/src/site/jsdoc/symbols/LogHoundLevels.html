@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>JsDoc Reference - WarnLogHoundLevel</title>
+		<title>JsDoc Reference - LogHoundLevels</title>
 
 		<style type="text/css">
 			/* default.css */
@@ -228,17 +228,15 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
 			<h1 class="classTitle">
 				
-				Class WarnLogHoundLevel
+				Namespace LogHoundLevels
 			</h1>
 
 <!-- ============================== class summary ========================== -->			
 			<p class="description">
 				
-				<br />Extends
-					<a href="../symbols/LogHoundLevel.html">LogHoundLevel</a>.<br />
 				
 			
-				Warn log level.
+				Manager for LogHoundLevel objects.
 				
 				
 					<br /><i>Defined in: </i> <a href="../symbols/src/loghound.js.html">loghound.js</a>.
@@ -247,8 +245,8 @@ ul.inheritsList
 
 <!-- ============================== constructor summary ==================== -->			
 			
-			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class WarnLogHoundLevel.">
-				<caption>Class Summary</caption>
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class LogHoundLevels.">
+				<caption>Namespace Summary</caption>
 				<thead>
 					<tr>
 						<th scope="col">Constructor Attributes</th>
@@ -260,9 +258,9 @@ ul.inheritsList
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/WarnLogHoundLevel.html#constructor">WarnLogHoundLevel</a></b>()
+								<b><a href="../symbols/LogHoundLevels.html#constructor">LogHoundLevels</a></b>
 							</div>
-							<div class="description"></div>
+							<div class="description">Object array defining all the log level objects and their specific attributes.</div>
 						</td>
 					</tr>
 				</tbody>
@@ -276,11 +274,47 @@ ul.inheritsList
 			
 				
 				
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class LogHoundLevels.">
+					<caption>Method Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Method Attributes</th>
+							<th scope="col">Method Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">LogHoundLevels.<b><a href="../symbols/LogHoundLevels.html#.getById">getById</a></b>(id)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">LogHoundLevels.<b><a href="../symbols/LogHoundLevels.html#.getByName">getByName</a></b>(name)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&lt;static&gt; &nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">LogHoundLevels.<b><a href="../symbols/LogHoundLevels.html#.getLevel">getLevel</a></b>(level)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+					</tbody>
+				</table>
 				
 				
-				<dl class="inheritsList">
-				<dt>Methods borrowed from class <a href="../symbols/LogHoundLevel.html">LogHoundLevel</a>: </dt><dd><a href="../symbols/LogHoundLevel.html#getId">getId</a>, <a href="../symbols/LogHoundLevel.html#getName">getName</a>, <a href="../symbols/LogHoundLevel.html#isEnabled">isEnabled</a>, <a href="../symbols/LogHoundLevel.html#setEnabled">setEnabled</a></dd>
-				</dl>
 				
 			
 <!-- ============================== events summary ======================== -->
@@ -290,15 +324,15 @@ ul.inheritsList
 			
 			<div class="details"><a name="constructor"> </a>
 				<div class="sectionTitle">
-					Class Detail
+					Namespace Detail
 				</div>
 				
 				<div class="fixedFont">
-						<b>WarnLogHoundLevel</b>()
+						<b>LogHoundLevels</b>
 				</div>
 				
 				<div class="description">
-					
+					Object array defining all the log level objects and their specific attributes.
 					
 				</div>
 				
@@ -320,6 +354,143 @@ ul.inheritsList
 			
 
 <!-- ============================== method details ========================= -->		
+			
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+				
+					<a name=".getById"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{<a href="../symbols/LogHoundLevel.html">LogHoundLevel</a>}</span>
+					<span class="light">LogHoundLevels.</span><b>getById</b>(id)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{integer}</span> <b>id</b>
+									
+								</dt>
+								<dd>The ID of the log level to retrieve.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/LogHoundLevel.html">LogHoundLevel</a>}</span> The retrieved log level, or <code>null</code> if
+no match for the argumented ID was found.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".getByName"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{<a href="../symbols/LogHoundLevel.html">LogHoundLevel</a>}</span>
+					<span class="light">LogHoundLevels.</span><b>getByName</b>(name)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{String}</span> <b>name</b>
+									
+								</dt>
+								<dd>The name of the log level to retrieve.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/LogHoundLevel.html">LogHoundLevel</a>}</span> The retrieved log level, or <code>null</code> if
+no match for the argumented name was found.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name=".getLevel"> </a>
+					<div class="fixedFont">&lt;static&gt; 
+					
+					<span class="light">{<a href="../symbols/LogHoundLevel.html">LogHoundLevel</a>}</span>
+					<span class="light">LogHoundLevels.</span><b>getLevel</b>(level)
+					
+					</div>
+					<div class="description">
+						
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{Number|String}</span> <b>level</b>
+									
+								</dt>
+								<dd>The ID or name of the log level to retrieve.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/LogHoundLevel.html">LogHoundLevel</a>}</span> The retrieved log level, or <code>null</code> if
+no match for the argumented level indicator was found.</dd>
+							
+							</dl>
+						
+						
+						
+
+					
+				
 			
 			
 <!-- ============================== event details ========================= -->		
