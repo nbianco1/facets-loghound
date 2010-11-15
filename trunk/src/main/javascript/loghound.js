@@ -37,7 +37,7 @@ if(LogHoundVer['build'].length>5) {
 } else {
     LogHoundVer['build'] = '-';
 }
-LogHoundVer['release'] = 'beta 3';
+LogHoundVer['release'] = 'beta 4';
 /**
  * returns {String} The pretty-printed version, including the build number.
  */
@@ -414,19 +414,8 @@ LogHound.prototype.doSetup = function() {
         FctsTools.addStyleClass(btns[i],'lhBtnOut');
     }
     for(i=0; i<btns.length; i++) {
-        btns[i].onmouseover = function(event) {
-            FctsTools.removeStyleClass(this, 'lhBtnOut');
-            FctsTools.removeStyleClass(this, 'lhBtnOn');
-            FctsTools.addStyleClass(this, 'lhBtnOver');
-        };
-        btns[i].onmouseout = function(event) {
-            FctsTools.removeStyleClass(this, 'lhBtnOver');
-            if(this.lhBtnState=='on') {
-                FctsTools.addStyleClass(this, 'lhBtnOn');
-            } else {
-                FctsTools.replaceStyleClass(this, 'lhBtnOn', 'lhBtnOut');
-            }
-        };
+        btns[i].onmouseover = this.buttonMouseOver;
+        btns[i].onmouseout = this.buttonMouseOut;
         btns[i].lhBtnState = 'off';
     }
     document.getElementById('lhTagCtrlAddBtn').onclick = function(event) {
@@ -448,10 +437,11 @@ LogHound.prototype.doSetup = function() {
         window.logHound.showLessMessages();
     };
     var levelControls = document.getElementsByClassName('lhCtrlLvl');
+    var showMsgLvlFn = function(event) {
+        window.logHound.showMessageLevel(this.id.slice(9));
+    };
     for(idx=0; idx<levelControls.length; idx++) {
-        levelControls[idx].onclick = function(event) {
-            window.logHound.showMessageLevel(this.id.slice(9));
-        };
+        levelControls[idx].onclick = showMsgLvlFn;
     }
     document.getElementById('lhBtnShade').onclick = function(event) {
         window.logHound.setShadeMode();
@@ -524,6 +514,19 @@ LogHound.prototype.doSetup = function() {
     this.logInfo('Log Hound is online...');
     //var msg = 'document.body.clientWidth='+document.body.clientWidth+'<br/>document.documentElement.clientWidth='+document.documentElement.clientWidth+'<br/>window.innerWidth='+window.innerWidth+'<br/>document.body.scrollWidth='+document.body.scrollWidth+'<br/>document.body.offsetWidth='+document.body.offsetWidth;
     //this.logInfo(msg);
+};
+LogHound.prototype.buttonMouseOver = function(event) {
+    FctsTools.removeStyleClass(this, 'lhBtnOut');
+    FctsTools.removeStyleClass(this, 'lhBtnOn');
+    FctsTools.addStyleClass(this, 'lhBtnOver');
+};
+LogHound.prototype.buttonMouseOut = function(event) {
+    FctsTools.removeStyleClass(this, 'lhBtnOver');
+    if(this.lhBtnState=='on') {
+        FctsTools.addStyleClass(this, 'lhBtnOn');
+    } else {
+        FctsTools.replaceStyleClass(this, 'lhBtnOn', 'lhBtnOut');
+    }
 };
 /**
  * @param {String} mode The tag filter mode.  Must be one of four values:
@@ -845,13 +848,10 @@ LogHound.prototype.addMsgFilter = function(newFilter) {
  * @private
  */
 LogHound.prototype.applyMsgFilters = function() {
-    var ts = (new Date()).getTime();
-    var index = 0;
-    var targetMsgRow = null;
-    var showMsg = true;
     for(recIdx=0; recIdx<this.msgRecords.length; recIdx++) {
         this.msgRecords[recIdx]['element'].style.display = (this.filterMsg(this.msgRecords[recIdx]) ? 'block' : 'none');
     }
+    //var ts = (new Date()).getTime();
     //this.logTrace('Message filters applied in '+((new Date()).getTime()-ts)+'ms',['LogHound','applyMsgFilters()']);
 };
 /**
@@ -980,7 +980,25 @@ LogHound.prototype.toggleTagCtrlPanel = function(cmd) {
 /**
  *
  */
-LogHound.prototype.setMessagePaneSize = function() {
+LogHound.prototype.adjustMessagePaneSize = function(adjustment) {
+    adjustment = FctsTools.parseToBool(adjustment,['more']);
+    if((typeof size)==='boolean') {
+        adjustment = (size ? 75 : -75);
+    }
+    this.setMessagePaneSize(this.logPlateBodyBox.offsetHeight+adjustment);
+};
+/**
+ *
+ */
+LogHound.prototype.setMessagePaneSize = function(size) {
+    if(!this.initialised || !this.enabled) { return; }
+    var adjustment = 0;
+
+    if((typeof size)==='boolean') {
+        adjustment = (size ? 75 : -75);
+    } else if((typeof size)==='number') {
+        adjustment = size;
+    }
     if(!this.initialised || !this.enabled) { return; }
     shade = FctsTools.parseToBool(shade);
 };
@@ -1082,14 +1100,12 @@ LogHound.prototype.addTags = function(tagz) {
     var tagsSelect = document.getElementById('lhAvailTagsSelect');
     foundMatch:
     for(i=0;i<tagz.length; i++) {
-        for(allIdx in this.msgTags) {
-            var t1 = tagz[i].toLowerCase();
-            var t2 = this.msgTags[allIdx].toLowerCase();
-            if(tagz[i].toLowerCase()==this.msgTags[allIdx].toLowerCase()) {
+        for(j=0; j<this.msgTags.length; j++) {
+            if(tagz[i].toLowerCase()==this.msgTags[j].toLowerCase()) {
                continue foundMatch;
             }
         }
-        if(tagz[i]==null || tagz[i]=='') { continue; }
+        if(FctsTools.isBlank(tagz[i])) { continue; }
         this.msgTags.push(tagz[i]);
         tagsSelect.options[tagsSelect.length] = new Option(tagz[i], tagz[i]);
     }
@@ -1337,15 +1353,13 @@ LogHound.prototype.moveTagAssignments = function(action) {
  * @private
  */
 LogHound.prototype.getViewTags = function() {
-    var viewSelect = document.getElementById('lhViewTagsSelect');
-    return FctsTools.getOptionValues(viewSelect);
+    return FctsTools.getOptionValues(document.getElementById('lhViewTagsSelect'));
 };
 /**
  * @private
  */
 LogHound.prototype.getAvailTags = function() {
-    var availSelect = document.getElementById('lhAvailTagsSelect');
-    return FctsTools.getOptionValues(viewSelect);
+    return FctsTools.getOptionValues(document.getElementById('lhAvailTagsSelect'));
 };
 /**
  * Base message filter class.  Extend this class and override methods to
@@ -1432,10 +1446,8 @@ LogHoundTextSearchFilter.prototype.showMessage = function(msgRec) {
     if(this.searchText=='') {
         return true;
     }
-    var message = msgRec['text'];
-    var result = msgRec['text'].search(this.regex);
     return msgRec['text'].search(this.regex)>=0;
-}
+};
 /**
  * Message level filter.
  * @class Message filter used to filter messages by logging level.
@@ -1447,7 +1459,7 @@ function LogHoundMessageLevelFilter() {
 FctsTools.extend(LogHoundMessageLevelFilter, LogHoundMessageFilter);
 LogHoundMessageLevelFilter.prototype.showMessage = function(msgRec) {
     return msgRec['level'].isEnabled();
-}
+};
 if(window['logHound']==null) {
     window['logHound'] = new LogHound();
 }
