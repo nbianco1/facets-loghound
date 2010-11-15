@@ -43,3 +43,6 @@ And let's be brutally honest here - THERE ARE DRAWBACKS!  Some projects require 
 
 This is to say that there are a lot of coders out there that might like to use Log Hound, and they wouldn't be able to if they had to kite along the rest of a JS framework with it.
 So the answer to this question is this: We are coding Log Hound to be usable by everyone first.  There will be time later to contemplate integration with the larger !JavaScript frameworks in the market.
+
+====9. How do I create an instance of Log Hound?====
+In the words of one Science Fiction legend: "There can be only one!"  There is always and ever one instance of Log Hound working at any given time on a web page.  You do not create an instance of Log Hound - an instance is created in the DOM window object at {{{window.logHound}}} just by including the {{{loghound.js}}} code file.  You still have to call {{{window.logHound.doSetup()}}} for that instance to be operational, but you cannot create your own instances.
