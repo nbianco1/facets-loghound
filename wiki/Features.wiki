@@ -10,7 +10,52 @@ window.logHound.logInfo('Info: FYI...');
 Out of the box, Log Hound supports your six basic logging levels: Fatal, Error, Warn, Info, Debug, and Trace.
 
 ----
-===Define Your Own Log Levels===
+===Create Your Own Message Filters===
+Let's start with looking at an existing filter.
+
+{{{
+01  function LogHoundTextSearchFilter(searchText) {
+02      LogHoundTextSearchFilter.baseConstructor.call(this, 'lhTxtSearchFilter');
+03      this.searchText = searchText;
+04      this.regex = new RegExp(searchText, 'i');
+05  }
+06  FctsTools.extend(LogHoundTextSearchFilter, LogHoundMessageFilter);
+07  LogHoundTextSearchFilter.prototype.showMessage = function(msgRec) {
+08      if(this.searchText=='') {
+09          return true;
+10      }
+11      return msgRec['text'].search(this.regex)>=0;
+12  };
+13  window.logHound.addMsgFilter(new LogHoundTextSearchFilter('textToMatch'));
+}}}
+
+The above is the filter used when searching the message text for matches.  As the example shows, there are three things you need to do in order to create a filter:
+
+*1) Create your filter class(01-05)*<br/>
+The first line (02) in the class(function...constructor... javascript objects are confusing!) declaration sets the constructor up for the super class you are extending.  Leave the "this" argument as-is.  The second string argument needs to be a unique ID for your filter.  If you add the filter a second time to Log Hound, this ID is what Log Hound will use to identify and remove the existing instance of your filter.
+The rest of the filter class can do whatever you need it to do.  Pass whatever you need to the class constructor and set up your member variables - it's your show here.
+
+*2) Extend !LogHoundMessageFilter with your class(06)*<br/>
+This is VERY IMPORTANT!!!!  Not only do you have to do this, but you have to extend !LogHoundMessageFilter *_before_* you declare the {{{showMessage()}}} function of your object.  Why?  It's a !JavaScript inheritance thing.  Just trust me.
+
+The first argument to the extend function is your class, the second needs to be the !LogHoundMessageFilter class.
+
+*3) Add {{{showMessage(msgRec)}}} function to your  (07)*<br/>
+The "msgRec" variable will be a message record object with the following properties:
+
+ * msgRec[['element']]
+ * msgRec[['error']]
+ * msgRec[['level']]
+ * msgRec[['number']]
+ * msgRec[['tags']]
+ * msgRec[['text']]
+ * msgRec[['timestamp']]
+
+
+
+
+----
+===Define Your Own Log Levels (experimental)===
 You can easily define your own log levels to Log Hound.  As an example, here's how to define a log level called "page":
 
 {{{
