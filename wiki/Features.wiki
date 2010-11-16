@@ -31,25 +31,27 @@ Let's start with looking at an existing filter.
 
 The above is the filter used when searching the message text for matches.  As the example shows, there are three things you need to do in order to create a filter:
 
-*1) Create your filter class(01-05)*<br/>
+*1) Create your filter class (01-05)*<br/>
 The first line (02) in the class(function...constructor... javascript objects are confusing!) declaration sets the constructor up for the super class you are extending.  Leave the "this" argument as-is.  The second string argument needs to be a unique ID for your filter.  If you add the filter a second time to Log Hound, this ID is what Log Hound will use to identify and remove the existing instance of your filter.
 The rest of the filter class can do whatever you need it to do.  Pass whatever you need to the class constructor and set up your member variables - it's your show here.
 
-*2) Extend !LogHoundMessageFilter with your class(06)*<br/>
+*2) Extend !LogHoundMessageFilter with your class (06)*<br/>
 This is VERY IMPORTANT!!!!  Not only do you have to do this, but you have to extend !LogHoundMessageFilter *_before_* you declare the {{{showMessage()}}} function of your object.  Why?  It's a !JavaScript inheritance thing.  Just trust me.
 
 The first argument to the extend function is your class, the second needs to be the !LogHoundMessageFilter class.
 
-*3) Add {{{showMessage(msgRec)}}} function to your  (07)*<br/>
+*3) Add {{{showMessage(msgRec)}}} function to your class (07)*<br/>
 The "msgRec" variable will be a message record object with the following properties:
 
- * msgRec&#91;'element'&#93;
- * msgRec[['error']]
- * msgRec[['level']]
- * msgRec[['number']]
- * msgRec[['tags']]
- * msgRec[['text']]
- * msgRec[['timestamp']]
+ * msgRec.element {DOMElement}
+ * msgRec.error {Error}
+ * msgRec.level {!LogHoundLevel}
+ * msgRec.number {Number}
+ * msgRec.tags {String[ ]}
+ * msgRec.text {String}
+ * msgRec.timestamp {Date}
+
+You can use any of the information in the message record or from your filter implementation to determine if the log message should be visible.  Returning {{{true}}} will make the message visible, and returning {{{false}}} will hide it.  Keep in mind that filters are cumulative, so all it takes to hide a message is for one filter to return false.
 
 
 
