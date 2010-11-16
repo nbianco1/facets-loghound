@@ -306,6 +306,33 @@ array.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/LogHound.html#adjustMessagePaneSize">adjustMessagePaneSize</a></b>(adjustment)
+								</div>
+								<div class="description">Adjusts the size of the message pane to show more or less log messages.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/LogHound.html#buttonMouseOut">buttonMouseOut</a></b>(event)
+								</div>
+								<div class="description">Standard mouse-out event for UI buttons.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/LogHound.html#buttonMouseOver">buttonMouseOver</a></b>(event)
+								</div>
+								<div class="description">Standard mouse-over event for UI buttons.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/LogHound.html#doSetup">doSetup</a></b>()
 								</div>
 								<div class="description">Performs the main setup for the Log Hound application.</div>
@@ -479,9 +506,9 @@ being initialised via the doSetup() function.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/LogHound.html#setMessagePaneSize">setMessagePaneSize</a></b>()
+								<div class="fixedFont"><b><a href="../symbols/LogHound.html#setMessagePaneSize">setMessagePaneSize</a></b>(size)
 								</div>
-								<div class="description"></div>
+								<div class="description">Sets the message pane size to a specific height.</div>
 							</td>
 						</tr>
 					
@@ -641,7 +668,10 @@ the page.</div>
 					</div>
 					<div class="description">
 						Adds a filter which extends LogHoundMessageFilter to the message filter
-array.
+array.  You can add your own filters to the standard set by creating your
+own LogHoundMessageFilter implementation and submitting it to this function.
+<p>Each filter MUST have a unique ID.  Submitting a filter with an existing
+ID will replace the existing filter with the submitted filter.
 						
 						
 					</div>
@@ -658,6 +688,124 @@ array.
 								</dt>
 								<dd>The message filter to add to the
 internal array.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="adjustMessagePaneSize"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{boolean}</span>
+					<b>adjustMessagePaneSize</b>(adjustment)
+					
+					</div>
+					<div class="description">
+						Adjusts the size of the message pane to show more or less log messages. The
+message pane will not be adjusted over its maximum hight or under its
+minimum height.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{boolean|String|number}</span> <b>adjustment</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{boolean}</span> <code>true</code> if the message pane was adjusted,
+otherwise <code>false</code>.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="buttonMouseOut"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>buttonMouseOut</b>(event)
+					
+					</div>
+					<div class="description">
+						Standard mouse-out event for UI buttons.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>event</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="buttonMouseOver"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>buttonMouseOver</b>(event)
+					
+					</div>
+					<div class="description">
+						Standard mouse-over event for UI buttons.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>event</b>
+									
+								</dt>
+								<dd></dd>
 							
 							</dl>
 						
@@ -1527,12 +1675,14 @@ layout being changed, otherwise <code>false</code>.</dd>
 					<a name="setMessagePaneSize"> </a>
 					<div class="fixedFont">
 					
-					
-					<b>setMessagePaneSize</b>()
+					<span class="light">{boolean}</span>
+					<b>setMessagePaneSize</b>(size)
 					
 					</div>
 					<div class="description">
-						
+						Sets the message pane size to a specific height.  The upper and lower bounds
+for the height are 600 and 75 respectively.  Calls argumenting sizes outside
+those bounds will be ignored.
 						
 						
 					</div>
@@ -1540,9 +1690,28 @@ layout being changed, otherwise <code>false</code>.</dd>
 					
 					
 						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{number}</span> <b>size</b>
+									
+								</dt>
+								<dd>The new height to set the message pane to.</dd>
+							
+							</dl>
 						
 						
 						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{boolean}</span> <code>true</code> if the message pane was adjusted,
+otherwise <code>false</code>.</dd>
+							
+							</dl>
 						
 						
 						
@@ -1831,7 +2000,7 @@ restore.
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Sun Nov 14 2010 15:43:30 GMT-0500 (EST)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.3.2 on Tue Nov 16 2010 17:35:21 GMT-0500 (EST)
 		</div>
 	</body>
 </html>

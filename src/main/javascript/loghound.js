@@ -102,7 +102,7 @@ var LogHoundLevels = [];
  */
 LogHoundLevels.getByName = function(name) {
     name = name.toLowerCase();
-    for(idx=0; idx<this.length; idx++) {
+    for(var idx=0; idx<this.length; idx++) {
         if(this[idx].getName() == name) {
             return this[idx];
         }
@@ -115,7 +115,7 @@ LogHoundLevels.getByName = function(name) {
  * no match for the argumented ID was found.
  */
 LogHoundLevels.getById = function(id) {
-    for(idx=0; idx<this.length; idx++) {
+    for(var idx=0; idx<this.length; idx++) {
         if(this[idx].getId() == id) {
             return this[idx];
         }
@@ -397,7 +397,7 @@ LogHound.prototype.doSetup = function() {
     // Add levels to level select control.
     var lvlSelect = document.getElementById('lhLvlSelect');
     var level;
-    for(idx = 0; idx<LogHoundLevels.length; idx++) {
+    for(var idx = 0; idx<LogHoundLevels.length; idx++) {
         level = LogHoundLevels[idx];
         lvlSelect.options[lvlSelect.length] = new Option(level.getName(),level.getId());
     }
@@ -431,16 +431,16 @@ LogHound.prototype.doSetup = function() {
         window.logHound.moveTagAssignments('addAll');
     };
     document.getElementById('lhCtrlMore').onclick = function(event) {
-        window.logHound.showMoreMessages();
+        window.logHound.adjustMessagePaneSize(true);
     };
     document.getElementById('lhCtrlLess').onclick = function(event) {
-        window.logHound.showLessMessages();
+        window.logHound.adjustMessagePaneSize(false);
     };
     var levelControls = document.getElementsByClassName('lhCtrlLvl');
     var showMsgLvlFn = function(event) {
         window.logHound.showMessageLevel(this.id.slice(9));
     };
-    for(idx=0; idx<levelControls.length; idx++) {
+    for(var idx=0; idx<levelControls.length; idx++) {
         levelControls[idx].onclick = showMsgLvlFn;
     }
     document.getElementById('lhBtnShade').onclick = function(event) {
@@ -515,11 +515,17 @@ LogHound.prototype.doSetup = function() {
     //var msg = 'document.body.clientWidth='+document.body.clientWidth+'<br/>document.documentElement.clientWidth='+document.documentElement.clientWidth+'<br/>window.innerWidth='+window.innerWidth+'<br/>document.body.scrollWidth='+document.body.scrollWidth+'<br/>document.body.offsetWidth='+document.body.offsetWidth;
     //this.logInfo(msg);
 };
+/**
+ * Standard mouse-over event for UI buttons.
+ */
 LogHound.prototype.buttonMouseOver = function(event) {
     FctsTools.removeStyleClass(this, 'lhBtnOut');
     FctsTools.removeStyleClass(this, 'lhBtnOn');
     FctsTools.addStyleClass(this, 'lhBtnOver');
 };
+/**
+ * Standard mouse-out event for UI buttons.
+ */
 LogHound.prototype.buttonMouseOut = function(event) {
     FctsTools.removeStyleClass(this, 'lhBtnOver');
     if(this.lhBtnState=='on') {
@@ -617,11 +623,11 @@ LogHound.prototype.setMessageLayout = function(layout) {
     }
     if(!this.initialised || !this.enabled) { return false; }
     var briefMsgRecs = document.getElementsByClassName('lhMsgRecBrief');
-    for(idx=0; idx<briefMsgRecs.length; idx++) {
+    for(var idx=0; idx<briefMsgRecs.length; idx++) {
         briefMsgRecs[idx].style.display = (this.msgDispMode=='brief' ? '' : 'none');
     }
     var detailMsgRecs = document.getElementsByClassName('lhMsgRecDetail');
-    for(idx=0; idx<detailMsgRecs.length; idx++) {
+    for(var idx=0; idx<detailMsgRecs.length; idx++) {
         detailMsgRecs[idx].style.display = (this.msgDispMode=='brief' ? 'none' : '');
     }
     return true;
@@ -822,7 +828,10 @@ LogHound.prototype.showMessageLevel = function(level,show) {
 };
 /**
  * Adds a filter which extends LogHoundMessageFilter to the message filter
- * array.
+ * array.  You can add your own filters to the standard set by creating your
+ * own LogHoundMessageFilter implementation and submitting it to this function.
+ * <p>Each filter MUST have a unique ID.  Submitting a filter with an existing
+ * ID will replace the existing filter with the submitted filter.
  * @param {LogHoundMessageFilter} newFilter The message filter to add to the
  * internal array.
  */
@@ -978,44 +987,45 @@ LogHound.prototype.toggleTagCtrlPanel = function(cmd) {
     this.adjustPlateSize();
 };
 /**
- *
+ * Adjusts the size of the message pane to show more or less log messages. The
+ * message pane will not be adjusted over its maximum hight or under its
+ * minimum height.
+ * @param {boolean|String|number} adjustment
+ * @returns {boolean} <code>true</code> if the message pane was adjusted,
+ * otherwise <code>false</code>.
  */
 LogHound.prototype.adjustMessagePaneSize = function(adjustment) {
-    adjustment = FctsTools.parseToBool(adjustment,['more']);
-    if((typeof size)==='boolean') {
-        adjustment = (size ? 75 : -75);
+    if(!this.initialised || !this.enabled) { return; }
+    if((typeof adjustment)==='boolean') {
+        adjustment = (adjustment ? 75 : -75);
+    } else if((adjustment instanceof String) || ((typeof adjustment)=='string')) {
+        adjustment = FctsTools.parseToBool(adjustment,['more']);
+        adjustment = (adjustment ? 75 : -75);
+    } else if((typeof adjustment)==='number') {
+        // If it's a number, we're good.
+    } else {
+        return false;
     }
-    this.setMessagePaneSize(this.logPlateBodyBox.offsetHeight+adjustment);
+    return this.setMessagePaneSize(this.logPlateBodyBox.offsetHeight+adjustment);
 };
 /**
- *
+ * Sets the message pane size to a specific height.  The upper and lower bounds
+ * for the height are 600 and 75 respectively.  Calls argumenting sizes outside
+ * those bounds will be ignored.
+ * @param {number} size The new height to set the message pane to.
+ * @returns {boolean} <code>true</code> if the message pane was adjusted,
+ * otherwise <code>false</code>.
  */
 LogHound.prototype.setMessagePaneSize = function(size) {
     if(!this.initialised || !this.enabled) { return; }
-    var adjustment = 0;
-
-    if((typeof size)==='boolean') {
-        adjustment = (size ? 75 : -75);
-    } else if((typeof size)==='number') {
-        adjustment = size;
+    if((typeof size)!=='number') {
+        return false;
     }
-    if(!this.initialised || !this.enabled) { return; }
-    shade = FctsTools.parseToBool(shade);
-};
-LogHound.prototype.showMoreMessages = function() {
-    var boxHeight = this.logPlateBodyBox.offsetHeight;
-    if(boxHeight>600) {
-        return;
+    var currHeight = this.logPlateBodyBox.offsetHeight;
+    if(currHeight==size || size>600 || size<75) {
+        return false;
     }
-    this.logPlateBodyBox.style.height = boxHeight+50;
-    this.adjustPlateSize();
-};
-LogHound.prototype.showLessMessages = function() {
-    var boxHeight = this.logPlateBodyBox.offsetHeight;
-    if(boxHeight<50) {
-        return;
-    }
-    this.logPlateBodyBox.style.height = boxHeight-50;
+    this.logPlateBodyBox.style.height = size;
     this.adjustPlateSize();
 };
 /**
@@ -1368,6 +1378,9 @@ LogHound.prototype.getAvailTags = function() {
  * @constructor
  */
 function LogHoundMessageFilter(id) {
+    if(FctsTools.isBlank(id)) {
+        throw new Error('Message filter ID cannot be blank.');
+    }
     this.id = id;
 }
 /**
@@ -1407,9 +1420,9 @@ LogHoundMessageTagFilter.prototype.showMessage = function(msgRec) {
     }
     var matched = false;
     var intMatched = false;
-    for(targetIdx=0; targetIdx<this.tagz.length; targetIdx++) {
+    for(var targetIdx=0; targetIdx<this.tagz.length; targetIdx++) {
         intMatched = false;
-        for(tagIdx=0; tagIdx<msgRec['tags'].length; tagIdx++) {
+        for(var tagIdx=0; tagIdx<msgRec['tags'].length; tagIdx++) {
             matched = (msgRec['tags'][tagIdx].toLowerCase() == this.tagz[targetIdx].toLowerCase());
             if(this.tagMode=='int' || this.tagMode=='ony') {
                 intMatched = (intMatched || matched);
@@ -1424,7 +1437,7 @@ LogHoundMessageTagFilter.prototype.showMessage = function(msgRec) {
     return (this.tagMode=='exc' || this.tagMode=='int' || this.tagMode=='ony');
 };
 LogHoundMessageTagFilter.prototype.hasTag = function(tag,msgTags) {
-    for(i=0; i<msgTags.length; i++) {
+    for(var i=0; i<msgTags.length; i++) {
         if(msgTags[tagIdx] == tag) {
             return true;
         }
