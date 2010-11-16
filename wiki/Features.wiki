@@ -43,7 +43,7 @@ The first argument to the extend function is your class, the second needs to be 
 *3) Add {{{showMessage(msgRec)}}} function to your  (07)*<br/>
 The "msgRec" variable will be a message record object with the following properties:
 
- * msgRec['element']
+ * msgRec__['element']
  * msgRec[['error']]
  * msgRec[['level']]
  * msgRec[['number']]
