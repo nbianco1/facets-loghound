@@ -51,10 +51,11 @@ The "msgRec" variable will be a message record object with the following propert
  * msgRec.text {String}
  * msgRec.timestamp {Date}
 
+*4) Return {{{true}}} or {{{false}}} (08-11)*<br/>
 You can use any of the information in the message record or from your filter implementation to determine if the log message should be visible.  Returning {{{true}}} will make the message visible, and returning {{{false}}} will hide it.  Keep in mind that filters are cumulative, so all it takes to hide a message is for one filter to return false.
 
-
-
+*5) Add the filter to Log Hound (13)*<br/>
+Don't forget to add the filter to Log Hound!  If you add the same filter twice, the first copy will be overwritten by the new copy.
 
 ----
 ===Define Your Own Log Levels (experimental)===
