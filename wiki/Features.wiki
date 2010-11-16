@@ -43,13 +43,13 @@ The first argument to the extend function is your class, the second needs to be 
 *3) Add {{{showMessage(msgRec)}}} function to your class (07)*<br/>
 The "msgRec" variable will be a message record object with the following properties:
 
- * msgRec.element {DOMElement}
- * msgRec.error {Error}
- * msgRec.level {!LogHoundLevel}
- * msgRec.number {Number}
- * msgRec.tags {String[ ]}
- * msgRec.text {String}
- * msgRec.timestamp {Date}
+ * msgRec.element {DOMElement}: The DIV wrapper around the log message in the user interface.  Be VERY careful with what you do to this element!
+ * msgRec.error {Error}: A !JavaScript error object if one was provided with the log message, or {{{null}}}.
+ * msgRec.level {!LogHoundLevel}: The log message level.
+ * msgRec.number {Number}: The log message number.
+ * msgRec.tags {String[ ]}: A string array of tags associated with the log message.
+ * msgRec.text {String}: The string text of the message.
+ * msgRec.timestamp {Date}: A !JavaScript date object representing the timestamp of when the message was received by Log Hound.
 
 *4) Return {{{true}}} or {{{false}}} (08-11)*<br/>
 You can use any of the information in the message record or from your filter implementation to determine if the log message should be visible.  Returning {{{true}}} will make the message visible, and returning {{{false}}} will hide it.  Keep in mind that filters are cumulative, so all it takes to hide a message is for one filter to return false.
