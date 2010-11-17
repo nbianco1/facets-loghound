@@ -37,7 +37,7 @@ if(LogHoundVer['build'].length>5) {
 } else {
     LogHoundVer['build'] = '-';
 }
-LogHoundVer['release'] = 'beta 4';
+LogHoundVer['release'] = '';
 /**
  * returns {String} The pretty-printed version, including the build number.
  */
