@@ -30,7 +30,7 @@
 var LogHoundVer = [];
 LogHoundVer['major'] = '2';
 LogHoundVer['minor'] = '0';
-LogHoundVer['fix'] = '0';
+LogHoundVer['fix'] = '1';
 LogHoundVer['build'] = '$Rev$';
 if(LogHoundVer['build'].length>5) {
     LogHoundVer['build'] = LogHoundVer['build'].substring(5).split(' ')[1];
