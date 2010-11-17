@@ -35,14 +35,21 @@ LogHoundVer['build'] = '$Rev$';
 if(LogHoundVer['build'].length>5) {
     LogHoundVer['build'] = LogHoundVer['build'].substring(5).split(' ')[1];
 } else {
-    LogHoundVer['build'] = '-';
+    LogHoundVer['build'] = '';
 }
 LogHoundVer['release'] = '';
 /**
  * returns {String} The pretty-printed version, including the build number.
  */
 LogHoundVer.getLongText = function() {
-    return this.major+'.'+this.minor+'.'+this.fix+'.'+this.build+' '+this.release;
+    var ver = this.major+'.'+this.minor+'.'+this.fix
+    if(this.build!='') {
+        ver = ver+'.'+this.build;
+    }
+    if(this.release!='') {
+        ver = ver+'.'+this.release;
+    }
+    return ver;
 };
 /**
  * returns {String} The pretty-printed version.
