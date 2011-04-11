@@ -35,9 +35,9 @@ You want to log a message.  There are two ways to do this:
 The following two lines are analogous.  The first uses the generic log function which you can use in instances where you are entering log messages using some kind of eval (AKA "evil") code.  The second is your base-level log message entry line.
 
 {{{
-windows.logHound.log(LogHoundLevels['INFO'],'My message here.');
+window.logHound.log(LogHoundLevels['INFO'],'My message here.');
 
-windows.logHound.logInfo('My message here.');
+window.logHound.logInfo('My message here.');
 }}}
 
 ----
@@ -48,7 +48,7 @@ Tags can be associated with any log message. Tags are used in grouping messages 
 
 To associate tags with the message, simply add an array of strings to the log function arguments:
 {{{
-windows.logHound.logInfo('My message here.',['Tag1','Tag2']);
+window.logHound.logInfo('My message here.',['Tag1','Tag2']);
 }}}
 
 There are no limits to how many tags you can associate with a message, but use this intelligently - don't add too many tags to every message or searching will become a study in shooting yourself in the foot.
@@ -63,7 +63,7 @@ In those extremely rare instances where persons unknown somehow managed to mess 
 try {
     // do something stupid
 } catch(err) {
-    windows.logHound.logError('Game over man!',['frameworkName'],err);
+    window.logHound.logError('Game over man!',['frameworkName'],err);
 }
 }}}
 
