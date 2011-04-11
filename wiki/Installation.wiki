@@ -32,11 +32,12 @@ This is the the base, no frills install example:
 1   <link href="/styles/loghound.css" rel="stylesheet" type="text/css" />
 2   <script type="text/JavaScript" language="JavaScript" src="/js/fcts_lib.js"></script>
 3   <script type="text/javascript" language="JavaScript" src="/js/loghound.js"></script>
-4   function onBodyLoad() {
-5       window.logHound.doSetup();
-6   }
-7   </script>
-8   <body onLoad="onBodyLoad();">
+4   <script type="text/javascript">
+5   function onBodyLoad() {
+6       window.logHound.doSetup();
+7   }
+8   </script>
+9   <body onLoad="onBodyLoad();">
 }}}
 
 *Line-by-line:*
@@ -44,8 +45,8 @@ This is the the base, no frills install example:
  * 1) Link in the style sheet.
  * 2) Include the Facets global code used by Log Hound.
  * 3) Include the Log Hound code.
- * 4-6) Create a function for the body onLoad event that calls Log Hound's doSetup() function.
- * 8) Make sure to call the body onLoad function!
+ * 4-8) Create a function for the body onLoad event that calls Log Hound's doSetup() function.
+ * 9) Make sure to call the body onLoad function!
 
 ===Complex===
 {{{
