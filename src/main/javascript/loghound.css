@@ -6,36 +6,77 @@
 #FFF2BA
 #DFEAF8
 */
-.lhFont {
+#lhPlate {
+    width: 400px;
+    position: absolute;
+    background-color: #688DE0;
+    display: none;
+    border-spacing: 2px;
+    z-index: 5000;
+    background-color: #688DE0;
+    box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+/***********************************************************
+    Global Styles
+***********************************************************/
+#lhPlate DIV {
+    vertical-align: middle;
+    box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+#lhPlate INPUT {
+    padding: 1px;
+    margin: 0px;
+}
+#lhPlate INPUT, #lhPlate SELECT {
+    border-radius: .25em;
+    -moz-border-radius: .25em;
+    -webkit-border-radius: .25em;
+    border: 1px solid #111;
+    box-shadow: 0px 0px 0px 0px #000000;
+    -moz-box-shadow: 0px 0px 0px 0px #000000;
+    -webkit-box-shadow: 0px 0px 0px 0px #000000;
+    box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+#lhPlate LABEL, #lhPlate INPUT, #lhPlate SELECT {
+    margin: 0px;
+}
+#lhPlate .lhFont {
     font-family: Arial,Helvetica,sans-serif;
     font-size: 8pt;
+    letter-spacing: 0.00em;
+    color: #222;
 }
-.lhSmFont {
+#lhPlate .lhSmFont {
     font-family: Verdana,Tahoma,Arial,Helvetica,sans-serif;
     font-size: 7pt;
     letter-spacing: -0.02em;
+    color: #222;
 }
 .lhRndCorners {
 /*
     -webkit-border-radius: 5px;
     -khtml-border-radius: 5px;
     -moz-border-radius: 5px;
-	border-radius: 5px;
+    border-radius: 5px;
 */
 }
 .lhPlateColor {
     background-color: #DFEAF8;
     border-color: #688DE0;
 }
-.lhInput {
-    font-size: 7pt;
-}
 .lhBtn {
     cursor:pointer;
     cursor:hand;
     font-weight: bold;
     text-align: center;
-    width: 15px;
+    width: 14px;
+    text-align: center;
 }
 .lhBtnOut {
     border: 1px solid #DFEAF8;
@@ -47,44 +88,60 @@
     border:1px solid #CB5C16;
 }
 .lhCtrl {
-    display: block;
     font-weight: bold;
     text-align: center;
     white-space: nowrap;
+    display: table-cell;
+}
+/***********************************************************
+    Targeted Styles
+***********************************************************/
+#lhTitlePanelPlate {
+    display: table-row;
+}
+#lhTitlePanelPlate DIV {
+    display: table-cell;
+}
+#lhTitlePanel {
+    display: table-cell;
+    width: 100%;
+    padding: 0px 4px;
 }
 #lhBtnHelp {
-    display: block;
     font-size: 8pt;
     font-weight: bold;
     text-align:center;
 }
 #lhBtnTags {
-    display: block;
     font-size: 8pt;
     font-weight: bold;
     text-align: center;
 }
 #lhCtrlLvlSelectPlate {
-    margin-left: 5px;
+    padding: 0px 5px;
+    display: table-cell;
 }
 #lhLvlSelect {
     font-size: 7pt;
-    height: 1.8em;
+    width: 60px;
 }
 #lhCtrlLvlPlate {
-    margin-left: 5px;
+    padding-left: 5px;
+    display: table-cell;
 }
 .lhCtrlLvl {
     /* border: 1px #688DE0 solid; */
     margin: 0px !important;
-    float: left;
+    height: 18px;
 }
 #lhCtrlMsgDispModePlate {
-    float: left;
     margin: 1px 0px 0px 7px;
 }
 #lhCtrlSearchPlate {
-    margin-left: 5px;
+    display: table-cell;
+    padding-left: 5px;
+    text-align: right;
+    height: 18px;
 }
 .lhDispModeLable {
     font-size: 7pt;
@@ -97,16 +154,14 @@
     display: inline;
     white-space: nowrap;
 }
-.lhSearchField {
-    font-size: 7pt;
+#lhSearchField {
     text-align: left;
     width: 100px;
-
+    height: 18px;
+    margin-left: 2px !important;
 }
 .lhTitleLeft {
-    display: block;
     width: 20px;
-    height: 14px;
 }
 .lhTitle {
     font-family: Arial,Helvetica,sans-serif;
@@ -114,72 +169,81 @@
     font-size: 8pt;
     font-weight: bold;
     width: 100%;
-    height: 14px;
     padding-left: 5px;
     text-align: left;
 }
 .lhBtnCtrls {
-    display: block;
     font-size: 8pt;
     font-weight: bold;
     text-align:center;
     white-space:nowrap;
-    width: 18px;
+    align: right;
 }
-#lhPlate {
-    width: 400px;
-    height: 100px;
-    border: 3px #688DE0 solid;
-    position: absolute;
-    background-color: #688DE0;
-    display: none;
+.lhTitlePanelElmt {
+    display: table-cell;
+    height: .9em;
+    line-height: 0.8em;
 }
-#lhPlateHead {
-    height: 16px;
-    font-size: 8pt;
-    font-weight: bold;
-    border-bottom: 3px solid #688DE0;
-    padding: 0px 4px;
+#lhHelpPanelPlate {
+    display: table-row;
 }
-#lhPlateHelpPanel {
-    height: 3em !important;
-    border-bottom: 3px solid #688DE0;
-    padding: 0px 6px 0px 6px;
-    display: none;
-    text-align: left;
-}
-#lhPlateCtrlPanel {
-    font-size: 8pt;
-    font-weight: normal;
-    border-bottom: 3px solid #688DE0;
-    padding: 0px 6px 0px 6px;
-    display: none;
-}
-#lhPlateCtrlPanel > table {
+#lhHelpPanel {
+    display: table-cell;
     width: 100%;
+    padding: 0px 4px;
+    text-align: left;
+    vertical-align: text-top !important;
+    height: 3em !important;
+}
+#lhCtrlPanelPlate {
+    padding: 0px 4px;
+    display: table-row;
+    width: 100%;
+    vertical-align: middle;
+}
+#lhCtrlPanel {
+    display: table-cell;
+    width: 100%;
+    padding: 0px 4px;
+    line-height: .8em;
 }
 #lhCtrlMsgDispModeBtn {
     margin-left: 5px;
 }
-#lhPlateTagPanel {
-    font-size: 7pt;
-    overflow: auto;
-    border-bottom: 3px solid #688DE0;
+#lhTagCtrlPanelPlate {
+    display: table-row;
+    width: 100%;
     padding: 2px;
-    display: none;
     text-align: center;
 }
-#lhPlateBodyBox {
-    clear: both;
+#lhTagCtrlPanel {
+    display: table-cell;
+    width: 100%;
+    padding: 0px 4px;
+    line-height: .8em;
+}
+#lhTagCtrlPanelPlate SELECT {
+    height: 60px;
+}
+#lhLogsPanelPlate {
+    height: 75px;
+    display: table-row;
+    width: 100%;
+    padding: 2px;
+    text-align: center;
+}
+#lhLogsPanel {
+    display: table-cell;
+    width: 100%;
+    padding: 0px 4px;
+    line-height: .8em;
+}
+#lhPlateBody {
     height: 75px;
     position: relative;
     overflow: visible;
     overflow-x: hidden;
     overflow-y: scroll;
-}
-#lhPlateBody {
-    position: relative;
-    overflow: hidden;
 }
 #lhInterfaceBody {
     margin: 0px;
@@ -195,9 +259,8 @@
     border-collapse: collapse;
 }
 .lhMsgElmt {
-    font-size: 7pt;
-    padding: 0px;
-    margin: 0px;
+    display: table-cell;
+    padding: 1px;
 }
 .lhMsgNum2 {
     border-right: 1px #AAAAAA solid;
@@ -288,30 +351,29 @@
     background-color: #BFD7FF;
 }
 #lhAvailTagsPlate {
+    display: table-cell;
     width: 150px;
-    float: left;
     text-align: left;
 }
 #lhCtrlTagsPlate {
+    display: table-cell;
     margin: 8px 3px 0px 3px;
     vertical-align: middle;
     width: 23px;
     text-align: center;
-    float: left;
 }
 .lhTagCtrl {
-    display: block;
+    display: table-cell;
     cursor:pointer;
     cursor:hand;
     margin: 0px auto;
-    line-height: 12px;
 }
 #lhTagCtrlRem {
     margin-top: 2px;
 }
 #lhViewTagsPlate {
+    display: table-cell;
     width: 150px;
-    float: left;
     text-align: left;
 }
 #lhAvailTagsSelect {
@@ -321,16 +383,16 @@
     width: 150px;
 }
 #lhModTagsPlate {
+    display: table-cell;
     margin: 5px 3px 0px 3px;
     vertical-align: middle;
     width: 18px;
     text-align: center;
-    float: left;
-}
-.lhShrinkWrap {
-    margin-left: auto;
-    margin-right: auto;
-    display: inline-block;
 }
 .lhMsgRecBrief {
+}
+.lhRndCorners {
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
 }
