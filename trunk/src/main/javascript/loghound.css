@@ -59,12 +59,9 @@
     color: #222;
 }
 .lhRndCorners {
-/*
-    -webkit-border-radius: 5px;
-    -khtml-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-*/
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
 }
 .lhPlateColor {
     background-color: #DFEAF8;
@@ -77,6 +74,11 @@
     text-align: center;
     width: 14px;
     text-align: center;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 .lhBtnOut {
     border: 1px solid #DFEAF8;
@@ -92,6 +94,11 @@
     text-align: center;
     white-space: nowrap;
     display: table-cell;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 /***********************************************************
     Targeted Styles
@@ -118,7 +125,7 @@
     text-align: center;
 }
 #lhCtrlLvlSelectPlate {
-    padding: 0px 5px;
+    padding-left: 5px;
     display: table-cell;
 }
 #lhLvlSelect {
@@ -194,6 +201,7 @@
     text-align: left;
     vertical-align: text-top !important;
     height: 3em !important;
+    line-height: 1.3em;
 }
 #lhCtrlPanelPlate {
     padding: 0px 4px;
@@ -238,7 +246,7 @@
     padding: 0px 4px;
     line-height: .8em;
 }
-#lhPlateBody {
+#lhLogsPanelBody {
     height: 75px;
     position: relative;
     overflow: visible;
@@ -363,9 +371,9 @@
     text-align: center;
 }
 .lhTagCtrl {
-    display: table-cell;
-    cursor:pointer;
-    cursor:hand;
+    display: block;
+    cursor: pointer;
+    cursor: hand;
     margin: 0px auto;
 }
 #lhTagCtrlRem {
@@ -390,9 +398,4 @@
     text-align: center;
 }
 .lhMsgRecBrief {
-}
-.lhRndCorners {
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
 }

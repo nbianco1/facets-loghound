@@ -315,6 +315,19 @@ FctsTools.replaceStyleClass = function(elmt, remClass, addClass) {
     this.removeStyleClass(elmt, remClass);
     this.addStyleClass(elmt, addClass);
 };
+/**
+ * @param {DOMElement} elmt The target element.
+ * @param {String} style The name of the target style.
+ * @param {String} pseudoElmt A string specifying the pseudo-element to match. Must be null (or not specified) for
+ * regular elements.
+ */
+FctsTools.getStyleValue = function(elmt, style, pseudoEmlt) {
+    if(window.getComputedStyle) {
+        return getComputedStyle(elmt, pseudoEmlt)[style];
+    } else {
+        return elmt.currentStyle[style]
+    }
+};
 FctsTools.parseToBool = function(arg,altTrueArray) {
     if((typeof arg)=='undefined' || arg==null) { return null; }
     if((typeof arg)=='boolean') {
