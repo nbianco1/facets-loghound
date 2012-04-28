@@ -29,7 +29,7 @@
  */
 var LogHoundVer = [];
 LogHoundVer['major'] = '2';
-LogHoundVer['minor'] = '1';
+LogHoundVer['minor'] = '5';
 LogHoundVer['fix'] = '0';
 LogHoundVer['build'] = '$Rev$';
 if(LogHoundVer['build'].length>5) {
@@ -208,7 +208,7 @@ LogHoundLevels.addLevel(TraceLogHoundLevel);
 
 // Load predefined extra log levels
 if((typeof(LogHoundLevelPreload)!='undefined') && (LogHoundLevelPreload instanceof Array)) {
-    for(i=0; i<LogHoundLevelPreload.length; i++) {
+    for(var i=0; i<LogHoundLevelPreload.length; i++) {
         LogHoundLevels.addLevel(LogHoundLevelPreload[i]);
     }
 }
@@ -262,10 +262,10 @@ LogHound.prototype.doSetup = function() {
 
 
     var btns = document.getElementsByClassName('lhBtn');
-    for(i=0; i<btns.length; i++) {
+    for(var i=0; i<btns.length; i++) {
         FctsTools.addStyleClass(btns[i],'lhBtnOut');
     }
-    for(i=0; i<btns.length; i++) {
+    for(var i=0; i<btns.length; i++) {
         btns[i].onmouseover = this.buttonMouseOver;
         btns[i].onmouseout = this.buttonMouseOut;
         btns[i].lhBtnState = 'off';
@@ -562,7 +562,7 @@ LogHound.prototype.toggleHelp = function(enable) {
         this.helpEnabled = true;
         var lhRef = this;
         var helpPanel = document.getElementById('lhHelpPanel');
-        for(i=0; i<this.helpEntries.length; i++) {
+        for(var i=0; i<this.helpEntries.length; i++) {
             var target = document.getElementById(this.helpEntries[i][0]);
             target.lhHelpTxt = this.helpEntries[i][1];
             target.lhOrigMouseOver = target.onmouseover;
@@ -580,7 +580,7 @@ LogHound.prototype.toggleHelp = function(enable) {
         if(!this.helpEnabled) { return; }
         this.helpEnabled = false;
         var target = null;
-        for(i=0; i<this.helpEntries.length; i++) {
+        for(var i=0; i<this.helpEntries.length; i++) {
             target = document.getElementById(this.helpEntries[i][0]);
             target.lhHelpTxt = this.helpEntries[i][1];
             target.onmouseover = target.lhOrigMouseOver;
@@ -833,7 +833,7 @@ LogHound.prototype.addMsgFilter = function(newFilter) {
     }
     var newFilterArray = [];
     var msgFilter = null;
-    for(i=0; i<this.msgFilters.length; i++) {
+    for(var i=0; i<this.msgFilters.length; i++) {
         msgFilter = this.msgFilters[i];
         if(msgFilter.getId()!=newFilter.getId()) {
             newFilterArray.push(msgFilter);
@@ -848,7 +848,7 @@ LogHound.prototype.addMsgFilter = function(newFilter) {
  * @private
  */
 LogHound.prototype.applyMsgFilters = function() {
-    for(recIdx=0; recIdx<this.msgRecords.length; recIdx++) {
+    for(var recIdx=0; recIdx<this.msgRecords.length; recIdx++) {
         this.msgRecords[recIdx]['element'].style.display = (this.filterMsg(this.msgRecords[recIdx]) ? 'block' : 'none');
     }
     //var ts = (new Date()).getTime();
@@ -862,7 +862,7 @@ LogHound.prototype.applyMsgFilters = function() {
  * should not be visible.
  */
 LogHound.prototype.filterMsg = function(msgRec) {
-    for(idx=0; idx<this.msgFilters.length; idx++) {
+    for(var idx=0; idx<this.msgFilters.length; idx++) {
         if(!this.msgFilters[idx].showMessage(msgRec)) {
             return false;
         }
@@ -1029,15 +1029,15 @@ LogHound.prototype.addTags = function(tagz) {
     if(tagz==null || !tagz.length || tagz.length<1) {
         return true;
     }
-    for(i=0;i<tagz.length; i++) {
+    for(var i=0;i<tagz.length; i++) {
         if(!(this.tagNameRegex.test(tagz[i]))) {
             return false;
         }
     }
     var tagsSelect = document.getElementById('lhAvailTagsSelect');
     foundMatch:
-    for(i=0;i<tagz.length; i++) {
-        for(j=0; j<this.msgTags.length; j++) {
+    for(var i=0;i<tagz.length; i++) {
+        for(var j=0; j<this.msgTags.length; j++) {
             if(tagz[i].toLowerCase()==this.msgTags[j].toLowerCase()) {
                continue foundMatch;
             }
@@ -1205,21 +1205,29 @@ LogHound.prototype.log = function() {
         }
     }
 
-    var msgFullEntryDisp = ((this.msgDispMode=='detail') ? 'block' : 'none');
-    var msgFullEntry = '<div id="lhMsgDetail_'+msgRec['number']+'" class="lhMsgRecDetail" style="display:'+msgFullEntryDisp+';">';
-    msgFullEntry +=    '<div class="lhMsgNum2 lhMsgElmt lhSmFont">'+msgRec['number']+'</div>';
-    msgFullEntry +=    '<div class="lhMsgLvl2 lhMsgElmt lhSmFont">'+msgRec['level'].getName()+'</div>';
-    msgFullEntry +=    '<div class="lhMsgTime2 lhMsgElmt lhSmFont">'+this.getTimestampText(msgRec['timestamp'])+'</div>';
-    msgFullEntry +=    '<div class="lhMsgTags2 lhMsgElmt lhSmFont">'+((msgRec['tags'] instanceof Array) ? msgRec['tags'] : '')+'</div>';
-    msgFullEntry +=    '<div class="lhMsgTxtFull2 lhMsgElmt lhFont">'+msgText+'</div>';
-    msgFullEntry +=    '</div>';
+    var msgFullEntryDisp = ((this.msgDispMode=='detail') ? '' : 'none');
+    var msgFullEntry = '<table id="lhMsgDetail_'+msgRec['number']+'" class="lhMsgRecDetail" style="display:'+msgFullEntryDisp+';"><tr>';
+    msgFullEntry +=    '<td class="lhMsgNum2 lhMsgElmt lhSmFont"><div>'+msgRec['number']+'</div></td>';
+    msgFullEntry +=    '<td class="lhMsgLvl lhMsgElmt lhSmFont"><div>'+msgRec['level'].getName()+'<div></td>';
+    msgFullEntry +=    '<td class="lhMsgTime lhMsgElmt lhSmFont">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
+    msgFullEntry +=    '<td class="lhMsgTags lhMsgElmt lhSmFont"><table><tr><td>'+((msgRec['tags'] instanceof Array) ? msgRec['tags'] : '')+'</td></tr></table></td>';
+    msgFullEntry +=    '</tr><tr>';
+    msgFullEntry +=    '<td colspan="4" class="lhMsgTxtDetail lhMsgElmt lhFont"><table><tr><td>'+msgText+'</td></tr></table></td>';
+    msgFullEntry +=    '</tr></table>';
 
-    var msgEntryDisp = ((this.msgDispMode=='brief') ? 'table-row' : 'none');
-    var msgEntry = '<div id="lhMsgBrief_'+msgRec['number']+'" class="lhMsgRecBrief" style="display:'+msgEntryDisp+'">';
-    msgEntry +=    '<div class="lhMsgNum lhMsgElmt lhSmFont">'+msgRec['number']+'</div>';
-    msgEntry +=    '<div class="lhMsgTime lhMsgElmt lhSmFont">'+this.getTimestampText(msgRec['timestamp'])+'</div>';
-    msgEntry +=    '<div class="lhMsgTxt lhMsgElmt lhSmFont">'+msgText+'</div>';
-    msgEntry +=    '</div>';
+    var msgEntryDisp = ((this.msgDispMode=='brief') ? '' : 'none');
+    var msgEntry = '<table id="lhMsgBrief_'+msgRec['number']+'" class="lhMsgRecBrief" style="display:'+msgEntryDisp+'"><tr>';
+    msgEntry +=    '<td class="lhMsgNum lhMsgElmt lhSmFont"><div>'+msgRec['number']+'</div></td>';
+    msgEntry +=    '<td class="lhMsgTime lhMsgElmt lhSmFont">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
+    msgEntry +=    '<td class="lhMsgTxt lhMsgElmt lhSmFont"><table><tr><td>'+msgText+'</td></tr></table></td>';
+    msgEntry +=    '</tr></table>';
+
+//    var msgEntryDisp = ((this.msgDispMode=='brief') ? 'table-row' : 'none');
+//    var msgEntry = '<div id="lhMsgBrief_'+msgRec['number']+'" class="lhMsgRecBrief" style="display:'+msgEntryDisp+'">';
+//    msgEntry +=    '<div class="lhMsgNum lhMsgElmt lhSmFont">'+msgRec['number']+'</div>';
+//    msgEntry +=    '<div class="lhMsgTime lhMsgElmt lhSmFont">'+this.getTimestampText(msgRec['timestamp'])+'</div>';
+//    msgEntry +=    '<div class="lhMsgTxt lhMsgElmt lhSmFont">'+msgText+'</div>';
+//    msgEntry +=    '</div>';
 
     msgElmt.innerHTML=msgFullEntry+msgEntry;
     var logsBody = document.getElementById('lhLogsPanelBody');
