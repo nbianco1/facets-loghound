@@ -245,9 +245,11 @@
     width: 100%;
     padding: 0px 4px;
     line-height: .8em;
+    background-color: #688DE0;
 }
 #lhLogsPanelBody {
     height: 75px;
+    display: block;
     position: relative;
     overflow: visible;
     overflow-x: hidden;
@@ -264,81 +266,74 @@
 .lhMsgRecDetail {
     padding: 0px;
     margin: 0px;
-    border-collapse: collapse;
 }
 .lhMsgElmt {
-    display: table-cell;
     padding: 1px;
 }
-.lhMsgNum2 {
+.logMsg .lhMsgNum2 {
     border-right: 1px #AAAAAA solid;
-    display: inline-block;
-  * display: inline;
-    width: 30px;
-    padding: 1px;
+    white-space: nowrap;
 }
-.lhMsgNum {
-    border-right: 1px #AAAAAA solid;
+.logMsg .lhMsgNum2 > DIV {
     width: 30px;
 }
-.lhMsgLvl2 {
+.logMsg .lhMsgNum {
     border-right: 1px #AAAAAA solid;
-    display: inline-block;
-  * display: inline;
+    width: 30px;
+}
+.logMsg .lhMsgLvl {
+    border-right: 1px #AAAAAA solid;
+    white-space: nowrap;
+}
+.logMsg .lhMsgLvl > DIV{
     width: 35px;
-    padding: 1px;
 }
-.lhMsgLvl {
+.logMsg .lhMsgTime {
     border-right: 1px #AAAAAA solid;
-    width: 40px;
+    white-space: nowrap;
 }
-.lhMsgTime2 {
-    border-right: 1px #AAAAAA solid;
-    display: inline-block;
-  * display: inline;
-    padding: 1px;
+.logMsg .lhMsgTags {
+    width: 100%
 }
-.lhMsgTime {
-    border-right: 1px #AAAAAA solid;
-    text-align: center;
-    width: 8.2em;
+.logMsg .lhMsgTags > TABLE {
+    table-layout: fixed;
+    width: 100%;
 }
-.lhMsgTags2 {
-    display: inline-block;
-  * display: inline;
-    padding: 1px;
+.logMsg .lhMsgTxt {
+    width: 100%;
 }
-.lhMsgTxtFull2 {
+.logMsg .lhMsgTxtDetail {
     border-top: 1px #AAAAAA solid;
-    word-wrap: break-word;
-    white-space: normal;
-    overflow-x: auto;
-    padding: 2px;
 }
-.lhMsgTxt {
-    word-wrap: break-word;
-    overflow: visible;
+.logMsg .lhMsgTxtDetail > TABLE, .logMsg .lhMsgTxt > TABLE {
+    table-layout: fixed;
+    width: 100%;
 }
-.lhMsgTxtFull {
-    border-top: 1px #AAAAAA solid;
-    word-wrap: break-word;
+.logMsg .lhMsgTxtDetail > TABLE TD, .logMsg .lhMsgTxt > TABLE TD {
+    padding: 0px;
+    line-height: 1.1em;
 }
 .logMsg {
     border-bottom: 1px solid black;
     border-collapse: collapse;
     text-align: left;
+    display: table;
+    width: 100%;
 }
 .logMsg > table {
     border-spacing: 0px;
+    border-collapse: collapse;
     margin: 0px;
     padding: 0px;
     width: 100%;
-    table-layout: fixed;
+    table-layout: auto;
 }
-.logMsg > table > tbody {
-    border-spacing: 0px;
-    margin: 0px;
-    padding: 0px;
+.logMsg TD {
+    word-wrap: break-word;
+    word-break: break-all;
+    white-space: normal;
+    vertical-align: middle;
+    padding: 3px 3px;
 }
 .lhFatalMsg {
     background-color: #FFBFFB;
@@ -396,6 +391,4 @@
     vertical-align: middle;
     width: 18px;
     text-align: center;
-}
-.lhMsgRecBrief {
 }
