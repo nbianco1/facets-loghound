@@ -1210,24 +1210,17 @@ LogHound.prototype.log = function() {
     msgFullEntry +=    '<td class="lhMsgNum2 lhMsgElmt lhSmFont"><div>'+msgRec['number']+'</div></td>';
     msgFullEntry +=    '<td class="lhMsgLvl lhMsgElmt lhSmFont"><div>'+msgRec['level'].getName()+'<div></td>';
     msgFullEntry +=    '<td class="lhMsgTime lhMsgElmt lhSmFont">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
-    msgFullEntry +=    '<td class="lhMsgTags lhMsgElmt lhSmFont"><table><tr><td>'+((msgRec['tags'] instanceof Array) ? msgRec['tags'] : '')+'</td></tr></table></td>';
+    msgFullEntry +=    '<td class="lhMsgTags lhMsgElmt lhSmFont"><table><tr><td class="lhSmFont">'+((msgRec['tags'] instanceof Array) ? msgRec['tags'] : '')+'</td></tr></table></td>';
     msgFullEntry +=    '</tr><tr>';
-    msgFullEntry +=    '<td colspan="4" class="lhMsgTxtDetail lhMsgElmt lhFont"><table><tr><td>'+msgText+'</td></tr></table></td>';
+    msgFullEntry +=    '<td colspan="4" class="lhMsgTxtDetail lhMsgElmt lhFont"><table><tr><td class="lhSmFont">'+msgText+'</td></tr></table></td>';
     msgFullEntry +=    '</tr></table>';
 
     var msgEntryDisp = ((this.msgDispMode=='brief') ? '' : 'none');
     var msgEntry = '<table id="lhMsgBrief_'+msgRec['number']+'" class="lhMsgRecBrief" style="display:'+msgEntryDisp+'"><tr>';
     msgEntry +=    '<td class="lhMsgNum lhMsgElmt lhSmFont"><div>'+msgRec['number']+'</div></td>';
     msgEntry +=    '<td class="lhMsgTime lhMsgElmt lhSmFont">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
-    msgEntry +=    '<td class="lhMsgTxt lhMsgElmt lhSmFont"><table><tr><td>'+msgText+'</td></tr></table></td>';
+    msgEntry +=    '<td class="lhMsgTxt lhMsgElmt lhSmFont"><table><tr><td class="lhSmFont">'+msgText+'</td></tr></table></td>';
     msgEntry +=    '</tr></table>';
-
-//    var msgEntryDisp = ((this.msgDispMode=='brief') ? 'table-row' : 'none');
-//    var msgEntry = '<div id="lhMsgBrief_'+msgRec['number']+'" class="lhMsgRecBrief" style="display:'+msgEntryDisp+'">';
-//    msgEntry +=    '<div class="lhMsgNum lhMsgElmt lhSmFont">'+msgRec['number']+'</div>';
-//    msgEntry +=    '<div class="lhMsgTime lhMsgElmt lhSmFont">'+this.getTimestampText(msgRec['timestamp'])+'</div>';
-//    msgEntry +=    '<div class="lhMsgTxt lhMsgElmt lhSmFont">'+msgText+'</div>';
-//    msgEntry +=    '</div>';
 
     msgElmt.innerHTML=msgFullEntry+msgEntry;
     var logsBody = document.getElementById('lhLogsPanelBody');
