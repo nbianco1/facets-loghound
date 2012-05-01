@@ -1,12 +1,13 @@
 We've tested Log Hound with the following browsers.  If you have a browser not in the table and you find a bug or lack thereof, drop us a line and let us know so we can fill out the table.
 
 || *Browser* || *Version*     || *OS*            || *Status*         ||
-|| !FireFox  ||  <3.0         || ANY             || Will Not Support ||
-|| !FireFox  ||  3.6          || Windows XP      || Works            ||
-|| IE        ||  <7           || ANY             || Will Not Support ||
-|| IE        ||  7(Quirks)    || Windows XP      || CSS Problems     ||
-|| IE        ||  7(IE7std)    || Windows XP      || Works            ||
+|| !FireFox  ||  <3.6         || ANY             || Will Not Support ||
+|| !FireFox  ||  3.6 - 12     || Windows XP      || Works            ||
+|| IE        ||  <8           || ANY             || Will Not Support ||
 || IE        ||  8(Quirks)    || Windows XP      || CSS Problems     ||
-|| IE        ||  8(IE7std)    || Windows XP      || Works            ||
 || IE        ||  8(IE8std)    || Windows XP      || Works            ||
-|| Chrome    ||  6.0          || Windows XP      || Works            ||
+|| IE        ||  9(Quirks)    || Windows XP      || CSS Problems     ||
+|| IE        ||  9(IE9std)    || Windows XP      || Works            ||
+|| Chrome    ||  >6.0         || Windows XP      || Works            ||
+
+For the best experience, use Firefox or Chrome.
