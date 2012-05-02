@@ -13,7 +13,6 @@
     display: none;
     border-spacing: 2px;
     z-index: 5000;
-    background-color: #688DE0;
     box-sizing: border-box;
     -ms-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -73,7 +72,6 @@
     font-weight: bold;
     text-align: center;
     width: 14px;
-    text-align: center;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
@@ -106,11 +104,10 @@
 #lhTitlePanelPlate {
     display: table-row;
 }
-#lhTitlePanelPlate DIV {
-    display: table-cell;
-}
 #lhTitlePanel {
     display: table-cell;
+    table-layout: auto;
+    border-spacing: 0;
     width: 100%;
     padding: 0px 4px;
 }
@@ -164,20 +161,20 @@
 #lhSearchField {
     text-align: left;
     width: 100px;
-    height: 18px;
+    height: 16px;
     margin-left: 2px !important;
 }
 .lhTitleLeft {
     width: 20px;
 }
-.lhTitle {
-    font-family: Arial,Helvetica,sans-serif;
-    letter-spacing: 0.0em;
-    font-size: 8pt;
+#lhTitle {
     font-weight: bold;
-    width: 100%;
     padding-left: 5px;
     text-align: left;
+    word-wrap: normal;
+    word-break: normal;
+    white-space: nowrap;
+
 }
 .lhBtnCtrls {
     font-size: 8pt;
@@ -188,14 +185,18 @@
 }
 .lhTitlePanelElmt {
     display: table-cell;
-    height: .9em;
+    height: 14px;
     line-height: 0.8em;
+}
+#lhTitlePanelSpcr {
+    width: 100%;
 }
 #lhHelpPanelPlate {
     display: table-row;
 }
 #lhHelpPanel {
     display: table-cell;
+    border-spacing: 0;
     width: 100%;
     padding: 0px 4px;
     text-align: left;
@@ -211,6 +212,8 @@
 }
 #lhCtrlPanel {
     display: table-cell;
+    table-layout: auto;
+    border-spacing: 0;
     width: 100%;
     padding: 0px 4px;
     line-height: .8em;
@@ -226,6 +229,7 @@
 }
 #lhTagCtrlPanel {
     display: table-cell;
+    border-spacing: 0;
     width: 100%;
     padding: 0px 4px;
     line-height: .8em;
@@ -242,6 +246,7 @@
 }
 #lhLogsPanel {
     display: table-cell;
+    border-spacing: 0;
     width: 100%;
     padding: 0px 4px;
     line-height: .8em;
@@ -279,7 +284,12 @@
 }
 .logMsg .lhMsgNum {
     border-right: 1px #AAAAAA solid;
+    white-space: nowrap;
+}
+.logMsg .lhMsgNum > DIV {
     width: 30px;
+    word-wrap: normal;
+    word-break: normal;
 }
 .logMsg .lhMsgLvl {
     border-right: 1px #AAAAAA solid;

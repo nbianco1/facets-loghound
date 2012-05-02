@@ -260,7 +260,6 @@ LogHound.prototype.doSetup = function() {
     this._createTagPanel();
     this._createLogsPanel();
 
-
     var btns = document.getElementsByClassName('lhBtn');
     for(var i=0; i<btns.length; i++) {
         FctsTools.addStyleClass(btns[i],'lhBtnOut');
@@ -270,37 +269,7 @@ LogHound.prototype.doSetup = function() {
         btns[i].onmouseout = this.buttonMouseOut;
         btns[i].lhBtnState = 'off';
     }
-    document.getElementById('lhTagCtrlAddBtn').onclick = function(event) {
-        loghoundRef.moveTagAssignments('add');
-    };
-    document.getElementById('lhTagCtrlRemBtn').onclick = function(event) {
-        loghoundRef.moveTagAssignments('rem');
-    };
-    document.getElementById('lhTagCtrlRemAllBtn').onclick = function(event) {
-        loghoundRef.moveTagAssignments('remAll');
-    };
-    document.getElementById('lhTagCtrlAddAllBtn').onclick = function(event) {
-        loghoundRef.moveTagAssignments('addAll');
-    };
-    document.getElementById('lhCtrlMore').onclick = function(event) {
-        loghoundRef.adjustMessagePaneSize(true);
-    };
-    document.getElementById('lhCtrlLess').onclick = function(event) {
-        loghoundRef.adjustMessagePaneSize(false);
-    };
-    var levelControls = document.getElementsByClassName('lhCtrlLvl');
-    var showMsgLvlFn = function(event) {
-        loghoundRef.showMessageLevel(this.id.slice(9));
-    };
-    for(var idx=0; idx<levelControls.length; idx++) {
-        levelControls[idx].onclick = showMsgLvlFn;
-    }
 
-    document.getElementById('lhCtrlMsgDispModeBtn').onclick = function(event) {
-        loghoundRef.setMessageLayout();
-    };
-
-    this.activateTagMode('any');
     //this.interfaceMonitor(true);
     this.setLogLevel(this.logLevel);
     for(var i=0;i<this._viewPlates.length;i++) {
@@ -317,6 +286,7 @@ LogHound.prototype._createTitlePanel = function() {
     var titlebar = '<div id="lhTitlePanel" class="lhPlateColor lhRndCorners">';
     titlebar +=    '<div id="lhBtnShade" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Message Panel">v</div>';
     titlebar +=    '<div id="lhTitle" class="lhTitlePanelElmt lhFont">Log Hound v'+LogHoundVer.getLongText()+'</div>';
+    titlebar +=    '<div id="lhTitlePanelSpcr" class="lhTitlePanelElmt lhFont"></div>';
     titlebar +=    '<div id="lhBtnHelp" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Help Panel">?</div>';
     titlebar +=    '<div id="lhBtnTags" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Tags Panel">T</div>';
     titlebar +=    '<div id="lhBtnCtrls" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Control Panel">C</div>';
@@ -341,14 +311,12 @@ LogHound.prototype._createTitlePanel = function() {
     };
     this.addHelpEntry(['lhBtnTags','Tag Panel Toggle: Opens and closes the tag control panel.']);
 
-
     // Control panel toggle
     var toggleCtrl = document.getElementById('lhBtnCtrls');
     toggleCtrl.onclick = function(event) {
         lhRef.setPanelDisplay(lhRef.domCtrlPanelPlate);
     };
     this.addHelpEntry(['lhBtnCtrls','Control Panel Toggle: Opens and closes the control panel.']);
-
 };
 
 LogHound.prototype._createHelpPanel = function() {
@@ -381,6 +349,7 @@ LogHound.prototype._createControlPanel = function() {
     ctrlbar +=    '<div id="lhCtrlLvlTrace" class="lhTraceMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Trace">+</div>';
     ctrlbar +=    '</div>';
     ctrlbar +=    '<div id="lhCtrlMsgDispModeBtn" class="lhDispModeLable lhCtrl lhBtn lhSmFont" title="Toggle message display mode">D</div>';
+    ctrlbar +=    '<div id="lhBtnClear" class="lhCtrl lhBtn lhSmFont" title="Clear All Logs">Z</div>';
     ctrlbar +=    '<div id="lhCtrlSearchPlate">';
     ctrlbar +=    '<label for="lhSearchField" class="lhSmFont lhSearchLabel lhCtrl">Search:</label>';
     ctrlbar +=    '<input type="text" id="lhSearchField" name="lhSearchField" class="lhSearchField lhSmFont" onkeyup="window.logHound.search()"/>';
@@ -410,6 +379,32 @@ LogHound.prototype._createControlPanel = function() {
     };
     this.addHelpEntry(['lhLvlSelect','Level Select: Levels are in descending order. Only messages corresponding to the level shown and those above will be logged after change.']);
     this.searchField = document.getElementById('lhSearchField');
+
+    document.getElementById('lhCtrlMore').onclick = function(event) {
+        lhRef.adjustMessagePaneSize(true);
+    };
+    document.getElementById('lhCtrlLess').onclick = function(event) {
+        lhRef.adjustMessagePaneSize(false);
+    };
+    var levelControls = document.getElementsByClassName('lhCtrlLvl');
+    var showMsgLvlFn = function(event) {
+        lhRef.showMessageLevel(this.id.slice(9));
+    };
+    for(var idx=0; idx<levelControls.length; idx++) {
+        levelControls[idx].onclick = showMsgLvlFn;
+    }
+
+    document.getElementById('lhCtrlMsgDispModeBtn').onclick = function(event) {
+        lhRef.setMessageLayout();
+    };
+
+    // Clear logs
+    var clearLogs = document.getElementById('lhBtnClear');
+    clearLogs.onclick = function(event) {
+        lhRef.clearLogs(false);
+    };
+    this.addHelpEntry(['lhBtnClear','Clears all existing log messages after confirmation by user.']);
+
 };
 
 LogHound.prototype._createTagPanel = function() {
@@ -450,7 +445,21 @@ LogHound.prototype._createTagPanel = function() {
     this.addHelpEntry(['lhTagCtrlRemBtn','Remove Selected Tags: Moves tags selected in the viewing tags box to the available tags box.']);
     this.addHelpEntry(['lhTagCtrlRemAllBtn','Remove All Tags: Moves all tags in the viewing tags box back to the available tags box.']);
 
+
     var lhRef = this;
+    document.getElementById('lhTagCtrlAddBtn').onclick = function(event) {
+        lhRef.moveTagAssignments('add');
+    };
+    document.getElementById('lhTagCtrlRemBtn').onclick = function(event) {
+        lhRef.moveTagAssignments('rem');
+    };
+    document.getElementById('lhTagCtrlRemAllBtn').onclick = function(event) {
+        lhRef.moveTagAssignments('remAll');
+    };
+    document.getElementById('lhTagCtrlAddAllBtn').onclick = function(event) {
+        lhRef.moveTagAssignments('addAll');
+    };
+
     this.tagModBtns = [];
     // Tag modifier: Any button.
     this.tagModBtnAny = document.getElementById('lhTagCtrlAnyBtn');
@@ -484,6 +493,7 @@ LogHound.prototype._createTagPanel = function() {
         lhRef.activateTagMode('exc');
     };
     this.addHelpEntry(['lhTagCtrlExcBtn','"Exclusion" Tags Modifier: Only messages that have none of the viewing tags will be visible.']);
+    this.activateTagMode('any');
 };
 
 LogHound.prototype._createLogsPanel = function() {
@@ -1238,6 +1248,21 @@ LogHound.prototype.log = function() {
     // Add message DOM element to record.
     msgRec['element'] = document.getElementById(msgId);
     return true;
+};
+/**
+ * @param {boolean} [force] <code>true</code> to bypass the confirmation dialog and clear the logs, <code>false</code>
+ * or <code>undefined</code> to have a dialog box ask the user first before clearing the logs.
+ */
+LogHound.prototype.clearLogs = function(force) {
+    if(force || confirm('Clear all logs?')) {
+        var logsBody = document.getElementById('lhLogsPanelBody');
+        while(logsBody.hasChildNodes()) {
+            logsBody.removeChild(logsBody.lastChild);
+        }
+        var clearedRecs = this.msgRecords;
+        this.msgRecords = [];
+        return clearedRecs;
+    }
 };
 /**
  * @returns {
