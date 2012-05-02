@@ -11,6 +11,9 @@
 var quotes = new Array();
 quotes[quotes.length] = 'damnant quod non intelligunt - "they condemn what they do not understand"';
 quotes[quotes.length] = 'contra bonos mores - "against the best interests of society"';
+quotes[quotes.length] = 'homo doctus in se semper divitias habet - "a learned man alwasy has wealth within himself"';
+quotes[quotes.length] = 'homo homini lupus - "man\'s inhumanity to man", literally "man is a wolf to man"';
+quotes[quotes.length] = 'in vino veritas - "win loosens the tongue", litterally "in wine, the truth"';
 
 function changeMsgLayout() {
     var selectElmt = document.getElementById('msgLayoutSelect');
@@ -20,7 +23,7 @@ function toggleLogging() {
     window.logHound.enableLogging(document.getElementById('enableChkBx').checked);
 }
 function toggleShadeMode() {
-    window.logHound.setShadeMode(document.getElementById('shadeChkBx').checked);
+    window.logHound.setShadeState(document.getElementById('shadeChkBx').checked);
 }
 function showClicked() {
     window.logHound.show(document.getElementById('showChkBx').checked);
@@ -50,12 +53,7 @@ function enterLogMessage() {
     var what = LogHoundLevels.getById(levelId);
     var tags = document.getElementById('logMsgTags').value;
     var crError = document.getElementById('createError').checked==1;
-    var tagArray = null;
-    if(tags.indexOf('\r\n')>=0) {
-        tagArray = tags.split('\r\n');
-    } else {
-        tagArray = tags.split('\n');
-    }
+    var tagArray = tags.split(/\r\n|\r|\n/);
     var error = null;
     if(crError) {
         try{
@@ -309,7 +307,7 @@ body {
     <div id="shadeCtrlPlate" class="outline ctrlPlate">
         <label class="outline">Shade mode:
         <input type="checkbox" id="shadeChkBx" name="shadeChkBx" class="checkbox" value="false" /></label>
-        <pre class="outline codeEx">window.logHound.setShadeMode()</pre>
+        <pre class="outline codeEx">window.logHound.setShadeState()</pre>
     </div>
     <div id="showCtrlPlate" class="outline ctrlPlate">
         <label class="outline">Show:
