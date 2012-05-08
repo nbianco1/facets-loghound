@@ -57,7 +57,7 @@ This is the the base, no frills install example:
 5   <script type="text/javascript">
 6   function loghoundControl() {
 7       var loghoundSwitch = document.getElementById('lhKillSwitch').value;
-8       window.logHound.setKillSwitch(!(!!loghoundSwitch && loghoundSwitch=='on'));
+8       window.logHound.setKillSwitch(loghoundSwitch!='on'));
 9   }
 10  function onBodyLoad() {
 11      loghoundControl();
