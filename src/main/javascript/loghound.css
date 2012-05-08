@@ -54,7 +54,6 @@
 #lhPlate .lhSmFont {
     font-family: Verdana,Tahoma,Arial,Helvetica,sans-serif;
     font-size: 7pt;
-    letter-spacing: -0.02em;
     color: #222;
 }
 .lhRndCorners {
@@ -345,23 +344,59 @@
     vertical-align: middle;
     padding: 3px 3px;
 }
+#lhCtrlLvlFatal {
+    background-color: #990099;
+    color: #FFFFFF !important;
+}
 .lhFatalMsg {
-    background-color: #FFBFFB;
+    color: #990099 !important;
+    font-weight: bold;
+}
+#lhCtrlLvlError {
+    background-color: #990000;
+    color: #FFFFFF !important;
 }
 .lhErrorMsg {
-    background-color: #FFBFBF;
+    color: #990000 !important;
+    font-weight: bold;
+}
+#lhCtrlLvlWarn {
+    background-color: #999900;
+    color: #FFFFFF !important;
 }
 .lhWarnMsg {
-    background-color: #FBFFBF;
+    color: #999900 !important;
+    font-weight: bold;
+}
+#lhCtrlLvlInfo {
+    background-color: #009900;
+    color: #FFFFFF !important;
 }
 .lhInfoMsg {
-    background-color: #BFFFBF;
+    color: #009900 !important;
+    font-weight: bold;
+}
+#lhCtrlLvlDebug {
+    background-color: #009999;
+    color: #FFFFFF !important;
 }
 .lhDebugMsg {
-    background-color: #BFFDFF;
+    color: #009999 !important;
+    font-weight: bold;
+}
+#lhCtrlLvlTrace {
+    background-color: #000099;
+    color: #FFFFFF !important;
 }
 .lhTraceMsg {
-    background-color: #BFD7FF;
+    color: #000099 !important;
+    font-weight: bold;
+}
+.lhLogMsgRow1 {
+    background-color: #fBfBfB;
+}
+.lhLogMsgRow2 {
+    background-color: #f0f0f0;
 }
 #lhAvailTagsPlate {
     display: table-cell;

@@ -111,7 +111,7 @@ FctsTools.extend = function(subClass, baseClass) {
 FctsTools.removeSelected = function(selectElmt) {
     var selectedArray = new Array();
     var newArray = new Array();
-    for(i=0;i<selectElmt.options.length;i++) {
+    for(var i=0;i<selectElmt.options.length;i++) {
         if(selectElmt.options[i].selected) {
             selectedArray[selectedArray.length] = selectElmt.options[i];
         } else {
@@ -123,7 +123,7 @@ FctsTools.removeSelected = function(selectElmt) {
 };
 FctsTools.getSelected = function(selectElmt) {
     var selectedArray = new Array();
-    for(idx in selectElmt.options) {
+    for(var idx in selectElmt.options) {
         if(selectElmt.options[idx].selected) {
             selectedArray[selectedArray.length] = selectElmt.options[idx];
         }
@@ -137,7 +137,7 @@ FctsTools.getSelected = function(selectElmt) {
  */
 FctsTools.setOptions = function(selectElmt, options) {
     selectElmt.options.length = 0;
-    for(idx in options) {
+    for(var idx in options) {
         selectElmt.options[selectElmt.options.length] = options[idx];
     }
 };
@@ -146,7 +146,7 @@ FctsTools.setOptions = function(selectElmt, options) {
  * @param options An array object containing the options to add to the argumented select element.
  */
 FctsTools.addOptions = function(selectElmt, options) {
-    for(idx in options) {
+    for(var idx in options) {
         selectElmt.options[selectElmt.options.length] = options[idx];
     }
 };
@@ -165,17 +165,17 @@ FctsTools.moveSelected = function(fromSelectElmt, toSelectElmt) {
  */
 FctsTools.moveAllOptions = function(fromSelectElmt, toSelectElmt) {
     var tempOptArr = new Array();
-    for(i=0; i<fromSelectElmt.options.length; i++) {
+    for(var i=0; i<fromSelectElmt.options.length; i++) {
         tempOptArr[i] = fromSelectElmt.options[i];
     }
-    for(i=0; i<tempOptArr.length; i++) {
+    for(var i=0; i<tempOptArr.length; i++) {
         toSelectElmt.options[toSelectElmt.options.length] = new Option(tempOptArr[i].text, tempOptArr[i].value);
     }
     fromSelectElmt.length = 0;
 };
 FctsTools.getOptionValues = function(selectElmt) {
     var valueArr = new Array();
-    for(i=0; i<selectElmt.options.length; i++) {
+    for(var i=0; i<selectElmt.options.length; i++) {
         valueArr[i] = selectElmt.options[i].value;
     }
     return valueArr;
@@ -187,7 +187,7 @@ FctsTools.isBlank = function(target) {
 FctsTools.sortOptionsByValue = function(selectElmt, sortFn) {
     var optionTemp = new Array();
     var optionValues = new Array();
-    for(i=0; i<selectElmt.options.length; i++) {
+    for(var i=0; i<selectElmt.options.length; i++) {
         optionTemp[i] = selectElmt.options[i];
         optionValues[i] = selectElmt.options[i].value;
     }
@@ -216,8 +216,8 @@ FctsTools.sortOptionsByValue = function(selectElmt, sortFn) {
     } else {
         optionValues.sort(sortFn);
     }
-    for(i=0; i<optionValues.length; i++) {
-        for(j=0; j<optionTemp.length; j++) {
+    for(var i=0; i<optionValues.length; i++) {
+        for(var j=0; j<optionTemp.length; j++) {
             if(optionValues[i] == optionTemp[j].value) {
                 selectElmt.options[selectElmt.options.length] = optionTemp[j];
                 optionTemp.splice(j--,1);
@@ -229,7 +229,7 @@ FctsTools.sortOptionsByValue = function(selectElmt, sortFn) {
 FctsTools.sortOptionsByText = function(selectElmt, sortFn) {
     var optionTemp = new Array();
     var optionText = new Array();
-    for(i=0; i<selectElmt.options.length; i++) {
+    for(var i=0; i<selectElmt.options.length; i++) {
         optionTemp[i] = selectElmt.options[i];
         optionText[i] = selectElmt.options[i].text;
     }
@@ -258,8 +258,8 @@ FctsTools.sortOptionsByText = function(selectElmt, sortFn) {
     } else {
         optionText.sort(sortFn);
     }
-    for(i=0; i<optionText.length; i++) {
-        for(j=0; j<optionTemp.length; j++) {
+    for(var i=0; i<optionText.length; i++) {
+        for(var j=0; j<optionTemp.length; j++) {
             if(optionText[i] == optionTemp[j].text) {
                 selectElmt.options[selectElmt.options.length] = optionTemp[j];
                 optionTemp.splice(j--,1);
