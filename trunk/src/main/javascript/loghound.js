@@ -68,6 +68,7 @@ LogHoundVer.getShortText = function() {
 function LogHoundLevel(id, text, enabled) {
     this.id = id;
     this.text = text.toLowerCase();
+    this.label = this.text.charAt(0).toUpperCase() + this.text.slice(1);
     this.enabled = enabled;
 }
 /**
@@ -82,6 +83,13 @@ LogHoundLevel.prototype.getId = function() {
 LogHoundLevel.prototype.getName = function() {
     return this.text;
 };
+/**
+ * @returns {String} The label for the log level, which is the name of the log level with the first character
+ * capitalised.
+ */
+LogHoundLevel.prototype.getLabel = function() {
+    return this.label;
+}
 /**
  * @returns {boolean} <code>true</code> if the log level is enabled, otherwise
  * <code>false</code>.
@@ -341,12 +349,12 @@ LogHound.prototype._createControlPanel = function() {
     ctrlbar +=    '<div id="lhCtrlLess" class="lhCtrl lhBtn lhFont" title="Show Less">^</div>';
     ctrlbar +=    '<div id="lhCtrlLvlSelectPlate"><select id="lhLvlSelect" name="lhLvlSelect" class="lhSmFont"></select></div>';
     ctrlbar +=    '<div id="lhCtrlLvlPlate">';
-    ctrlbar +=    '<div id="lhCtrlLvlFatal" class="lhFatalMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Fatal">+</div>';
-    ctrlbar +=    '<div id="lhCtrlLvlError" class="lhErrorMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Error">+</div>';
-    ctrlbar +=    '<div id="lhCtrlLvlWarn" class="lhWarnMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Warn">+</div>';
-    ctrlbar +=    '<div id="lhCtrlLvlInfo" class="lhInfoMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Info">+</div>';
-    ctrlbar +=    '<div id="lhCtrlLvlDebug" class="lhDebugMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Debug">+</div>';
-    ctrlbar +=    '<div id="lhCtrlLvlTrace" class="lhTraceMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Trace">+</div>';
+    ctrlbar +=    '<div id="lhCtrlLvlFatal" class="lhFatalMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Fatal">0</div>';
+    ctrlbar +=    '<div id="lhCtrlLvlError" class="lhErrorMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Error">0</div>';
+    ctrlbar +=    '<div id="lhCtrlLvlWarn" class="lhWarnMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Warn">0</div>';
+    ctrlbar +=    '<div id="lhCtrlLvlInfo" class="lhInfoMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Info">0</div>';
+    ctrlbar +=    '<div id="lhCtrlLvlDebug" class="lhDebugMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Debug">0</div>';
+    ctrlbar +=    '<div id="lhCtrlLvlTrace" class="lhTraceMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Trace">0</div>';
     ctrlbar +=    '</div>';
     ctrlbar +=    '<div id="lhCtrlMsgDispModeBtn" class="lhDispModeLable lhCtrl lhBtn lhSmFont" title="Toggle message display mode">D</div>';
     ctrlbar +=    '<div id="lhBtnClear" class="lhCtrl lhBtn lhSmFont" title="Clear All Logs">Z</div>';
@@ -817,12 +825,15 @@ LogHound.prototype.showMessageLevel = function(level,show) {
     }
     show = FctsTools.parseToBool(show,['show']);
     var levelBtn = document.getElementById('lhCtrlLvl'+FctsTools.capitaliseFirstLetter(levelObj.getName()));
-    show = (show==null ? !(levelBtn.innerHTML=='+') : show);
+    show = (show==null ? !(levelObj.isEnabled()) : show);
+    if(show == levelBtn.isShowing) {
+        return;
+    }
     if(!show) {
-        levelBtn.innerHTML = '&ndash;';
+        levelBtn.style.textDecoration = 'line-through';
         levelObj.setEnabled(false);
     } else {
-        levelBtn.innerHTML = '+';
+        levelBtn.style.textDecoration = '';
         levelObj.setEnabled(true);
     }
     this.applyMsgFilters();
@@ -1193,15 +1204,22 @@ LogHound.prototype.log = function() {
     }
     msgRec['number'] = this.msgCount;
     this.msgRecords.push(msgRec);
+    if(!this.msgRecords[msgRec['level'].getName()]) {
+        this.msgRecords[msgRec['level'].getName()] = 0;
+        this.msgRecords[msgRec['level'].getName()+'CtrlBtn'] = document.getElementById('lhCtrlLvl'+msgRec['level'].getLabel());
+    }
+    this.msgRecords[msgRec['level'].getName()]++;
+    this.msgRecords[msgRec['level'].getName()+'CtrlBtn'].innerHTML = this.msgRecords[msgRec['level'].getName()];
     this.msgCount++;
 
     // Add message to display
+    var rowColor = (msgRec['number']%2 == 0 ? 'lhLogMsgRow1' : 'lhLogMsgRow2');
     var msgElmt = document.createElement('DIV');
     var levelText = FctsTools.capitaliseFirstLetter(msgRec['level'].getName());
     var msgId = 'logmsg'+msgRec['number'];
     msgElmt.setAttribute('id', msgId);
-    msgElmt.setAttribute('class','lh'+levelText+'Msg logMsg');
-    msgElmt.setAttribute('className','lh'+levelText+'Msg logMsg');
+    msgElmt.setAttribute('class','lh'+levelText+'Msg logMsg '+rowColor);
+    msgElmt.setAttribute('className','lh'+levelText+'Msg logMsg '+rowColor);
     msgElmt.setAttribute('lhLogLevel', msgRec['level'].getName());
     msgElmt.style.display = (msgRec['level'].isEnabled()==true ? 'block' : 'none');
 
@@ -1217,19 +1235,19 @@ LogHound.prototype.log = function() {
 
     var msgFullEntryDisp = ((this.msgDispMode=='detail') ? '' : 'none');
     var msgFullEntry = '<table id="lhMsgDetail_'+msgRec['number']+'" class="lhMsgRecDetail" style="display:'+msgFullEntryDisp+';"><tr>';
-    msgFullEntry +=    '<td class="lhMsgNum2 lhMsgElmt lhSmFont"><div>'+msgRec['number']+'</div></td>';
-    msgFullEntry +=    '<td class="lhMsgLvl lhMsgElmt lhSmFont"><div>'+msgRec['level'].getName()+'<div></td>';
-    msgFullEntry +=    '<td class="lhMsgTime lhMsgElmt lhSmFont">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
-    msgFullEntry +=    '<td class="lhMsgTags lhMsgElmt lhSmFont"><table><tr><td class="lhSmFont">'+((msgRec['tags'] instanceof Array) ? msgRec['tags'] : '')+'</td></tr></table></td>';
+    msgFullEntry +=    '<td class="lhMsgNum2 lhMsgElmt lhSmFont"><div class="lh'+levelText+'Msg">'+msgRec['number']+'</div></td>';
+    msgFullEntry +=    '<td class="lhMsgLvl lhMsgElmt lhSmFont"><div class="lh'+levelText+'Msg">'+msgRec['level'].getName()+'<div></td>';
+    msgFullEntry +=    '<td class="lhMsgTime lhMsgElmt lhSmFont lh'+levelText+'Msg">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
+    msgFullEntry +=    '<td class="lhMsgTags lhMsgElmt lhSmFont"><table><tr><td class="lhSmFont lh'+levelText+'Msg">'+((msgRec['tags'] instanceof Array) ? msgRec['tags'] : '')+'</td></tr></table></td>';
     msgFullEntry +=    '</tr><tr>';
-    msgFullEntry +=    '<td colspan="4" class="lhMsgTxtDetail lhMsgElmt lhFont"><table><tr><td class="lhSmFont">'+msgText+'</td></tr></table></td>';
+    msgFullEntry +=    '<td colspan="4" class="lhMsgTxtDetail lhMsgElmt lhFont"><table><tr><td class="lhSmFont lh'+levelText+'Msg">'+msgText+'</td></tr></table></td>';
     msgFullEntry +=    '</tr></table>';
 
     var msgEntryDisp = ((this.msgDispMode=='brief') ? '' : 'none');
     var msgEntry = '<table id="lhMsgBrief_'+msgRec['number']+'" class="lhMsgRecBrief" style="display:'+msgEntryDisp+'"><tr>';
-    msgEntry +=    '<td class="lhMsgNum lhMsgElmt lhSmFont"><div>'+msgRec['number']+'</div></td>';
-    msgEntry +=    '<td class="lhMsgTime lhMsgElmt lhSmFont">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
-    msgEntry +=    '<td class="lhMsgTxt lhMsgElmt lhSmFont"><table><tr><td class="lhSmFont">'+msgText+'</td></tr></table></td>';
+    msgEntry +=    '<td class="lhMsgNum lhMsgElmt lhSmFont"><div class="lh'+levelText+'Msg">'+msgRec['number']+'</div></td>';
+    msgEntry +=    '<td class="lhMsgTime lhMsgElmt lhSmFont lh'+levelText+'Msg">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
+    msgEntry +=    '<td class="lhMsgTxt lhMsgElmt lhSmFont"><table><tr><td class="lhSmFont lh'+levelText+'Msg">'+msgText+'</td></tr></table></td>';
     msgEntry +=    '</tr></table>';
 
     msgElmt.innerHTML=msgFullEntry+msgEntry;
@@ -1258,6 +1276,10 @@ LogHound.prototype.clearLogs = function(force) {
         var logsBody = document.getElementById('lhLogsPanelBody');
         while(logsBody.hasChildNodes()) {
             logsBody.removeChild(logsBody.lastChild);
+        }
+        // set level message totals to 0
+        for(var len=LogHoundLevels.length, i=0; i<len; i++) {
+            this.msgRecords[LogHoundLevels[i].getName()] = 0;
         }
         var clearedRecs = this.msgRecords;
         this.msgRecords = [];
