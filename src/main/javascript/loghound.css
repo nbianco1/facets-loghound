@@ -7,7 +7,7 @@
 #DFEAF8
 */
 #lhPlate {
-    width: 400px;
+    width: 425px;
     position: absolute;
     background-color: #688DE0;
     display: none;
@@ -96,6 +96,10 @@
     -moz-user-select: none;
     -o-user-select: none;
     user-select: none;
+    height: 16px;
+}
+.lhCellCtn {
+    display: table-cell;
 }
 /***********************************************************
     Targeted Styles
@@ -135,7 +139,11 @@
 .lhCtrlLvl {
     /* border: 1px #688DE0 solid; */
     margin: 0px !important;
-    height: 18px;
+    width: 2.2em;
+}
+.lhCtrlLvlOff {
+    text-decoration: line-through;
+    font-weight: normal !important;
 }
 #lhCtrlMsgDispModePlate {
     margin: 1px 0px 0px 7px;
