@@ -52,7 +52,7 @@ if(!document.getElementsByClassName)
         }
     }
     return returnElements;
-}
+};
 
 var FctsTools = new Array();
 FctsTools.windowHeight = function() {
@@ -129,7 +129,7 @@ FctsTools.getSelected = function(selectElmt) {
         }
     }
     return selectedArray;
-}
+};
 /**
  * Replaces all the select element's options with the argumented options.
  * @param selectElmt
@@ -179,10 +179,6 @@ FctsTools.getOptionValues = function(selectElmt) {
         valueArr[i] = selectElmt.options[i].value;
     }
     return valueArr;
-};
-FctsTools.isBlankRegex = new RegExp('^[ \t]+$');
-FctsTools.isBlank = function(target) {
-    return ((typeof target)=='undefined' || target==null || target=='' || this.isBlankRegex.test(target));
 };
 FctsTools.sortOptionsByValue = function(selectElmt, sortFn) {
     var optionTemp = new Array();
@@ -268,6 +264,82 @@ FctsTools.sortOptionsByText = function(selectElmt, sortFn) {
         }
     }
 };
+
+
+
+
+
+FctsTools.isBlankRegex = new RegExp('^[ \t]+$');
+FctsTools.isBlank2 = function(target) {
+    return ((typeof target)=='undefined' || target==null || target=='' || this.isBlankRegex.test(target));
+};
+/**
+ *
+ * @param {Object} obj The object to test.
+ * @returns {boolean} Returns <code>true</code> if the arguemented number really is a number, otherwise
+ * <code>false</code>.
+ * @static
+ * @see <a target="_blank" href="http://stackoverflow.com/questions/18082/validate-numbers-in-javascript-isnumeric">Validate numbers in JavaScript - IsNumeric()</a>.
+ * @see <a target="_blank" href="http://dl.dropbox.com/u/35146/js/tests/isNumber.html">isNumber Test Cases</a>.
+ */
+FctsTools.isNumber = function(obj) {
+    return !isNaN(parseFloat(obj)) && isFinite(obj);
+};
+/**
+ *
+ * @param {String} str The string to test
+ * @returns {boolean} Returns <code>true</code> if the string is undefined, null, or empty, otherwise
+ * <code>false</code>.
+ * @static
+ * @see <a target="_blank" href="http://stackoverflow.com/questions/154059/what-is-the-best-way-to-check-for-an-empty-string-in-javascript">What is the best way to check for an empty string in JavaScript?</a>.
+ */
+FctsTools.isEmpty = function(str) {
+    return (!str || 0 === str.length);
+};
+/**
+ *
+ * @param {String} str The string to test
+ * @returns {boolean} Returns <code>true</code> if the string is undefined, null, empty, or only whitespace, otherwise
+ * <code>false</code>.
+ * @static
+ * @see <a target="_blank" href="http://stackoverflow.com/questions/154059/what-is-the-best-way-to-check-for-an-empty-string-in-javascript">What is the best way to check for an empty string in JavaScript?</a>.
+ */
+FctsTools.isBlank = function(str) {
+    return (!str || /^\s*$/.test(str));
+};
+/**
+ *
+ * @param {Object} obj The object to test.
+ * @returns {boolean} Returns <code>true</code> if the argumented object really is a string, otherwise
+ * <code>false</code>.
+ * @static
+ * @see <a target="_blank" href="http://stackoverflow.com/questions/4891937/how-to-detect-if-variable-is-a-string">how to detect if variable is a string</a>.
+ */
+FctsTools.isString = function(obj) {
+    return (Object.prototype.toString.call(obj) === '[object String]');
+};
+/**
+ *
+ * @param {Object} obj The object to test.
+ * @returns {boolean} Returns <code>true</code> if the argumented object really is an array, otherwise
+ * <code>false</code>.
+ * @static
+ */
+FctsTools.isArray = function(obj) {
+    return (Object.prototype.toString.call(obj) === '[object Array]');
+};
+/**
+ *
+ * @param {String} str The string to check.
+ * @param {String} textToMatch The text to match.
+ * @returns
+ * @static {boolean} Returns <code>true</code> if the argumented string starts with the "textToMatch", otherwise
+ * <code>false</code>.
+ * @see <a target="_blank" href="http://stackoverflow.com/questions/646628/javascript-startswith">Javascript StartsWith</a>.
+ */
+FctsTools.startsWith = function(str,textToMatch) {
+    return str.slice(0, textToMatch.length) == textToMatch;
+};
 FctsTools.escapeRegex = function(targetText) {
     if(!arguments.callee.sRE) {
         var specials = [
@@ -293,7 +365,7 @@ FctsTools.addStyleClass = function(elmt, classname) {
     }
     classes.push(classname);
     elmt.className = classes.join(' ');
-}
+};
 FctsTools.removeStyleClass = function(elmt, classname) {
     if(elmt.className==null || elmt.className=='') {
         return;
@@ -325,7 +397,7 @@ FctsTools.getStyleValue = function(elmt, style, pseudoEmlt) {
     if(window.getComputedStyle) {
         return getComputedStyle(elmt, pseudoEmlt)[style];
     } else {
-        return elmt.currentStyle[style]
+        return elmt.currentStyle[style];
     }
 };
 FctsTools.parseToBool = function(arg,altTrueArray) {
@@ -347,4 +419,4 @@ FctsTools.parseToBool = function(arg,altTrueArray) {
 };
 FctsTools.capitaliseFirstLetter = function(string) {
     return string.charAt(0).toUpperCase()+string.slice(1).toLowerCase();
-}
+};

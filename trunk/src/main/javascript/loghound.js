@@ -42,7 +42,7 @@ LogHoundVer['release'] = '';
  * returns {String} The pretty-printed version, including the build number.
  */
 LogHoundVer.getLongText = function() {
-    var ver = this.major+'.'+this.minor+'.'+this.fix
+    var ver = this.major+'.'+this.minor+'.'+this.fix;
     if(this.build!='') {
         ver = ver+'.'+this.build;
     }
@@ -89,7 +89,7 @@ LogHoundLevel.prototype.getName = function() {
  */
 LogHoundLevel.prototype.getLabel = function() {
     return this.label;
-}
+};
 /**
  * @returns {boolean} <code>true</code> if the log level is enabled, otherwise
  * <code>false</code>.
@@ -138,20 +138,20 @@ LogHoundLevels.getById = function(id) {
     return null;
 };
 /**
- * @param {Number|String} level The ID or name of the log level to retrieve.
+ * @param {Number|String|LogHoundLevel} level The ID or name of the log level to retrieve.
  * @returns {LogHoundLevel} The retrieved log level, or <code>null</code> if
  * no match for the argumented level indicator was found.
  */
 LogHoundLevels.getLevel = function(level) {
     if(level==null) { return null; }
-    if((typeof level)=='number') {
+    if(FctsTools.isNumber(level)) {
         return this.getById(level);
-    } else if((level instanceof String) || (typeof level)=='string') {
+    } else if(FctsTools.isString(level)) {
         return this.getByName(level);
-    } else if(!(level instanceof LogHoundLevel)) {
-        return null;
+    } else if(level instanceof LogHoundLevel) {
+        return level;
     }
-    return level;
+    return null;
 };
 /**
  * Takes a new log level definition and extends LogHoundLevel with it, then
@@ -247,7 +247,6 @@ LogHound.prototype.doSetup = function() {
     if(this.killSwitch) {
         return;
     }
-    var loghoundRef = this;
     this.tagMode = 'any';
     this.killSwitch = true;
     this.initialised = true;
@@ -271,8 +270,6 @@ LogHound.prototype.doSetup = function() {
     var btns = document.getElementsByClassName('lhBtn');
     for(var i=0; i<btns.length; i++) {
         FctsTools.addStyleClass(btns[i],'lhBtnOut');
-    }
-    for(var i=0; i<btns.length; i++) {
         btns[i].onmouseover = this.buttonMouseOver;
         btns[i].onmouseout = this.buttonMouseOut;
         btns[i].lhBtnState = 'off';
@@ -292,12 +289,12 @@ LogHound.prototype._createTitlePanel = function() {
     this.domTitlePanelPlate = document.createElement('DIV');
     this.domTitlePanelPlate.setAttribute('id', 'lhTitlePanelPlate');
     var titlebar = '<div id="lhTitlePanel" class="lhPlateColor lhRndCorners">';
-    titlebar +=    '<div id="lhBtnShade" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Message Panel">v</div>';
-    titlebar +=    '<div id="lhTitle" class="lhTitlePanelElmt lhFont">Log Hound v'+LogHoundVer.getLongText()+'</div>';
+    titlebar +=    this.wrapCell('<div id="lhBtnShade" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Message Panel">v</div>');
+    titlebar +=    this.wrapCell('<div id="lhTitle" class="lhTitlePanelElmt lhFont">Log Hound v'+LogHoundVer.getLongText()+'</div>');
     titlebar +=    '<div id="lhTitlePanelSpcr" class="lhTitlePanelElmt lhFont"></div>';
-    titlebar +=    '<div id="lhBtnHelp" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Help Panel">?</div>';
-    titlebar +=    '<div id="lhBtnTags" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Tags Panel">T</div>';
-    titlebar +=    '<div id="lhBtnCtrls" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Control Panel">C</div>';
+    titlebar +=    this.wrapCell('<div id="lhBtnHelp" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Help Panel">?</div>');
+    titlebar +=    this.wrapCell('<div id="lhBtnTags" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Tags Panel">T</div>');
+    titlebar +=    this.wrapCell('<div id="lhBtnCtrls" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Control Panel">C</div>');
     titlebar +=    '</div>';
     this.domTitlePanelPlate.innerHTML = titlebar;
     this.logPlate.appendChild(this.domTitlePanelPlate);
@@ -345,23 +342,23 @@ LogHound.prototype._createControlPanel = function() {
     this.domCtrlPanelPlate = document.createElement('DIV');
     this.domCtrlPanelPlate.setAttribute('id', 'lhCtrlPanelPlate');
     var ctrlbar = '<div id="lhCtrlPanel" class="lhPlateColor lhRndCorners">';
-    ctrlbar +=    '<div id="lhCtrlMore" class="lhCtrl lhBtn lhFont" title="Show More">v</div>';
-    ctrlbar +=    '<div id="lhCtrlLess" class="lhCtrl lhBtn lhFont" title="Show Less">^</div>';
-    ctrlbar +=    '<div id="lhCtrlLvlSelectPlate"><select id="lhLvlSelect" name="lhLvlSelect" class="lhSmFont"></select></div>';
-    ctrlbar +=    '<div id="lhCtrlLvlPlate">';
-    ctrlbar +=    '<div id="lhCtrlLvlFatal" class="lhFatalMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Fatal">0</div>';
-    ctrlbar +=    '<div id="lhCtrlLvlError" class="lhErrorMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Error">0</div>';
-    ctrlbar +=    '<div id="lhCtrlLvlWarn" class="lhWarnMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Warn">0</div>';
-    ctrlbar +=    '<div id="lhCtrlLvlInfo" class="lhInfoMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Info">0</div>';
-    ctrlbar +=    '<div id="lhCtrlLvlDebug" class="lhDebugMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Debug">0</div>';
-    ctrlbar +=    '<div id="lhCtrlLvlTrace" class="lhTraceMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Trace">0</div>';
-    ctrlbar +=    '</div>';
-    ctrlbar +=    '<div id="lhCtrlMsgDispModeBtn" class="lhDispModeLable lhCtrl lhBtn lhSmFont" title="Toggle message display mode">D</div>';
-    ctrlbar +=    '<div id="lhBtnClear" class="lhCtrl lhBtn lhSmFont" title="Clear All Logs">Z</div>';
-    ctrlbar +=    '<div id="lhCtrlSearchPlate">';
-    ctrlbar +=    '<label for="lhSearchField" class="lhSmFont lhSearchLabel lhCtrl">Search:</label>';
-    ctrlbar +=    '<input type="text" id="lhSearchField" name="lhSearchField" class="lhSearchField lhSmFont" onkeyup="window.logHound.search()"/>';
-    ctrlbar +=    '</div>';
+    ctrlbar +=    this.wrapCell('<div id="lhCtrlMore" class="lhCtrl lhBtn lhFont" title="Show More">v</div>');
+    ctrlbar +=    this.wrapCell('<div id="lhCtrlLess" class="lhCtrl lhBtn lhFont" title="Show Less">^</div>');
+    ctrlbar +=    this.wrapCell('<div id="lhCtrlLvlSelectPlate"><select id="lhLvlSelect" name="lhLvlSelect" class="lhSmFont"></select></div>');
+    ctrlbar +=    this.wrapCell('<div id="lhCtrlLvlPlate">' +
+                                    '<div id="lhCtrlLvlFatal" class="lhFatalMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Fatal">0</div>' +
+                                    '<div id="lhCtrlLvlError" class="lhErrorMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Error">0</div>' +
+                                    '<div id="lhCtrlLvlWarn" class="lhWarnMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Warn">0</div>' +
+                                    '<div id="lhCtrlLvlInfo" class="lhInfoMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Info">0</div>' +
+                                    '<div id="lhCtrlLvlDebug" class="lhDebugMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Debug">0</div>' +
+                                    '<div id="lhCtrlLvlTrace" class="lhTraceMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Trace">0</div>' +
+                                '</div>');
+    ctrlbar +=    this.wrapCell('<div id="lhCtrlMsgDispModeBtn" class="lhDispModeLable lhCtrl lhBtn lhSmFont" title="Toggle message display mode">D</div>');
+    ctrlbar +=    this.wrapCell('<div id="lhBtnClear" class="lhCtrl lhBtn lhSmFont" title="Clear All Logs">Z</div>');
+    ctrlbar +=    this.wrapCell('<div id="lhCtrlSearchPlate">' +
+                                    '<label for="lhSearchField" class="lhSmFont lhSearchLabel lhCtrl">Search:</label>' +
+                                    '<input type="text" id="lhSearchField" name="lhSearchField" class="lhSearchField lhSmFont" onkeyup="window.logHound.search()"/>' +
+                                '</div>');
     ctrlbar +=    '</div>';
     this.domCtrlPanelPlate.innerHTML = ctrlbar;
     this.addPanel(this.domCtrlPanelPlate);
@@ -374,7 +371,7 @@ LogHound.prototype._createControlPanel = function() {
     var lhRef = this;
     // Add levels to level select control.
     var lvlSelect = document.getElementById('lhLvlSelect');
-    var level;
+    var level=null;
     for(var idx = 0; idx<LogHoundLevels.length; idx++) {
         level = LogHoundLevels[idx];
         lvlSelect.options[lvlSelect.length] = new Option(level.getName(),level.getId());
@@ -382,7 +379,7 @@ LogHound.prototype._createControlPanel = function() {
     FctsTools.sortOptionsByValue(lvlSelect,function(o1,o2) {
         return parseInt(o2,10)-parseInt(o1,10);
     });
-    document.getElementById('lhLvlSelect').onchange = function(event) {
+    lvlSelect.onchange = function(event) {
         lhRef.setLogLevel(parseInt(this.value,10));
     };
     this.addHelpEntry(['lhLvlSelect','Level Select: Levels are in descending order. Only messages corresponding to the level shown and those above will be logged after change.']);
@@ -503,7 +500,17 @@ LogHound.prototype._createTagPanel = function() {
     this.addHelpEntry(['lhTagCtrlExcBtn','"Exclusion" Tags Modifier: Only messages that have none of the viewing tags will be visible.']);
     this.activateTagMode('any');
 };
-
+/**
+ *
+ * @param cellContents
+ * @returns {String}
+ */
+LogHound.prototype.wrapCell = function(cellContents) {
+    return '<div class="lhCellCtn">'+cellContents+'</div>';
+};
+/**
+ * @private
+ */
 LogHound.prototype._createLogsPanel = function() {
     this.domLogsPanelPlate = document.createElement('DIV');
     this.domLogsPanelPlate.setAttribute('id', 'lhLogsPanelPlate');
@@ -512,8 +519,12 @@ LogHound.prototype._createLogsPanel = function() {
     logsPanel +=    '</div>';
     this.domLogsPanelPlate.innerHTML = logsPanel;
     this.addPanel(this.domLogsPanelPlate,true);
-}
-
+};
+/**
+ *
+ * @param panelRef
+ * @param startOpen
+ */
 LogHound.prototype.addPanel = function(panelRef,startOpen) {
     if(typeof panelRef == 'string') {
         panelRef = document.getElementById(panelRef);
@@ -523,7 +534,7 @@ LogHound.prototype.addPanel = function(panelRef,startOpen) {
     panelRef.lhDisplayStyle = 'none';
     this.logPlate.appendChild(panelRef);
     this._viewPlates.push(panelRef);
-}
+};
 /**
  * Standard mouse-over event for UI buttons.
  */
@@ -575,12 +586,12 @@ LogHound.prototype.addHelpEntry = function(entry) {
  * @private
  */
 LogHound.prototype.toggleHelp = function(enable) {
+    if(this.helpEnabled==(!!enable)) { return; }
+    this.helpEnabled = !!enable;
     if(!!enable) {
-        if(this.helpEnabled) { return; }
-        this.helpEnabled = true;
         var lhRef = this;
         var helpPanel = document.getElementById('lhHelpPanel');
-        for(var i=0; i<this.helpEntries.length; i++) {
+        for(var len=this.helpEntries.length, i=0; i<len; i++) {
             var target = document.getElementById(this.helpEntries[i][0]);
             target.lhHelpTxt = this.helpEntries[i][1];
             target.lhOrigMouseOver = target.onmouseover;
@@ -595,10 +606,8 @@ LogHound.prototype.toggleHelp = function(enable) {
             };
         }
     } else {
-        if(!this.helpEnabled) { return; }
-        this.helpEnabled = false;
         var target = null;
-        for(var i=0; i<this.helpEntries.length; i++) {
+        for(var len=this.helpEntries.length, i=0; i<len; i++) {
             target = document.getElementById(this.helpEntries[i][0]);
             target.lhHelpTxt = this.helpEntries[i][1];
             target.onmouseover = target.lhOrigMouseOver;
@@ -633,11 +642,11 @@ LogHound.prototype.setMessageLayout = function(layout) {
     }
     if(!this.initialised || !this.enabled) { return false; }
     var briefMsgRecs = document.getElementsByClassName('lhMsgRecBrief');
-    for(var idx=0; idx<briefMsgRecs.length; idx++) {
+    for(var len=briefMsgRecs.length,idx=0; idx<len; idx++) {
         briefMsgRecs[idx].style.display = (this.msgDispMode=='brief' ? '' : 'none');
     }
     var detailMsgRecs = document.getElementsByClassName('lhMsgRecDetail');
-    for(var idx=0; idx<detailMsgRecs.length; idx++) {
+    for(var len=detailMsgRecs.length,idx=0; idx<len; idx++) {
         detailMsgRecs[idx].style.display = (this.msgDispMode=='brief' ? 'none' : '');
     }
     return true;
@@ -830,10 +839,10 @@ LogHound.prototype.showMessageLevel = function(level,show) {
         return;
     }
     if(!show) {
-        levelBtn.style.textDecoration = 'line-through';
+        FctsTools.addStyleClass(levelBtn,'lhCtrlLvlOff');
         levelObj.setEnabled(false);
     } else {
-        levelBtn.style.textDecoration = '';
+        FctsTools.removeStyleClass(levelBtn,'lhCtrlLvlOff');
         levelObj.setEnabled(true);
     }
     this.applyMsgFilters();
@@ -869,7 +878,7 @@ LogHound.prototype.addMsgFilter = function(newFilter) {
  * @private
  */
 LogHound.prototype.applyMsgFilters = function() {
-    for(var recIdx=0; recIdx<this.msgRecords.length; recIdx++) {
+    for(var len=this.msgRecords.length, recIdx=0; recIdx<len; recIdx++) {
         this.msgRecords[recIdx]['element'].style.display = (this.filterMsg(this.msgRecords[recIdx]) ? 'block' : 'none');
     }
     //var ts = (new Date()).getTime();
@@ -883,7 +892,7 @@ LogHound.prototype.applyMsgFilters = function() {
  * should not be visible.
  */
 LogHound.prototype.filterMsg = function(msgRec) {
-    for(var idx=0; idx<this.msgFilters.length; idx++) {
+    for(var len=this.msgFilters.length, idx=0; idx<len; idx++) {
         if(!this.msgFilters[idx].showMessage(msgRec)) {
             return false;
         }
@@ -967,7 +976,6 @@ LogHound.prototype.adjustMessagePaneSize = function(adjustment) {
     } else {
         return false;
     }
-    var newHeight = parseInt(FctsTools.getStyleValue(document.getElementById('lhLogsPanelBody'),'height'),10)+adjustment;
     return this.setMessagePaneSize(this.domLogsPanelPlate.offsetHeight+adjustment);
 };
 /**
@@ -997,10 +1005,7 @@ LogHound.prototype.stickLogPlateTopLeft = function() {
     this.logPlate.style.zIndex=5000;
 };
 LogHound.prototype.stickLogPlateTopRight = function() {
-    var plateHeight = this.logPlate.offsetHeight;
     var plateWidth = this.logPlate.offsetWidth;
-    var winHeight = FctsTools.windowHeight();
-    var winWidth = FctsTools.windowWidth();
     var scrollTop = FctsTools.scrollTop();
     var scrollLeft = FctsTools.scrollLeft();
     /*
