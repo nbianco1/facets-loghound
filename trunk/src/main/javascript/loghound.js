@@ -35,7 +35,7 @@ LogHoundVer['build'] = '$Rev$';
 if(LogHoundVer['build'].length>5) {
     LogHoundVer['build'] = LogHoundVer['build'].substring(5).split(' ')[1];
 } else {
-    LogHoundVer['build'] = 'alpha 1';
+    LogHoundVer['build'] = 'alpha 2';
 }
 LogHoundVer['release'] = '';
 /**
@@ -237,6 +237,10 @@ function LogHound() {
     this.tagNameRegex = new RegExp('^[a-z][-a-z0-9_]+$','i');
     this._viewPlates = [];
     this._shadeState = false;
+    var queryParams = FctsTools.parseQueryString();
+    if(!!queryParams && !!queryParams['lhRun']) {
+        this.doSetup();
+    }
 }
 /**
  * Performs the main setup for the Log Hound application.  This should only be
@@ -289,12 +293,12 @@ LogHound.prototype._createTitlePanel = function() {
     this.domTitlePanelPlate = document.createElement('DIV');
     this.domTitlePanelPlate.setAttribute('id', 'lhTitlePanelPlate');
     var titlebar = '<div id="lhTitlePanel" class="lhPlateColor lhRndCorners">';
-    titlebar +=    this.wrapCell('<div id="lhBtnShade" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Message Panel">v</div>');
-    titlebar +=    this.wrapCell('<div id="lhTitle" class="lhTitlePanelElmt lhFont">Log Hound v'+LogHoundVer.getLongText()+'</div>');
+    titlebar +=    '<div id="lhBtnShade" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Message Panel">v</div>';
+    titlebar +=    '<div id="lhTitle" class="lhTitlePanelElmt lhFont">Log Hound v'+LogHoundVer.getLongText()+'</div>';
     titlebar +=    '<div id="lhTitlePanelSpcr" class="lhTitlePanelElmt lhFont"></div>';
-    titlebar +=    this.wrapCell('<div id="lhBtnHelp" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Help Panel">?</div>');
-    titlebar +=    this.wrapCell('<div id="lhBtnTags" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Tags Panel">T</div>');
-    titlebar +=    this.wrapCell('<div id="lhBtnCtrls" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Control Panel">C</div>');
+    titlebar +=    '<div id="lhBtnHelp" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Help Panel">?</div>';
+    titlebar +=    '<div id="lhBtnTags" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Tags Panel">T</div>';
+    titlebar +=    '<div id="lhBtnCtrls" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Control Panel">C</div>';
     titlebar +=    '</div>';
     this.domTitlePanelPlate.innerHTML = titlebar;
     this.logPlate.appendChild(this.domTitlePanelPlate);
@@ -342,24 +346,23 @@ LogHound.prototype._createControlPanel = function() {
     this.domCtrlPanelPlate = document.createElement('DIV');
     this.domCtrlPanelPlate.setAttribute('id', 'lhCtrlPanelPlate');
     var ctrlbar = '<div id="lhCtrlPanel" class="lhPlateColor lhRndCorners">';
-    ctrlbar +=    this.wrapCell('<div id="lhCtrlMore" class="lhCtrl lhBtn lhFont" title="Show More">v</div>');
-    ctrlbar +=    this.wrapCell('<div id="lhCtrlLess" class="lhCtrl lhBtn lhFont" title="Show Less">^</div>');
-    ctrlbar +=    this.wrapCell('<div id="lhCtrlLvlSelectPlate"><select id="lhLvlSelect" name="lhLvlSelect" class="lhSmFont"></select></div>');
-    ctrlbar +=    this.wrapCell('<div id="lhCtrlLvlPlate">' +
-                                    '<div id="lhCtrlLvlFatal" class="lhFatalMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Fatal">0</div>' +
-                                    '<div id="lhCtrlLvlError" class="lhErrorMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Error">0</div>' +
-                                    '<div id="lhCtrlLvlWarn" class="lhWarnMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Warn">0</div>' +
-                                    '<div id="lhCtrlLvlInfo" class="lhInfoMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Info">0</div>' +
-                                    '<div id="lhCtrlLvlDebug" class="lhDebugMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Debug">0</div>' +
-                                    '<div id="lhCtrlLvlTrace" class="lhTraceMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Trace">0</div>' +
-                                '</div>');
-    ctrlbar +=    this.wrapCell('<div id="lhCtrlMsgDispModeBtn" class="lhDispModeLable lhCtrl lhBtn lhSmFont" title="Toggle message display mode">D</div>');
-    ctrlbar +=    this.wrapCell('<div id="lhBtnClear" class="lhCtrl lhBtn lhSmFont" title="Clear All Logs">Z</div>');
-    ctrlbar +=    this.wrapCell('<div id="lhCtrlSearchPlate">' +
-                                    '<label for="lhSearchField" class="lhSmFont lhSearchLabel lhCtrl">Search:</label>' +
-                                    '<input type="text" id="lhSearchField" name="lhSearchField" class="lhSearchField lhSmFont" onkeyup="window.logHound.search()"/>' +
-                                '</div>');
+    ctrlbar +=    '<div id="lhCtrlMore" class="lhCtrl lhBtn lhFont" title="Show More">v</div>';
+    ctrlbar +=    '<div id="lhCtrlLess" class="lhCtrl lhBtn lhFont" title="Show Less">^</div>';
+    ctrlbar +=    '<div id="lhCtrlLvlSelectPlate"><select id="lhLvlSelect" name="lhLvlSelect" class="lhSmFont"></select></div>';
+    ctrlbar +=    '<div id="lhCtrlLvlPlate">';
+    ctrlbar +=    '<div id="lhCtrlLvlFatal" class="lhFatalMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Fatal">0</div>';
+    ctrlbar +=    '<div id="lhCtrlLvlError" class="lhErrorMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Error">0</div>';
+    ctrlbar +=    '<div id="lhCtrlLvlWarn" class="lhWarnMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Warn">0</div>';
+    ctrlbar +=    '<div id="lhCtrlLvlInfo" class="lhInfoMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Info">0</div>';
+    ctrlbar +=    '<div id="lhCtrlLvlDebug" class="lhDebugMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Debug">0</div>';
+    ctrlbar +=    '<div id="lhCtrlLvlTrace" class="lhTraceMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Trace">0</div>';
     ctrlbar +=    '</div>';
+    ctrlbar +=    '<div id="lhCtrlMsgDispModeBtn" class="lhDispModeLable lhCtrl lhBtn lhSmFont" title="Toggle message display mode">D</div>';
+    ctrlbar +=    '<div id="lhBtnClear" class="lhCtrl lhBtn lhSmFont" title="Clear All Logs">Z</div>';
+    ctrlbar +=    '<div id="lhCtrlSearchPlate">';
+    ctrlbar +=    '<label for="lhSearchField" class="lhSmFont lhSearchLabel lhCtrl">Search:</label>';
+    ctrlbar +=    '<input type="text" id="lhSearchField" name="lhSearchField" class="lhSearchField lhSmFont" onkeyup="window.logHound.search()"/>';
+    ctrlbar +=    '</div></div>';
     this.domCtrlPanelPlate.innerHTML = ctrlbar;
     this.addPanel(this.domCtrlPanelPlate);
     this.addHelpEntry(['lhCtrlMore','Show more messages: Lengthens the log message pane to show more messages.']);
@@ -499,14 +502,6 @@ LogHound.prototype._createTagPanel = function() {
     };
     this.addHelpEntry(['lhTagCtrlExcBtn','"Exclusion" Tags Modifier: Only messages that have none of the viewing tags will be visible.']);
     this.activateTagMode('any');
-};
-/**
- *
- * @param cellContents
- * @returns {String}
- */
-LogHound.prototype.wrapCell = function(cellContents) {
-    return '<div class="lhCellCtn">'+cellContents+'</div>';
 };
 /**
  * @private
@@ -1178,6 +1173,29 @@ LogHound.prototype.parseLoggingArgs = function() {
     return msgRec;
 };
 /**
+ * @private
+ */
+LogHound.prototype._updateLogTotals = function(level) {
+    if(!level) {
+        for(var len=LogHoundLevels.length,i=0; i<len; i++) {
+            level = LogHoundLevels[i];
+            if(!this.msgRecords[level.getName()+'Count']) {
+                this.msgRecords[level.getName()+'Count'] = 0;
+                this.msgRecords[level.getName()+'CtrlBtn'] = document.getElementById('lhCtrlLvl'+level.getLabel());
+            }
+            this.msgRecords[level.getName()+'Count'] = 0;
+            this.msgRecords[level.getName()+'CtrlBtn'].innerHTML = 0;
+        }
+    } else {
+        if(!this.msgRecords[level.getName()+'Count']) {
+            this.msgRecords[level.getName()+'Count'] = 0;
+            this.msgRecords[level.getName()+'CtrlBtn'] = document.getElementById('lhCtrlLvl'+level.getLabel());
+        }
+        this.msgRecords[level.getName()+'Count']++;
+        this.msgRecords[level.getName()+'CtrlBtn'].innerHTML = this.msgRecords[level.getName()+'Count'];
+    }
+};
+/**
  * Main logging function - this is where all log messages go to die... or be
  * displayed. The arguments for this method are handled by a special argument
  * parser, so the order of the arguments does not matter.
@@ -1207,15 +1225,9 @@ LogHound.prototype.log = function() {
     if(!this.addTags(msgRec['tags'])) {
         return false;
     }
-    msgRec['number'] = this.msgCount;
+    msgRec['number'] = this.msgCount++;
     this.msgRecords.push(msgRec);
-    if(!this.msgRecords[msgRec['level'].getName()]) {
-        this.msgRecords[msgRec['level'].getName()] = 0;
-        this.msgRecords[msgRec['level'].getName()+'CtrlBtn'] = document.getElementById('lhCtrlLvl'+msgRec['level'].getLabel());
-    }
-    this.msgRecords[msgRec['level'].getName()]++;
-    this.msgRecords[msgRec['level'].getName()+'CtrlBtn'].innerHTML = this.msgRecords[msgRec['level'].getName()];
-    this.msgCount++;
+    this._updateLogTotals(msgRec['level']);
 
     // Add message to display
     var rowColor = (msgRec['number']%2 == 0 ? 'lhLogMsgRow1' : 'lhLogMsgRow2');
@@ -1240,19 +1252,19 @@ LogHound.prototype.log = function() {
 
     var msgFullEntryDisp = ((this.msgDispMode=='detail') ? '' : 'none');
     var msgFullEntry = '<table id="lhMsgDetail_'+msgRec['number']+'" class="lhMsgRecDetail" style="display:'+msgFullEntryDisp+';"><tr>';
-    msgFullEntry +=    '<td class="lhMsgNum2 lhMsgElmt lhSmFont"><div class="lh'+levelText+'Msg">'+msgRec['number']+'</div></td>';
-    msgFullEntry +=    '<td class="lhMsgLvl lhMsgElmt lhSmFont"><div class="lh'+levelText+'Msg">'+msgRec['level'].getName()+'<div></td>';
-    msgFullEntry +=    '<td class="lhMsgTime lhMsgElmt lhSmFont lh'+levelText+'Msg">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
-    msgFullEntry +=    '<td class="lhMsgTags lhMsgElmt lhSmFont"><table><tr><td class="lhSmFont lh'+levelText+'Msg">'+((msgRec['tags'] instanceof Array) ? msgRec['tags'] : '')+'</td></tr></table></td>';
+    msgFullEntry +=    '<td class="lhMsgNum2 lhLogMsgElmt lhSmFont"><div class="lh'+levelText+'Msg">'+msgRec['number']+'</div></td>';
+    msgFullEntry +=    '<td class="lhMsgLvl lhLogMsgElmt lhSmFont"><div class="lh'+levelText+'Msg">'+msgRec['level'].getName()+'<div></td>';
+    msgFullEntry +=    '<td class="lhMsgTime lhLogMsgElmt lhSmFont lh'+levelText+'Msg">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
+    msgFullEntry +=    '<td class="lhMsgTags lhLogMsgElmt lhSmFont"><table><tr><td class="lhSmFont lh'+levelText+'Msg">'+((msgRec['tags'] instanceof Array) ? msgRec['tags'] : '')+'</td></tr></table></td>';
     msgFullEntry +=    '</tr><tr>';
-    msgFullEntry +=    '<td colspan="4" class="lhMsgTxtDetail lhMsgElmt lhFont"><table><tr><td class="lhSmFont lh'+levelText+'Msg">'+msgText+'</td></tr></table></td>';
+    msgFullEntry +=    '<td colspan="4" class="lhMsgTxtDetail lhLogMsgElmt lhFont"><table><tr><td class="lhSmFont lh'+levelText+'Msg">'+msgText+'</td></tr></table></td>';
     msgFullEntry +=    '</tr></table>';
 
     var msgEntryDisp = ((this.msgDispMode=='brief') ? '' : 'none');
     var msgEntry = '<table id="lhMsgBrief_'+msgRec['number']+'" class="lhMsgRecBrief" style="display:'+msgEntryDisp+'"><tr>';
-    msgEntry +=    '<td class="lhMsgNum lhMsgElmt lhSmFont"><div class="lh'+levelText+'Msg">'+msgRec['number']+'</div></td>';
-    msgEntry +=    '<td class="lhMsgTime lhMsgElmt lhSmFont lh'+levelText+'Msg">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
-    msgEntry +=    '<td class="lhMsgTxt lhMsgElmt lhSmFont"><table><tr><td class="lhSmFont lh'+levelText+'Msg">'+msgText+'</td></tr></table></td>';
+    msgEntry +=    '<td class="lhMsgNum lhLogMsgElmt lhSmFont"><div class="lh'+levelText+'Msg">'+msgRec['number']+'</div></td>';
+    msgEntry +=    '<td class="lhMsgTime lhLogMsgElmt lhSmFont lh'+levelText+'Msg">'+this.getTimestampText(msgRec['timestamp'])+'</td>';
+    msgEntry +=    '<td class="lhMsgTxt lhLogMsgElmt lhSmFont"><table><tr><td class="lhSmFont lh'+levelText+'Msg">'+msgText+'</td></tr></table></td>';
     msgEntry +=    '</tr></table>';
 
     msgElmt.innerHTML=msgFullEntry+msgEntry;
@@ -1288,6 +1300,8 @@ LogHound.prototype.clearLogs = function(force) {
         }
         var clearedRecs = this.msgRecords;
         this.msgRecords = [];
+        this._updateLogTotals();
+        this.logInfo('All messages have been cleared.');
         return clearedRecs;
     }
 };
@@ -1377,7 +1391,7 @@ LogHoundMessageFilter.prototype.getId = function() {
     return this.id;
 };
 /**
- * @param {Object}
+ * @param {Object} msgRec
  * @returns {boolean} <code>true</code> if the argumented message should be
  * shown, otherwise <code>false</code>.
  */
