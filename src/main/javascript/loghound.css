@@ -71,6 +71,7 @@
     font-weight: bold;
     text-align: center;
     width: 14px;
+    min-width: 14px;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
@@ -181,7 +182,9 @@
     word-wrap: normal;
     word-break: normal;
     white-space: nowrap;
-
+}
+#lhBtnShade {
+    /*background: transparent url(http://facets-loghound.googlecode.com/svn/trunk/src/main/javascript/ui-icons_454545_256x240.png) no-repeat scroll -50px -140px; */
 }
 .lhBtnCtrls {
     font-size: 8pt;
@@ -279,8 +282,8 @@
     padding: 0px;
     margin: 0px;
 }
-.lhMsgElmt {
-    padding: 1px;
+.lhLogMsgElmt {
+    padding: 3px;
 }
 .logMsg .lhMsgNum2 {
     border-right: 1px #AAAAAA solid;
@@ -350,7 +353,6 @@
     word-break: break-all;
     white-space: normal;
     vertical-align: middle;
-    padding: 3px 3px;
 }
 #lhCtrlLvlFatal {
     background-color: #990099;
@@ -401,7 +403,7 @@
     font-weight: bold;
 }
 .lhLogMsgRow1 {
-    background-color: #fBfBfB;
+    background-color: #fcfcfc;
 }
 .lhLogMsgRow2 {
     background-color: #f0f0f0;

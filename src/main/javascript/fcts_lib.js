@@ -332,9 +332,9 @@ FctsTools.isArray = function(obj) {
  *
  * @param {String} str The string to check.
  * @param {String} textToMatch The text to match.
- * @returns
- * @static {boolean} Returns <code>true</code> if the argumented string starts with the "textToMatch", otherwise
+ * @returns {boolean} Returns <code>true</code> if the argumented string starts with the "textToMatch", otherwise
  * <code>false</code>.
+ * @static
  * @see <a target="_blank" href="http://stackoverflow.com/questions/646628/javascript-startswith">Javascript StartsWith</a>.
  */
 FctsTools.startsWith = function(str,textToMatch) {
@@ -417,6 +417,29 @@ FctsTools.parseToBool = function(arg,altTrueArray) {
     }
     return (arg=='true');
 };
+/**
+ *
+ */
 FctsTools.capitaliseFirstLetter = function(string) {
     return string.charAt(0).toUpperCase()+string.slice(1).toLowerCase();
+};
+/**
+ * @return {Array} An array of the query parameters which will also act as an associative array (hashmap).
+ * @see <a target="_blank" href="http://stackoverflow.com/questions/901115/get-query-string-values-in-javascript">Get query string values in JavaScript</a>
+ */
+FctsTools.parseQueryString = function () {
+    var urlParams = [];
+    var e = null,
+        a = /\+/g,  // Regex for replacing addition symbol with a space
+        r = /([^&=]+)=?([^&]*)/g,
+        d = function (s) { return decodeURIComponent(s.replace(a, " ")); },
+        q = window.location.search.substring(1);
+
+    while(e = r.exec(q)) {
+        var name = d(e[1]);
+        var value = d(e[2]);
+        urlParams[name] = value;
+        urlParams.push([name,value]);
+    }
+    return urlParams;
 };
