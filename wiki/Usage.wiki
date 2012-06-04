@@ -46,6 +46,8 @@ window.logHound.logInfo('My message here.');
 
 Tags can be associated with any log message. Tags are used in grouping messages together to make it easier to search for specific messages.  One way tags can be used is to separate log messages from different frameworks.  Each framework would include the framework name as a tag on every message logged in that framework.  In that way you could exclude all the messages from, say, your calendar !JavaScript component from the rest of the messages, and then search using text matching without worrying about having to wade through the calendar messages as well.
 
+*Note:* Message tags can only be alphanumeric. No periods, apostrophes, commas, etc...  This is a bug that will be fixed in a later version.
+
 To associate tags with the message, simply add an array of strings to the log function arguments:
 {{{
 window.logHound.logInfo('My message here.',['Tag1','Tag2']);
