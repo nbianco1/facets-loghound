@@ -18,7 +18,7 @@ These are the functions you will want to get familiar with.
 For the level-specific log functions, the arguments list currently stands as such:
 
  * *{String} message :* The message to be logged.  This argument is required, as without it you are just teasing my nice framework.
- * *{String[[ ]]} tags :* A string array of tags to associate with the message.  Tags can be used in searching through the messages in new and exciting ways! (Nice promo -ed)
+ * *{String[[ ]} tags :* A string array of tags to associate with the message.  Tags can be used in searching through the messages in new and exciting ways! (Nice promo -ed)
  * *{Error} error :* An error object that you caught.  This will be pretty-printed after the message in the log entry.
 
 *NOTE:* The order of the arguments does not matter for any of the log functions. Log Hound has a rather ~~twisted~~ ingenious arguments parser that manages the log function arguments.
