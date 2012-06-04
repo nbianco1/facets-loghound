@@ -346,22 +346,25 @@ LogHound.prototype._createControlPanel = function() {
     this.domCtrlPanelPlate = document.createElement('DIV');
     this.domCtrlPanelPlate.setAttribute('id', 'lhCtrlPanelPlate');
     var ctrlbar = '<div id="lhCtrlPanel" class="lhPlateColor lhRndCorners">';
+    ctrlbar +=    '<div id="lhCtrlRow1">';
     ctrlbar +=    '<div id="lhCtrlMore" class="lhCtrl lhBtn lhFont" title="Show More">v</div>';
     ctrlbar +=    '<div id="lhCtrlLess" class="lhCtrl lhBtn lhFont" title="Show Less">^</div>';
     ctrlbar +=    '<div id="lhCtrlLvlSelectPlate"><select id="lhLvlSelect" name="lhLvlSelect" class="lhSmFont"></select></div>';
-    ctrlbar +=    '<div id="lhCtrlLvlPlate">';
+    ctrlbar +=    '<div id="lhCtrlMsgDispModeBtn" class="lhDispModeLable lhCtrl lhBtn lhSmFont" title="Toggle message display mode">D</div>';
+    ctrlbar +=    '<div id="lhBtnClear" class="lhCtrl lhBtn lhSmFont" title="Clear All Logs">Clr</div>';
+    ctrlbar +=    '<div id="lhCtrlSearchPlate">';
+    ctrlbar +=    '<label for="lhSearchField" class="lhSmFont lhSearchLabel lhCtrl">Search:</label>';
+    ctrlbar +=    '<input type="text" id="lhSearchField" name="lhSearchField" class="lhSearchField lhSmFont" onkeyup="window.logHound.search()" title="Type to search..." placeholder="Type to search..."/>';
+    ctrlbar +=    '</div></div>';
+    ctrlbar +=    '<div id="lhCtrlRow2">';
+    ctrlbar +=    '<div class="lhSpacer"></div><div id="lhCtrlLvlPlate">';
     ctrlbar +=    '<div id="lhCtrlLvlFatal" class="lhFatalMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Fatal">0</div>';
     ctrlbar +=    '<div id="lhCtrlLvlError" class="lhErrorMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Error">0</div>';
     ctrlbar +=    '<div id="lhCtrlLvlWarn" class="lhWarnMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Warn">0</div>';
     ctrlbar +=    '<div id="lhCtrlLvlInfo" class="lhInfoMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Info">0</div>';
     ctrlbar +=    '<div id="lhCtrlLvlDebug" class="lhDebugMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Debug">0</div>';
     ctrlbar +=    '<div id="lhCtrlLvlTrace" class="lhTraceMsg lhCtrlLvl lhCtrl lhBtn lhFont" title="Trace">0</div>';
-    ctrlbar +=    '</div>';
-    ctrlbar +=    '<div id="lhCtrlMsgDispModeBtn" class="lhDispModeLable lhCtrl lhBtn lhSmFont" title="Toggle message display mode">D</div>';
-    ctrlbar +=    '<div id="lhBtnClear" class="lhCtrl lhBtn lhSmFont" title="Clear All Logs">Z</div>';
-    ctrlbar +=    '<div id="lhCtrlSearchPlate">';
-    ctrlbar +=    '<label for="lhSearchField" class="lhSmFont lhSearchLabel lhCtrl">Search:</label>';
-    ctrlbar +=    '<input type="text" id="lhSearchField" name="lhSearchField" class="lhSearchField lhSmFont" onkeyup="window.logHound.search()"/>';
+    ctrlbar +=    '</div><div class="lhSpacer"></div>';
     ctrlbar +=    '</div></div>';
     this.domCtrlPanelPlate.innerHTML = ctrlbar;
     this.addPanel(this.domCtrlPanelPlate);
@@ -420,6 +423,7 @@ LogHound.prototype._createTagPanel = function() {
     this.domTagCtrlPanelPlate = document.createElement('DIV');
     this.domTagCtrlPanelPlate.setAttribute('id', 'lhTagCtrlPanelPlate');
     var tagbar = '<div id="lhTagCtrlPanel" class="lhPlateColor lhRndCorners">';
+    tagbar +=    '<div class="lhSpacer"></div>';
     tagbar +=    '<div id="lhAvailTagsPlate">';
     tagbar +=    '<span class="lhSmFont">Tags:</span>';
     tagbar +=    '<div><select id="lhAvailTagsSelect" class="lhSmFont" multiple="multiple" size="4"></select></div>';
@@ -443,7 +447,7 @@ LogHound.prototype._createTagPanel = function() {
     tagbar +=    '<span id="lhTagCtrlIntBtn" class="lhTagCtrl lhSmFont lhBtn" title="Intersection">I</span>';
     tagbar +=    '<span id="lhTagCtrlOnyBtn" class="lhTagCtrl lhSmFont lhBtn" title="Only">O</span>';
     tagbar +=    '<span id="lhTagCtrlExcBtn" class="lhTagCtrl lhSmFont lhBtn" title="Exclusion">E</span>';
-    tagbar +=    '</div></div>';
+    tagbar +=    '</div><div class="lhSpacer"></div></div>';
     this.domTagCtrlPanelPlate.innerHTML = tagbar;
     this.addPanel(this.domTagCtrlPanelPlate);
     this.addHelpEntry(['lhAvailTagsSelect','Available Tags Select: Lists all unique available tags assigned to any messages.']);
@@ -992,12 +996,6 @@ LogHound.prototype.setMessagePaneSize = function(size) {
         return false;
     }
     logsPanelBody.style.height = size+'px';
-};
-LogHound.prototype.stickLogPlateTopLeft = function() {
-    var scrollHeight = $(window).scrollTop();
-    this.logPlate.style.left=0;
-    this.logPlate.style.top=(0+scrollHeight);
-    this.logPlate.style.zIndex=5000;
 };
 LogHound.prototype.stickLogPlateTopRight = function() {
     var plateWidth = this.logPlate.offsetWidth;
