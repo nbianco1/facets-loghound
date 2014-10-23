@@ -9,52 +9,7 @@
  * http://ejohn.org/blog/getelementsbyclassname-speed-comparison/
  */
 
-var FctsJSLib = new Object();
-FctsJSLib.Version = new Object();
-
-if(!document.getElementsByClassName)
-    document.getElementsByClassName = function(className){
-    var classes = className.split(" ");
-    var classesToCheck = "";
-    var returnElements = [];
-    var match, node, elements;
-
-    if(document.evaluate) {
-        var xhtmlNamespace = "http://www.w3.org/1999/xhtml";
-        var namespaceResolver = (document.documentElement.namespaceURI === xhtmlNamespace)? xhtmlNamespace:null;
-
-        for(var j=0, jl=classes.length; j<jl;j+=1) {
-            classesToCheck += "[contains(concat(' ', @class, ' '), ' " + classes[j] + " ')]";
-        }
-        try {
-            elements = document.evaluate(".//*" + classesToCheck, document, namespaceResolver, 0, null);
-        }
-        catch(e) {
-            elements = document.evaluate(".//*" + classesToCheck, document, null, 0, null);
-        }
-        while((match = elements.iterateNext())) {
-            returnElements.push(match);
-        }
-    } else {
-        classesToCheck = [];
-        elements = (document.all) ? document.all : document.getElementsByTagName("*");
-        for (var k=0, kl=classes.length; k<kl; k+=1) {
-            classesToCheck.push(new RegExp("(^|\\s)" + classes[k] + "(\\s|$)"));
-        }
-        for(var l=0, ll=elements.length; l<ll;l+=1) {
-            node = elements[l];
-            match = false;
-            for (var m=0, ml=classesToCheck.length; m<ml; m+=1) {
-                match = classesToCheck[m].test(node.className);
-                if(!match) { break; }
-            }
-            if(match) { returnElements.push(node); }
-        }
-    }
-    return returnElements;
-};
-
-var FctsTools = new Array();
+var FctsTools = {};
 FctsTools.windowHeight = function() {
     return ((window.innerHeight) ? window.innerHeight : document.body.offsetHeight);
 };
@@ -100,10 +55,11 @@ FctsTools.typeOf = function(value) {
     }
     return s;
 };
+/**
+ * Simple javascript object extender.
+ */
 FctsTools.extend = function(subClass, baseClass) {
-    function inheritance() {}
-    inheritance.prototype = baseClass.prototype;
-    subClass.prototype = new inheritance();
+    subClass.prototype = Object.create(baseClass.prototype);
     subClass.prototype.constructor = subClass;
     subClass.baseConstructor = baseClass;
     subClass.superClass = baseClass.prototype;
@@ -180,7 +136,7 @@ FctsTools.getOptionValues = function(selectElmt) {
     }
     return valueArr;
 };
-FctsTools.sortOptionsByValue = function(selectElmt, sortFn) {
+FctsTools.sortOptions = function(selectElmt,sortFn) {
     var optionTemp = new Array();
     var optionValues = new Array();
     for(var i=0; i<selectElmt.options.length; i++) {
@@ -188,30 +144,7 @@ FctsTools.sortOptionsByValue = function(selectElmt, sortFn) {
         optionValues[i] = selectElmt.options[i].value;
     }
     selectElmt.options.length = 0;
-    if(sortFn == null || !sortFn) {
-        optionValues.sort(function(o1,o2) {
-            if(FctsTools.isBlank(o1) && FctsTools.isBlank(o2)) {
-                return 0;
-            } else if(FctsTools.isBlank(o1) || FctsTools.isBlank(o2)) {
-                return (FctsTools.isBlank(o1) ? -1 : 1);
-            }
-            if(document.all) { // IE sucks ass.
-                o1 = new String(o1);
-                o2 = new String(o2);
-            }
-            o1 = o1.toLowerCase();
-            o2 = o2.toLowerCase();
-            for(var i=0;i<o1.length;i++) {
-                if(o1.charCodeAt(i)==o2.charCodeAt(i)) {
-                    continue;
-                }
-                return o1.charCodeAt(i)-o2.charCodeAt(i);
-            }
-            return 0;
-        });
-    } else {
-        optionValues.sort(sortFn);
-    }
+    optionValues.sort(sortFn);
     for(var i=0; i<optionValues.length; i++) {
         for(var j=0; j<optionTemp.length; j++) {
             if(optionValues[i] == optionTemp[j].value) {
@@ -222,68 +155,49 @@ FctsTools.sortOptionsByValue = function(selectElmt, sortFn) {
         }
     }
 };
-FctsTools.sortOptionsByText = function(selectElmt, sortFn) {
-    var optionTemp = new Array();
-    var optionText = new Array();
-    for(var i=0; i<selectElmt.options.length; i++) {
-        optionTemp[i] = selectElmt.options[i];
-        optionText[i] = selectElmt.options[i].text;
-    }
-    selectElmt.options.length = 0;
-    if(sortFn == null || !sortFn) {
-        optionText.sort(function(o1,o2) {
-            if(FctsTools.isBlank(o1) && FctsTools.isBlank(o2)) {
-                return 0;
-            } else if(FctsTools.isBlank(o1) || FctsTools.isBlank(o2)) {
-                return (FctsTools.isBlank(o1) ? -1 : 1);
-            }
-            if(document.all) { // IE sucks ass.
-                o1 = new String(o1);
-                o2 = new String(o2);
-            }
-            o1 = o1.toLowerCase();
-            o2 = o2.toLowerCase();
-            for(var i=0;i<o1.length;i++) {
-                if(o1.charCodeAt(i)==o2.charCodeAt(i)) {
-                    continue;
-                }
-                return o1.charCodeAt(i)-o2.charCodeAt(i);
-            }
+FctsTools.sortOptionsByValue = function(selectElmt) {
+    this.sortOptions(selectElmt,function(o1, o2) {
+        if(FctsTools.isBlank(o1) && FctsTools.isBlank(o2)) {
             return 0;
-        });
-    } else {
-        optionText.sort(sortFn);
-    }
-    for(var i=0; i<optionText.length; i++) {
-        for(var j=0; j<optionTemp.length; j++) {
-            if(optionText[i] == optionTemp[j].text) {
-                selectElmt.options[selectElmt.options.length] = optionTemp[j];
-                optionTemp.splice(j--,1);
+        } else if(FctsTools.isBlank(o1) || FctsTools.isBlank(o2)) {
+            return (FctsTools.isBlank(o1) ? -1 : 1);
+        }
+        if(document.all) { // IE sucks ass.
+            o1 = new String(o1);
+            o2 = new String(o2);
+        }
+        o1 = o1.toLowerCase();
+        o2 = o2.toLowerCase();
+        for(var i=0; i<o1.length; i++) {
+            if(o1.charCodeAt(i) == o2.charCodeAt(i)) {
                 continue;
             }
+            return o1.charCodeAt(i) - o2.charCodeAt(i);
         }
-    }
+        return 0;
+    });
 };
-
-
-
-
-
-FctsTools.isBlankRegex = new RegExp('^[ \t]+$');
-FctsTools.isBlank2 = function(target) {
-    return ((typeof target)=='undefined' || target==null || target=='' || this.isBlankRegex.test(target));
-};
-/**
- *
- * @param {Object} obj The object to test.
- * @returns {boolean} Returns <code>true</code> if the arguemented number really is a number, otherwise
- * <code>false</code>.
- * @static
- * @see <a target="_blank" href="http://stackoverflow.com/questions/18082/validate-numbers-in-javascript-isnumeric">Validate numbers in JavaScript - IsNumeric()</a>.
- * @see <a target="_blank" href="http://dl.dropbox.com/u/35146/js/tests/isNumber.html">isNumber Test Cases</a>.
- */
-FctsTools.isNumber = function(obj) {
-    return !isNaN(parseFloat(obj)) && isFinite(obj);
+FctsTools.sortOptionsByText = function(selectElmt) {
+    this.sortOptions(selectElmt,function(o1,o2) {
+        if(FctsTools.isBlank(o1) && FctsTools.isBlank(o2)) {
+            return 0;
+        } else if(FctsTools.isBlank(o1) || FctsTools.isBlank(o2)) {
+            return (FctsTools.isBlank(o1) ? -1 : 1);
+        }
+        if(document.all) { // IE sucks ass.
+            o1 = new String(o1);
+            o2 = new String(o2);
+        }
+        o1 = o1.toLowerCase();
+        o2 = o2.toLowerCase();
+        for(var i=0;i<o1.length;i++) {
+            if(o1.charCodeAt(i)==o2.charCodeAt(i)) {
+                continue;
+            }
+            return o1.charCodeAt(i)-o2.charCodeAt(i);
+        }
+        return 0;
+    });
 };
 /**
  *
@@ -316,7 +230,34 @@ FctsTools.isBlank = function(str) {
  * @see <a target="_blank" href="http://stackoverflow.com/questions/4891937/how-to-detect-if-variable-is-a-string">how to detect if variable is a string</a>.
  */
 FctsTools.isString = function(obj) {
-    return (Object.prototype.toString.call(obj) === '[object String]');
+    return (typeof obj != 'undefined') && (Object.prototype.toString.call(obj) === '[object String]');
+};
+/**
+ *
+ * @param {Object} obj The object to test.
+ * @param {Boolean} [strict=false] Set to <code>true</code> to reject if the argumented object is a string, even if it
+ * could be parsed as a number.
+ * @returns {boolean} Returns <code>true</code> if the arguemented number really is a number, otherwise
+ * <code>false</code>.
+ * @static
+ * @see <a target="_blank" href="http://stackoverflow.com/questions/18082/validate-numbers-in-javascript-isnumeric">Validate numbers in JavaScript - IsNumeric()</a>.
+ * @see <a target="_blank" href="http://dl.dropbox.com/u/35146/js/tests/isNumber.html">isNumber Test Cases</a>.
+ */
+FctsTools.isNumber = function(obj, strict) {
+    if(!!strict && FctsTools.isString(obj)) {
+        return false;
+    }
+    return !isNaN(parseFloat(obj)) && isFinite(obj);
+};
+/**
+ * @param {Object} obj The object to test.
+ * @returns {boolean} Returns <code>true</code> if the argumented object really is a boolean, otherwise
+ * <code>false</code>.
+ * @static
+ * @see <a target="_blank" href="http://jsperf.com/alternative-isfunction-implementations/4">Alternative isFunction Implementations with verifications and several test types</a>.
+ */
+FctsTools.isBoolean = function(obj) {
+    return (typeof obj != 'undefined') && (Object.prototype.toString.call(obj) === '[object Boolean]');
 };
 /**
  *
@@ -326,7 +267,27 @@ FctsTools.isString = function(obj) {
  * @static
  */
 FctsTools.isArray = function(obj) {
-    return (Object.prototype.toString.call(obj) === '[object Array]');
+    return (typeof obj != 'undefined') && (Object.prototype.toString.call(obj) === '[object Array]');
+};
+/**
+ * @param {Object} obj The object to test.
+ * @returns {boolean} Returns <code>true</code> if the argumented object really is a function, otherwise
+ * <code>false</code>.
+ * @static
+ * @see <a target="_blank" href="http://jsperf.com/alternative-isfunction-implementations/4">Alternative isFunction Implementations with verifications and several test types</a>.
+ */
+FctsTools.isFunction = function(obj) {
+    return (typeof obj != 'undefined') && (Object.prototype.toString.call(obj) === '[object Function]');
+};
+/**
+ * @param {Object} obj The object to test.
+ * @returns {boolean} Returns <code>true</code> if the argumented object really is an object, otherwise
+ * <code>false</code>.
+ * @static
+ * @see <a target="_blank" href="http://jsperf.com/alternative-isfunction-implementations/4">Alternative isFunction Implementations with verifications and several test types</a>.
+ */
+FctsTools.isObject = function(obj) {
+    return (typeof obj != 'undefined') && (Object.prototype.toString.call(obj) === '[object Object]');
 };
 /**
  *
@@ -418,6 +379,27 @@ FctsTools.parseToBool = function(arg,altTrueArray) {
     return (arg=='true');
 };
 /**
+ * @param {Object|String} element Either the DOM element reference or the string ID of the target.
+ */
+FctsTools.preventParentScroll = function(element) {
+    if(FctsTools.isString(element)) {
+        element = document.getElementById(element);
+    }
+    var mousewheelevt=(/Firefox/i.test(navigator.userAgent))? "DOMMouseScroll" : "mousewheel"; //FF doesn't recognize mousewheel as of FF3.x
+    if(element.attachEvent) { //if IE (and Opera depending on user setting)
+        element.attachEvent('on'+mousewheelevt, function(event){
+            //alert('Mouse wheel movement detected!');
+        });
+    } else if(element.addEventListener) { //WC3 browsers
+        element.addEventListener(mousewheelevt, function(event, d){
+            //event.preventDefault();
+            //event.cancelBubble = true;
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+        }, true);
+    }
+};
+/**
  *
  */
 FctsTools.capitaliseFirstLetter = function(string) {
@@ -432,7 +414,7 @@ FctsTools.parseQueryString = function () {
     var e = null,
         a = /\+/g,  // Regex for replacing addition symbol with a space
         r = /([^&=]+)=?([^&]*)/g,
-        d = function (s) { return decodeURIComponent(s.replace(a, " ")); },
+        d = function (s) { return decodeURIComponent(s.replace(a, ' ')); },
         q = window.location.search.substring(1);
 
     while(e = r.exec(q)) {
@@ -442,4 +424,14 @@ FctsTools.parseQueryString = function () {
         urlParams.push([name,value]);
     }
     return urlParams;
+};
+/**
+ *
+ */
+FctsTools.preventEvent = function(evt) {
+    evt = evt || window.event;
+    if(evt.preventDefault) {
+        evt.preventDefault();
+    }
+    evt.returnValue = false;
 };
