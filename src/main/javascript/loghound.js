@@ -3,7 +3,7 @@
  *
  * Software License Agreement (Apache License 2.0)
  *
- * <p>Copyright (c) 2010,  Facets Technologies, Inc.<br/>
+ * <p>Copyright (c) 2014,  Facets Technologies, Inc.<br/>
  * All rights reserved.</p>
  *
  * <p>Licensed under the Apache License, Version 2.0 (the "License");<br/>
@@ -35,7 +35,7 @@ LogHoundVer['build'] = '$Rev$';
 if(LogHoundVer['build'].length>5) {
     LogHoundVer['build'] = LogHoundVer['build'].substring(5).split(' ')[1];
 } else {
-    LogHoundVer['build'] = 'alpha 2';
+    LogHoundVer['build'] = 'beta 1';
 }
 LogHoundVer['release'] = '';
 /**
@@ -236,6 +236,8 @@ function LogHound() {
     this.helpEnabled = false;
     this.tagNameRegex = new RegExp('^[a-z][-a-z0-9_]+$','i');
     this._viewPlates = [];
+    this._msgCountLimit = 10000;
+    this._msgCountMin = 100;
     this._shadeState = false;
     var queryParams = FctsTools.parseQueryString();
     if(!!queryParams && !!queryParams['lhRun']) {
@@ -243,11 +245,32 @@ function LogHound() {
     }
 }
 /**
+ *
+ */
+LogHound.prototype.doSetup = function() {
+    if(!!document && !!document.body) {
+        this._doSetup();
+    } else {
+        window.logHoundProc = {};
+        window.logHoundProc.loadAttempts = 5;
+        var context = this;
+        window.logHoundProc.procId = setInterval(function() {
+            if((window.logHoundProc.loadAttempts--)<1) {
+                clearInterval(window.logHoundProc.procId);
+            }
+            if(!!document && !!document.body) {
+                clearInterval(window.logHoundProc.procId);
+                context._doSetup();
+            }
+        }, 500);
+    }
+};
+/**
  * Performs the main setup for the Log Hound application.  This should only be
  * called once per page, though it protects itself against multiple calls. Log
  * Hound will not be functional until this method is called.
  */
-LogHound.prototype.doSetup = function() {
+LogHound.prototype._doSetup = function() {
     if(this.killSwitch) {
         return;
     }
@@ -298,7 +321,6 @@ LogHound.prototype._createTitlePanel = function() {
     titlebar +=    '<div id="lhTitlePanelSpcr" class="lhTitlePanelElmt lhFont"></div>';
     titlebar +=    '<div id="lhBtnHelp" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Help Panel">?</div>';
     titlebar +=    '<div id="lhBtnTags" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Tags Panel">T</div>';
-    titlebar +=    '<div id="lhBtnCtrls" class="lhTitlePanelElmt lhFont lhCtrl lhBtn" title="Toggle Control Panel">C</div>';
     titlebar +=    '</div>';
     this.domTitlePanelPlate.innerHTML = titlebar;
     this.logPlate.appendChild(this.domTitlePanelPlate);
@@ -319,13 +341,6 @@ LogHound.prototype._createTitlePanel = function() {
         lhRef.setPanelDisplay(lhRef.domTagCtrlPanelPlate);
     };
     this.addHelpEntry(['lhBtnTags','Tag Panel Toggle: Opens and closes the tag control panel.']);
-
-    // Control panel toggle
-    var toggleCtrl = document.getElementById('lhBtnCtrls');
-    toggleCtrl.onclick = function(event) {
-        lhRef.setPanelDisplay(lhRef.domCtrlPanelPlate);
-    };
-    this.addHelpEntry(['lhBtnCtrls','Control Panel Toggle: Opens and closes the control panel.']);
 };
 
 LogHound.prototype._createHelpPanel = function() {
@@ -347,13 +362,13 @@ LogHound.prototype._createControlPanel = function() {
     this.domCtrlPanelPlate.setAttribute('id', 'lhCtrlPanelPlate');
     var ctrlbar = '<div id="lhCtrlPanel" class="lhPlateColor lhRndCorners">';
     ctrlbar +=    '<div id="lhCtrlRow1">';
-    ctrlbar +=    '<div id="lhCtrlMore" class="lhCtrl lhBtn lhFont" title="Show More">v</div>';
-    ctrlbar +=    '<div id="lhCtrlLess" class="lhCtrl lhBtn lhFont" title="Show Less">^</div>';
-    ctrlbar +=    '<div id="lhCtrlLvlSelectPlate"><select id="lhLvlSelect" name="lhLvlSelect" class="lhSmFont"></select></div>';
+    ctrlbar +=    '<div id="lhCtrlMore" class="lhCtrl lhBtn lhFont" title="Show more logs">v</div>';
+    ctrlbar +=    '<div id="lhCtrlLess" class="lhCtrl lhBtn lhFont" title="Show less logs">^</div>';
+    ctrlbar +=    '<div id="lhCtrlLvlSelectPlate"><select id="lhLvlSelect" name="lhLvlSelect" class="lhSmFont" title="Select level of logging"></select></div>';
     ctrlbar +=    '<div id="lhCtrlMsgDispModeBtn" class="lhDispModeLable lhCtrl lhBtn lhSmFont" title="Toggle message display mode">D</div>';
     ctrlbar +=    '<div id="lhBtnClear" class="lhCtrl lhBtn lhSmFont" title="Clear All Logs">Clr</div>';
+    ctrlbar +=    '<div id="lhLogCountLimitPlate"><div id="lhLogCountLimitBtn" class="lhCtrl lhBtnType1 lhSmFont" title="Log message count limit">2000</div></div>';
     ctrlbar +=    '<div id="lhCtrlSearchPlate">';
-    ctrlbar +=    '<label for="lhSearchField" class="lhSmFont lhSearchLabel lhCtrl">Search:</label>';
     ctrlbar +=    '<input type="text" id="lhSearchField" name="lhSearchField" class="lhSearchField lhSmFont" onkeyup="window.logHound.search()" title="Type to search..." placeholder="Type to search..."/>';
     ctrlbar +=    '</div></div>';
     ctrlbar +=    '<div id="lhCtrlRow2">';
@@ -367,12 +382,9 @@ LogHound.prototype._createControlPanel = function() {
     ctrlbar +=    '</div><div class="lhSpacer"></div>';
     ctrlbar +=    '</div></div>';
     this.domCtrlPanelPlate.innerHTML = ctrlbar;
-    this.addPanel(this.domCtrlPanelPlate);
-    this.addHelpEntry(['lhCtrlMore','Show more messages: Lengthens the log message pane to show more messages.']);
-    this.addHelpEntry(['lhCtrlLess','Show less messages: Shortens the log message pane to show fewer messages.']);
+    this.addPanel(this.domCtrlPanelPlate,true);
     this.addHelpEntry(['lhSearchField','Search text entry: Message text is matched as you type, with non-matching log messages being automatically hidden.']);
     this.addHelpEntry(['lhCtrlLvlPlate','Log level visibility controls: Controls which log level messages will be visible in the message pane.']);
-    this.addHelpEntry(['lhCtrlMsgDispModeBtn','Message detail toggle: Toggles the message pane between normal message display and detailed message display.']);
 
     var lhRef = this;
     // Add levels to level select control.
@@ -394,9 +406,11 @@ LogHound.prototype._createControlPanel = function() {
     document.getElementById('lhCtrlMore').onclick = function(event) {
         lhRef.adjustMessagePaneSize(true);
     };
+    this.addHelpEntry(['lhCtrlMore','Show more messages: Lengthens the log message pane to show more messages.']);
     document.getElementById('lhCtrlLess').onclick = function(event) {
         lhRef.adjustMessagePaneSize(false);
     };
+    this.addHelpEntry(['lhCtrlLess','Show less messages: Shortens the log message pane to show fewer messages.']);
     var levelControls = document.getElementsByClassName('lhCtrlLvl');
     var showMsgLvlFn = function(event) {
         lhRef.showMessageLevel(this.id.slice(9));
@@ -408,6 +422,7 @@ LogHound.prototype._createControlPanel = function() {
     document.getElementById('lhCtrlMsgDispModeBtn').onclick = function(event) {
         lhRef.setMessageLayout();
     };
+    this.addHelpEntry(['lhCtrlMsgDispModeBtn','Message detail toggle: Toggles the message pane between normal message display and detailed message display.']);
 
     // Clear logs
     var clearLogs = document.getElementById('lhBtnClear');
@@ -416,6 +431,12 @@ LogHound.prototype._createControlPanel = function() {
     };
     this.addHelpEntry(['lhBtnClear','Clears all existing log messages after confirmation by user.']);
 
+    // Set log message count limit
+    var logLimitBtn = document.getElementById('lhLogCountLimitBtn');
+    logLimitBtn.onclick = function(event) {
+        lhRef.setMessageCountLimit();
+    };
+    this.addHelpEntry(['lhLogCountLimitBtn','Sets the log message count limit (cannot be greater than '+this._msgCountLimit+' or less than '+this._msgCountMin+'). The oldest messages will be deleted from memory.']);
 };
 
 LogHound.prototype._createTagPanel = function() {
@@ -425,7 +446,7 @@ LogHound.prototype._createTagPanel = function() {
     var tagbar = '<div id="lhTagCtrlPanel" class="lhPlateColor lhRndCorners">';
     tagbar +=    '<div class="lhSpacer"></div>';
     tagbar +=    '<div id="lhAvailTagsPlate">';
-    tagbar +=    '<span class="lhSmFont">Tags:</span>';
+    tagbar +=    '<span class="lhTagsHdr lhSmFont">Tags:</span>';
     tagbar +=    '<div><select id="lhAvailTagsSelect" class="lhSmFont" multiple="multiple" size="4"></select></div>';
     tagbar +=    '</div>';
 
@@ -438,7 +459,7 @@ LogHound.prototype._createTagPanel = function() {
 
     // http://www.dhtmlgoodies.com/scripts/multiple_select/multiple_select.html
     tagbar +=    '<div id="lhViewTagsPlate">';
-    tagbar +=    '<span class="lhSmFont">Viewing:</span>';
+    tagbar +=    '<span class="lhTagsHdr lhSmFont">Viewing:</span>';
     tagbar +=    '<div><select id="lhViewTagsSelect" class="lhSmFont" multiple="multiple" size="4"></select></div>';
     tagbar +=    '</div>';
 
@@ -456,6 +477,9 @@ LogHound.prototype._createTagPanel = function() {
     this.addHelpEntry(['lhTagCtrlAddAllBtn','Add All Tags: Moves all tags in the available tags box to the viewing box.']);
     this.addHelpEntry(['lhTagCtrlRemBtn','Remove Selected Tags: Moves tags selected in the viewing tags box to the available tags box.']);
     this.addHelpEntry(['lhTagCtrlRemAllBtn','Remove All Tags: Moves all tags in the viewing tags box back to the available tags box.']);
+
+    this.tagsSelectElmt = document.getElementById('lhAvailTagsSelect');
+    this.tagsViewElmt = document.getElementById('lhViewTagsSelect');
 
 
     var lhRef = this;
@@ -518,6 +542,11 @@ LogHound.prototype._createLogsPanel = function() {
     logsPanel +=    '</div>';
     this.domLogsPanelPlate.innerHTML = logsPanel;
     this.addPanel(this.domLogsPanelPlate,true);
+    var logsBody = document.getElementById('lhLogsPanelBody');
+    logsBody.addEventListener('mousewheel',function(evt) {
+        evt.cancelBubble = true;
+    }, false);
+    FctsTools.preventParentScroll(logsBody);
 };
 /**
  *
@@ -614,6 +643,35 @@ LogHound.prototype.toggleHelp = function(enable) {
         }
     }
 };
+LogHound.prototype.setMessageCountLimit = function(count) {
+    // ctrlbar +=    '<div id="lhLogCountLimitPlate"><div id="lhLogCountLimitBtn" class="lhCtrl lhSmFont" title="Log message count limit">2000</div></div>';
+    var limitBtn = document.getElementById('lhLogCountLimitBtn');
+    var currVal = limitBtn.innerHTML;
+    var errmsg = '';
+    if(!count) {
+        while(true) {
+            count = prompt(errmsg+'Enter new message limit count',currVal);
+            if(FctsTools.isBlank(count)) {
+                count = currVal;
+                break;
+            }
+            if(!FctsTools.isNumber(count)) {
+                errmsg = 'The count value must be a number.\n';
+                continue;
+            }
+            if(count > this._msgCountLimit) {
+                errmsg = 'The count value cannot be greater than '+this._msgCountLimit+'.\n';
+                continue;
+            }
+            if(count < this._msgCountMin) {
+                errmsg = 'The count value cannot be less than '+this._msgCountMin+'.\n';
+                continue;
+            }
+            break;
+        }
+    }
+    limitBtn.innerHTML = count;
+};
 /**
  * Sets the message layout display to either 'brief' or 'detail'.  If Log Hound
  * is active, the message layout in the UI will then be changed to the
@@ -668,8 +726,7 @@ LogHound.prototype.getMessageLayout = function() {
  */
 LogHound.prototype.setTagFilterMode = function(mode) {
     this.tagMode = ((mode!='any' && mode!='int' && mode!='exc' && mode!='ony') ? 'any' : mode);
-    var viewSelect = document.getElementById('lhViewTagsSelect');
-    this.addMsgFilter(new LogHoundMessageTagFilter(FctsTools.getOptionValues(viewSelect),this.tagMode));
+    this.addMsgFilter(new LogHoundMessageTagFilter(FctsTools.getOptionValues(this.tagsViewElmt),this.tagMode));
     this.applyMsgFilters();
 };
 /**
@@ -877,11 +934,14 @@ LogHound.prototype.addMsgFilter = function(newFilter) {
  * @private
  */
 LogHound.prototype.applyMsgFilters = function() {
-    for(var len=this.msgRecords.length, recIdx=0; recIdx<len; recIdx++) {
-        this.msgRecords[recIdx]['element'].style.display = (this.filterMsg(this.msgRecords[recIdx]) ? 'block' : 'none');
+    for(var len=this.msgRecords.length, i=0; i<len; i++) {
+        this.filterMessage(this.msgRecords[i]);
     }
     //var ts = (new Date()).getTime();
     //this.logTrace('Message filters applied in '+((new Date()).getTime()-ts)+'ms',['LogHound','applyMsgFilters()']);
+};
+LogHound.prototype.filterMessage = function(msgRec) {
+    msgRec['element'].style.display = (this.isMessageFiltered(msgRec) ? 'block' : 'none');
 };
 /**
  * Filters a message record based on the currently active message filters.
@@ -890,9 +950,9 @@ LogHound.prototype.applyMsgFilters = function() {
  * based on the currently active filters, <code>false</code> if the record
  * should not be visible.
  */
-LogHound.prototype.filterMsg = function(msgRec) {
-    for(var len=this.msgFilters.length, idx=0; idx<len; idx++) {
-        if(!this.msgFilters[idx].showMessage(msgRec)) {
+LogHound.prototype.isMessageFiltered = function(msgRec) {
+    for(var len=this.msgFilters.length, i=0; i<len; i++) {
+        if(!this.msgFilters[i].showMessage(msgRec)) {
             return false;
         }
     }
@@ -1053,7 +1113,7 @@ LogHound.prototype.addTags = function(tagz) {
             return false;
         }
     }
-    var tagsSelect = document.getElementById('lhAvailTagsSelect');
+    this.tagsSelectElmt = document.getElementById('lhAvailTagsSelect');
     foundMatch:
     for(var i=0;i<tagz.length; i++) {
         for(var j=0; j<this.msgTags.length; j++) {
@@ -1063,9 +1123,9 @@ LogHound.prototype.addTags = function(tagz) {
         }
         if(FctsTools.isBlank(tagz[i])) { continue; }
         this.msgTags.push(tagz[i]);
-        tagsSelect.options[tagsSelect.length] = new Option(tagz[i], tagz[i]);
+        this.tagsSelectElmt.options[this.tagsSelectElmt.length] = new Option(tagz[i], tagz[i]);
     }
-    FctsTools.sortOptionsByText(tagsSelect);
+    FctsTools.sortOptionsByText(this.tagsSelectElmt);
     return true;
 };
 /**
@@ -1277,9 +1337,10 @@ LogHound.prototype.log = function() {
     var targetTable = document.getElementById(targetTableId);
     targetTable.style.display = 'none';
     targetTable.style.display = '';
-
     // Add message DOM element to record.
     msgRec['element'] = document.getElementById(msgId);
+    // Filter message
+    this.filterMessage(msgRec);
     return true;
 };
 /**
@@ -1299,6 +1360,11 @@ LogHound.prototype.clearLogs = function(force) {
         var clearedRecs = this.msgRecords;
         this.msgRecords = [];
         this._updateLogTotals();
+        this.msgTags = [];
+        this.tagsSelectElmt.selectedIndex = -1;
+        this.tagsSelectElmt.options.length = 0;
+        this.tagsViewElmt.selectedIndex = -1;
+        this.tagsViewElmt.options.length = 0;
         this.logInfo('All messages have been cleared.');
         return clearedRecs;
     }
@@ -1338,37 +1404,35 @@ LogHound.prototype.getTimestampText = function(ts) {
  * @private
  */
 LogHound.prototype.moveTagAssignments = function(action) {
-    var availSelect = document.getElementById('lhAvailTagsSelect');
-    var viewSelect = document.getElementById('lhViewTagsSelect');
     if(action == 'add') {
-        if(availSelect.options.length<1 || availSelect.selectedIndex<0) { return; }
-        FctsTools.moveSelected(availSelect, viewSelect);
+        if(this.tagsSelectElmt.options.length<1 || this.tagsSelectElmt.selectedIndex<0) { return; }
+        FctsTools.moveSelected(this.tagsSelectElmt, this.tagsViewElmt);
     } else if(action == 'addAll') {
-        if(availSelect.options.length<1) { return; }
-        FctsTools.moveAllOptions(availSelect, viewSelect);
+        if(this.tagsSelectElmt.options.length<1) { return; }
+        FctsTools.moveAllOptions(this.tagsSelectElmt, this.tagsViewElmt);
     } else if(action == 'rem') {
-        if(viewSelect.options.length<1 || viewSelect.selectedIndex<0) { return; }
-        FctsTools.moveSelected(viewSelect, availSelect);
+        if(this.tagsViewElmt.options.length<1 || this.tagsViewElmt.selectedIndex<0) { return; }
+        FctsTools.moveSelected(this.tagsViewElmt, this.tagsSelectElmt);
     } else if(action == 'remAll') {
-        if(viewSelect.options.length<1) { return; }
-        FctsTools.moveAllOptions(viewSelect, availSelect);
+        if(this.tagsViewElmt.options.length<1) { return; }
+        FctsTools.moveAllOptions(this.tagsViewElmt, this.tagsSelectElmt);
     }
-    FctsTools.sortOptionsByText(availSelect);
-    FctsTools.sortOptionsByText(viewSelect);
-    this.addMsgFilter(new LogHoundMessageTagFilter(FctsTools.getOptionValues(viewSelect),this.tagMode));
+    FctsTools.sortOptionsByText(this.tagsSelectElmt);
+    FctsTools.sortOptionsByText(this.tagsViewElmt);
+    this.addMsgFilter(new LogHoundMessageTagFilter(FctsTools.getOptionValues(this.tagsViewElmt),this.tagMode));
     this.applyMsgFilters();
 };
 /**
  * @private
  */
 LogHound.prototype.getViewTags = function() {
-    return FctsTools.getOptionValues(document.getElementById('lhViewTagsSelect'));
+    return FctsTools.getOptionValues(this.tagsViewElmt);
 };
 /**
  * @private
  */
 LogHound.prototype.getAvailTags = function() {
-    return FctsTools.getOptionValues(document.getElementById('lhAvailTagsSelect'));
+    return FctsTools.getOptionValues(this.tagsSelectElmt);
 };
 /**
  * Base message filter class.  Extend this class and override methods to
@@ -1474,6 +1538,7 @@ LogHoundMessageLevelFilter.prototype.showMessage = function(msgRec) {
 };
 if(window['logHound']==null) {
     window['logHound'] = new LogHound();
+    window['loghound'] = window['logHound'];
 }
 
 
