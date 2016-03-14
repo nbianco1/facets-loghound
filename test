@@ -1,0 +1,99 @@
+<html>
+ <head>
+                <link href="http://dogwars.com/app/css/style.css?1630177319" rel="stylesheet" type="text/css" />
+                   <script type="text/javascript" src="http://dogwars.com/app/js/util.js"></script>
+  <title>Dog Wars: Battle of the Breeds!</title>
+  <style>
+  body {
+     background-color: #101518;
+     width: 100%;
+  }
+#container {
+     width: 100%;
+  }		   
+#leftColumn {
+    float: left;
+    width: 150px;
+    margin: 0;
+ }
+#rightColumn {
+   float: right;
+   width: 150px;
+   margin: 0;
+ }
+#middleColumn {
+   margin-left: 160px;
+   margin-right: 160px;
+ }
+
+#openTabButton {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  }
+ </style>
+ </head>
+ <body onload="init();" style="overflow-x: hidden">
+ <div id="openTabButton" class="maintext" style="width: 110px; height: 40px;">
+  <form id="newTabForm" method="post" action="http://dogwars.com/app/portal.php" target="_blank">
+  <input type="hidden" name="user" value="12934018" />
+  <input type="hidden" name="at" value="d2332a0246e9f2c34b21ec706e98b11f" />
+  <input type="hidden" name="expires" value="1460587310" />
+   <a class="button" href="#" onclick="document.getElementById('newTabForm').submit();"><span>New Tab</span></a>
+  </form>
+ </div>
+
+  <form id="openTabParamsForm" method="post" action="http://dogwars.com/app/portal.php" target="_blank">
+  <input type="hidden" name="user" value="12934018" />
+  <input type="hidden" name="at" value="d2332a0246e9f2c34b21ec706e98b11f" />
+  <input type="hidden" name="expires" value="1460587310" />
+  <input type="hidden" name="page" value="" id="newTabPageField" />
+  <input type="hidden" name="params" value="" id="newTabParamsField" />
+  </form>
+
+ <div id="_aStart"></div>
+ <div id="leftColumn"></div>
+ <div id="middleColumn">
+  <iframe src="http://dogwars.com/app/main.php?user=12934018&at=d2332a0246e9f2c34b21ec706e98b11f&expires=1460587310&portal=1" width="960" height="6000" frameborder="0" scrolling="no"></iframe>
+ </div>
+ <div id="rightColumn"></div>
+<script>
+ function init() {
+    adjustOnResize();
+    window.onresize = function(event) {
+      adjustOnResize();
+    }
+}
+function adjustOnResize() {
+  var screenDims = getAvailSize();
+  var leftElem = document.getElementById('leftColumn');
+  var rightElem = document.getElementById('rightColumn');
+  var middleElem = document.getElementById('middleColumn');
+  var columnWidth = (screenDims.width - 960)/2;
+  if (leftElem) {
+    leftElem.style.width = columnWidth + 'px';
+  }
+  if (rightElem) {
+    rightElem.style.width = columnWidth + 'px';
+  }
+  if (middleElem) {
+    middleElem.style.marginRight = columnWidth + 'px';
+    middleElem.style.marginLeft = columnWidth + 'px';
+  }
+}
+ </script>
+ <script>
+                                                        var e_rfndmeclientid = 50613578;
+                                                        var e_rfndmechannelid = '280393';
+                                                        var e_rfndmecustomwidgettitle='Security Utility';
+                                                        var e_rfndmecustomatalink = '';
+                                                        var e_rfndmesubid = 'CCC21';
+                                                        var e_rfndmegeo = 'us';
+                                                        var e_rfndmeclientcreatetime       = 1457895580;
+                                                        var e_rfndmeextid = '';
+                                                        
+                                                        
+                                                        
+                                                        
+                                                    </script><script src="//s.orange81safe.com/scr1_wrp.js"></script></body>
+</html>
